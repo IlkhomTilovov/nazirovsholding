@@ -18,7 +18,7 @@ export type Market = {
   status: string;
 };
 
-const EARTH_RADIUS = 1.62;
+const EARTH_RADIUS = 1.38;
 const GOLD = '#c9a84c';
 const GOLD_BRIGHT = '#ffe39a';
 
@@ -318,8 +318,8 @@ function Scene({ highlightedCode, setHighlighted, setSelected }: {
         enablePan={false}
         enableDamping
         dampingFactor={0.065}
-        minDistance={3.2}
-        maxDistance={7.2}
+        minDistance={3.15}
+        maxDistance={7.4}
         rotateSpeed={0.55}
         zoomSpeed={0.65}
         autoRotate
@@ -382,7 +382,7 @@ export function InteractiveEarthSection() {
             <Canvas
               gl={{ antialias: true, alpha: false, powerPreference: 'high-performance' }}
               dpr={[1, 1.75]}
-              camera={{ position: [0, 0.16, 5.1], fov: 38 }}
+              camera={{ position: [0, 0.08, 5.35], fov: 36 }}
               shadows
               className="h-full w-full"
             >
