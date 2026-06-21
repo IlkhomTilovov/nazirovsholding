@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { ArrowRight, Loader2, Shield, Ruler, Gem, Truck, Star, Paintbrush, Users, ChevronRight, Phone, Send } from 'lucide-react';
+import { ArrowRight, Loader2, Shield, Ruler, Gem, Truck, Star, Paintbrush, Users, ChevronRight, Phone, Send, FileText, Briefcase, Factory, Ship } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { ProductCard } from '@/components/ProductCard';
 import { useFeaturedProducts, useCategories } from '@/hooks/useProducts';
@@ -44,7 +44,7 @@ function useInView(threshold = 0.15) {
 }
 
 const iconMap: Record<string, any> = {
-  Shield, Ruler, Gem, Truck, Star, Paintbrush, Users,
+  Shield, Ruler, Gem, Truck, Star, Paintbrush, Users, FileText, Briefcase, Factory, Ship,
 };
 
 export default function Index() {
@@ -266,35 +266,86 @@ export default function Index() {
         </div>
       </section>
 
-      {/* PROCESS - editable */}
-      <section ref={sectionProcess.ref} className="py-20 md:py-28 bg-background">
-        <div className="container mx-auto px-4 lg:px-8">
-          <div className={`text-center mb-16 transition-all duration-700 ${sectionProcess.isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
-            <EditableText contentKey="process_label" fallback="Jarayon" as="span" className="text-primary text-xs tracking-[0.3em] uppercase font-medium" section="process" />
-            <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mt-4">
-              <EditableText contentKey="process_title" fallback="Qanday ishlaymiz" as="span" className="font-serif text-3xl md:text-4xl lg:text-5xl font-bold" section="process" />
+      {/* EXPORT PROCESS - editable */}
+      <section ref={sectionProcess.ref} className="py-20 md:py-32 bg-background relative overflow-hidden">
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,hsl(var(--primary)/0.06),transparent_70%)] pointer-events-none" />
+        <div className="max-w-[1200px] mx-auto px-4 lg:px-8 relative">
+          <div className={`text-center mb-20 transition-all duration-700 ${sectionProcess.isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
+            <EditableText
+              contentKey="process_label"
+              fallback="EKSPORT JARAYONI"
+              as="span"
+              className="text-primary text-xs tracking-[0.4em] uppercase font-semibold"
+              section="process"
+            />
+            <h2 className="font-serif text-4xl md:text-5xl lg:text-6xl font-normal text-foreground mt-5 mb-5 leading-[1.1]">
+              <EditableText
+                contentKey="process_title"
+                fallback="Eksport jarayoni qanday ishlaydi"
+                as="span"
+                section="process"
+              />
             </h2>
+            <p className="text-muted-foreground text-base md:text-lg max-w-2xl mx-auto leading-relaxed">
+              <EditableText
+                contentKey="process_subtitle"
+                fallback="MIR MEXA xalqaro hamkorlari uchun eksportning barcha bosqichlarini professional tarzda boshqaradi."
+                as="span"
+                section="process"
+              />
+            </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {steps.map((step, i) => (
-              <div
-                key={step.key}
-                className={`relative text-center transition-all duration-700 ${sectionProcess.isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'}`}
-                style={{ transitionDelay: `${i * 150}ms` }}
-              >
-                <span className="font-serif text-6xl font-bold text-primary/20">{step.num}</span>
-                <h3 className="font-serif text-lg font-semibold text-foreground mt-2 mb-2">
-                  <EditableText contentKey={`${step.key}_title`} fallback={step.titleFallback} as="span" className="font-serif text-lg font-semibold" section="process" />
-                </h3>
-                <p className="text-muted-foreground text-sm">
-                  <EditableText contentKey={`${step.key}_desc`} fallback={step.descFallback} as="span" className="text-sm" section="process" />
-                </p>
-                {i < steps.length - 1 && (
-                  <ChevronRight className="hidden lg:block absolute top-8 -right-4 w-8 h-8 text-primary/20" />
-                )}
-              </div>
-            ))}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-4 relative">
+            {steps.map((step, i) => {
+              const IconComp = iconMap[step.icon] || FileText;
+              return (
+                <div
+                  key={step.key}
+                  className={`relative group transition-all duration-700 ${sectionProcess.isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'}`}
+                  style={{ transitionDelay: `${i * 150}ms` }}
+                >
+                  <div className="relative h-full p-7 border border-primary/15 rounded-sm bg-card/40 backdrop-blur-sm transition-all duration-500 hover:border-primary/60 hover:bg-card/60 hover:shadow-[0_0_40px_-10px_hsl(var(--primary)/0.4)] hover:-translate-y-1">
+                    {/* Number watermark */}
+                    <span className="absolute top-4 right-5 font-serif text-5xl font-normal text-primary/15 group-hover:text-primary/30 transition-colors duration-500 select-none">
+                      {step.num}
+                    </span>
+
+                    {/* Icon */}
+                    <div className="w-12 h-12 mb-6 flex items-center justify-center border border-primary/30 rounded-sm bg-primary/5 group-hover:bg-primary/15 group-hover:border-primary/60 transition-all duration-500">
+                      <IconComp className="w-5 h-5 text-primary" strokeWidth={1.5} />
+                    </div>
+
+                    <h3 className="font-serif text-xl md:text-2xl font-normal text-foreground mb-3 leading-snug">
+                      <EditableText
+                        contentKey={`${step.key}_title`}
+                        fallback={step.titleFallback}
+                        as="span"
+                        section="process"
+                      />
+                    </h3>
+                    <p className="text-muted-foreground text-sm leading-relaxed">
+                      <EditableText
+                        contentKey={`${step.key}_desc`}
+                        fallback={step.descFallback}
+                        as="span"
+                        section="process"
+                      />
+                    </p>
+
+                    {/* Gold bottom accent */}
+                    <div className="absolute bottom-0 left-0 h-px w-0 bg-gradient-to-r from-primary to-transparent group-hover:w-full transition-all duration-700" />
+                  </div>
+
+                  {/* Connector arrow (desktop only, between cards) */}
+                  {i < steps.length - 1 && (
+                    <div className="hidden lg:flex absolute top-1/2 -right-2 z-10 -translate-y-1/2 items-center justify-center w-4 h-4">
+                      <ChevronRight className="w-4 h-4 text-primary/40" strokeWidth={1.5} />
+                    </div>
+                  )}
+                </div>
+              );
+            })}
           </div>
         </div>
       </section>
