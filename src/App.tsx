@@ -27,6 +27,9 @@ import BrandDetails from "./pages/BrandDetails";
 import Catalog from "./pages/Catalog";
 import ProductDetails from "./pages/ProductDetails";
 import About from "./pages/About";
+import Sectors from "./pages/Sectors";
+import International from "./pages/International";
+import Projects from "./pages/Projects";
 import Contact from "./pages/Contact";
 import FAQ from "./pages/FAQ";
 import Cart from "./pages/Cart";
@@ -165,6 +168,9 @@ const App = () => (
                               <Route path="/product/:id" element={<ProductDetails />} />
                               <Route path="/brand/:slug" element={<BrandDetails />} />
                               <Route path="/about" element={<About />} />
+                              <Route path="/sectors" element={<Sectors />} />
+                              <Route path="/international" element={<International />} />
+                              <Route path="/projects" element={<Projects />} />
                               <Route path="/contact" element={<Contact />} />
                               <Route path="/faq" element={<FAQ />} />
                               <Route path="/cart" element={<Cart />} />
