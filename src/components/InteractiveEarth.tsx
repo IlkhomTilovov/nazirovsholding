@@ -18,7 +18,7 @@ export type Market = {
   status: string;
 };
 
-const EARTH_RADIUS = 2.05;
+const EARTH_RADIUS = 1.62;
 const GOLD = '#c9a84c';
 const GOLD_BRIGHT = '#ffe39a';
 
@@ -257,7 +257,7 @@ function EarthNetwork({ highlightedCode, setHighlighted, setSelected }: {
   setSelected: (code: string) => void;
 }) {
   return (
-    <group rotation={[0, -0.48, 0.05]}>
+    <group rotation={[0.04, 2.6, 0.03]}>
       <EarthSphere />
       <CountryBorders />
       {MARKETS.map((market) => (
@@ -318,8 +318,8 @@ function Scene({ highlightedCode, setHighlighted, setSelected }: {
         enablePan={false}
         enableDamping
         dampingFactor={0.065}
-        minDistance={3.15}
-        maxDistance={6.5}
+        minDistance={3.2}
+        maxDistance={7.2}
         rotateSpeed={0.55}
         zoomSpeed={0.65}
         autoRotate
@@ -382,7 +382,7 @@ export function InteractiveEarthSection() {
             <Canvas
               gl={{ antialias: true, alpha: false, powerPreference: 'high-performance' }}
               dpr={[1, 1.75]}
-              camera={{ position: [0, 0.25, 4.45], fov: 39 }}
+              camera={{ position: [0, 0.16, 5.1], fov: 38 }}
               shadows
               className="h-full w-full"
             >
