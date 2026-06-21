@@ -283,6 +283,125 @@ export default function Index() {
       {/* BRANDS - dynamic */}
       <BrandsSection />
 
+      {/* HOLDING RAQAMLARDA - animated stats */}
+      <section ref={sectionStats.ref} className="py-20 md:py-28 bg-background relative overflow-hidden border-y border-primary/10">
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,hsl(var(--primary)/0.08),transparent_60%)] pointer-events-none" />
+        <div className="max-w-[1320px] mx-auto px-4 lg:px-8 relative">
+          <div className={`text-center mb-14 transition-all duration-700 ${sectionStats.isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
+            <div className="flex items-center justify-center gap-3 mb-5">
+              <span className="w-10 h-px bg-primary" />
+              <EditableText contentKey="stats_label" fallback="MIR MEXA RAQAMLARDA" as="span" className="text-primary text-xs tracking-[0.4em] uppercase font-semibold" section="stats" />
+              <span className="w-10 h-px bg-primary" />
+            </div>
+            <h2 className="font-serif text-4xl md:text-5xl lg:text-6xl text-foreground leading-[1.05]">
+              <EditableText contentKey="stats_title_1" fallback="Faktlar so'zlardan" as="span" className="block" section="stats" />
+              <EditableText contentKey="stats_title_2" fallback="ishonchliroq" as="span" className="block text-primary italic" section="stats" />
+            </h2>
+          </div>
+
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-10 md:gap-6">
+            <StatCounter value={20} suffix="+" label="Xalqaro bozor" isVisible={sectionStats.isVisible} delay={0} />
+            <StatCounter value={500} suffix="+" label="Strategik hamkor" isVisible={sectionStats.isVisible} delay={120} />
+            <StatCounter value={1000} suffix="+" label="Muvaffaqiyatli yetkazma" isVisible={sectionStats.isVisible} delay={240} />
+            <StatCounter value={15} suffix="+" label="Yillik tajriba" isVisible={sectionStats.isVisible} delay={360} />
+          </div>
+        </div>
+      </section>
+
+      {/* BUSINESS SECTORS */}
+      <section ref={sectionSectors.ref} className="py-24 md:py-32 bg-background relative overflow-hidden">
+        <div className="absolute -top-32 left-1/4 w-[600px] h-[600px] bg-primary/[0.04] rounded-full blur-[120px] pointer-events-none" />
+        <div className="max-w-[1320px] mx-auto px-4 lg:px-8 relative">
+          <div className={`mb-16 max-w-3xl transition-all duration-700 ${sectionSectors.isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
+            <div className="flex items-center gap-3 mb-5">
+              <span className="w-10 h-px bg-primary" />
+              <EditableText contentKey="sectors_label" fallback="BIZNES YO'NALISHLARIMIZ" as="span" className="text-primary text-xs tracking-[0.4em] uppercase font-semibold" section="sectors" />
+            </div>
+            <h2 className="font-serif text-4xl md:text-5xl lg:text-6xl text-foreground leading-[1.05] mb-6">
+              <EditableText contentKey="sectors_title_1" fallback="Bir ekotizim," as="span" className="block" section="sectors" />
+              <EditableText contentKey="sectors_title_2" fallback="cheksiz imkoniyatlar" as="span" className="block text-primary italic" section="sectors" />
+            </h2>
+            <p className="text-muted-foreground text-base md:text-lg leading-relaxed">
+              <EditableText contentKey="sectors_intro" fallback="MIR MEXA holdingi to'rt yo'nalishni birlashtirgan: eksport, ishlab chiqarish, logistika va investitsiya. Bu — mijozlar uchun yagona darvoza orqali to'liq B2B yechim." as="span" section="sectors" />
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {businessSectors.map((s, i) => {
+              const IconComp = iconMap[s.icon] || Building2;
+              return (
+                <article
+                  key={s.key}
+                  className={`group relative overflow-hidden rounded-sm border border-primary/15 bg-gradient-to-br from-card/60 to-background p-8 md:p-10 transition-all duration-500 hover:border-primary/50 hover:shadow-[0_0_60px_-20px_hsl(var(--primary)/0.45)] hover:-translate-y-1 ${sectionSectors.isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'}`}
+                  style={{ transitionDelay: `${i * 120}ms` }}
+                >
+                  <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-full blur-3xl group-hover:bg-primary/10 transition-colors duration-700" />
+                  <div className="relative flex items-start gap-5">
+                    <div className="w-14 h-14 flex-shrink-0 flex items-center justify-center border border-primary/40 bg-primary/5 rounded-sm group-hover:bg-primary/15 transition-colors duration-500">
+                      <IconComp className="w-6 h-6 text-primary" strokeWidth={1.5} />
+                    </div>
+                    <div className="flex-1">
+                      <h3 className="font-serif text-2xl md:text-3xl text-foreground mb-3 leading-tight">
+                        <EditableText contentKey={`${s.key}_title`} fallback={s.titleFallback} as="span" section="sectors" />
+                      </h3>
+                      <p className="text-muted-foreground text-sm md:text-base leading-relaxed">
+                        <EditableText contentKey={`${s.key}_desc`} fallback={s.descFallback} as="span" section="sectors" />
+                      </p>
+                    </div>
+                  </div>
+                  <div className="absolute bottom-0 left-0 h-px w-0 bg-gradient-to-r from-primary via-primary/60 to-transparent group-hover:w-full transition-all duration-700" />
+                </article>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+
+      {/* GLOBAL PRESENCE */}
+      <section ref={sectionGlobal.ref} className="py-24 md:py-32 bg-secondary/40 relative overflow-hidden border-y border-primary/10">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_50%,hsl(var(--primary)/0.08),transparent_50%)] pointer-events-none" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_50%,hsl(var(--primary)/0.06),transparent_50%)] pointer-events-none" />
+        <div className="max-w-[1320px] mx-auto px-4 lg:px-8 relative">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+            <div className={`lg:col-span-5 transition-all duration-700 ${sectionGlobal.isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
+              <div className="flex items-center gap-3 mb-5">
+                <span className="w-10 h-px bg-primary" />
+                <EditableText contentKey="global_label" fallback="GLOBAL QAMROV" as="span" className="text-primary text-xs tracking-[0.4em] uppercase font-semibold" section="global" />
+              </div>
+              <h2 className="font-serif text-4xl md:text-5xl lg:text-6xl text-foreground leading-[1.05] mb-6">
+                <EditableText contentKey="global_title_1" fallback="3 qit'a." as="span" className="block" section="global" />
+                <EditableText contentKey="global_title_2" fallback="20+ davlat." as="span" className="block text-primary italic" section="global" />
+                <EditableText contentKey="global_title_3" fallback="Bitta hamkor." as="span" className="block" section="global" />
+              </h2>
+              <p className="text-muted-foreground text-base md:text-lg leading-relaxed mb-8">
+                <EditableText contentKey="global_intro" fallback="Yevropa Ittifoqi, MDH, Yaqin Sharq va Osiyo bozorlarida faol eksport va xalqaro hamkorlik. Har bir bozorda mahalliy hamkorlar va logistika tarmog'i." as="span" section="global" />
+              </p>
+              <div className="flex flex-wrap gap-4 text-sm">
+                <div className="flex items-center gap-2 text-muted-foreground"><Globe2 className="w-4 h-4 text-primary" /> 3 qit'a</div>
+                <div className="flex items-center gap-2 text-muted-foreground"><MapPin className="w-4 h-4 text-primary" /> 20+ bozor</div>
+                <div className="flex items-center gap-2 text-muted-foreground"><Handshake className="w-4 h-4 text-primary" /> 500+ hamkor</div>
+              </div>
+            </div>
+
+            <div className={`lg:col-span-7 transition-all duration-700 ${sectionGlobal.isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'}`} style={{ transitionDelay: '200ms' }}>
+              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
+                {globalMarkets.map((m, i) => (
+                  <div
+                    key={m.key}
+                    className={`group flex items-center gap-3 px-4 py-3.5 border border-primary/15 bg-card/50 backdrop-blur-sm rounded-sm hover:border-primary/50 hover:bg-card transition-all duration-500 ${sectionGlobal.isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}`}
+                    style={{ transitionDelay: `${300 + i * 50}ms` }}
+                  >
+                    <span className="text-2xl leading-none">{m.flag}</span>
+                    <span className="text-foreground/90 text-sm font-medium tracking-wide">{m.name}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+
       {/* WHY US - Quality grid + Mission panel (Noir & Gold premium) */}
       <section ref={sectionWhyUs.ref} className="py-24 md:py-32 bg-background relative overflow-hidden">
         {/* decorative ambient lights */}
