@@ -377,7 +377,7 @@ export function InteractiveEarthSection() {
               <div className="text-[9px] uppercase tracking-[0.35em] text-[#c9a84c]/60">Center Origin</div>
               <div className="mt-1 text-xs uppercase tracking-[0.25em] text-white/90">Uzbekistan · Tashkent</div>
             </div>
-            <div className="absolute bottom-4 right-4 z-10 text-[10px] uppercase tracking-[0.3em] text-white/35">Drag · Scroll · Rotate</div>
+            <div className="absolute bottom-4 right-4 z-10 text-[10px] uppercase tracking-[0.3em] text-white/35">Drag · Rotate</div>
 
             <Canvas
               gl={{ antialias: true, alpha: true, powerPreference: 'high-performance' }}
