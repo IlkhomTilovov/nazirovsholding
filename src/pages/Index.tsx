@@ -613,6 +613,7 @@ export default function Index() {
                   section="process"
                 />
               </span>
+              <span className="h-px w-10" style={{ background: 'rgba(201,164,106,0.5)' }} />
             </div>
 
             <h2
