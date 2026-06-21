@@ -78,14 +78,14 @@ function Globe({
     const g = new ThreeGlobe({ animateIn: true })
       .showAtmosphere(true)
       .atmosphereColor(GOLD)
-      .atmosphereAltitude(0.18)
+      .atmosphereAltitude(0.22)
       .showGlobe(true)
       .globeMaterial(
         new THREE.MeshPhongMaterial({
-          color: new THREE.Color('#08111c'),
-          emissive: new THREE.Color('#020306'),
-          specular: new THREE.Color('#1a1305'),
-          shininess: 14,
+          color: new THREE.Color('#1a1a1a'),
+          emissive: new THREE.Color('#0a0a0a'),
+          specular: new THREE.Color('#3a2a08'),
+          shininess: 22,
         }),
       );
     return g;
