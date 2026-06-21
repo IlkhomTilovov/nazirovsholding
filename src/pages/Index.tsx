@@ -197,40 +197,71 @@ export default function Index() {
       {/* BRANDS - dynamic */}
       <BrandsSection />
 
-      {/* WHY US - editable */}
-      <section ref={sectionWhyUs.ref} className="py-20 md:py-28 bg-secondary">
-        <div className="container mx-auto px-4 lg:px-8">
-          <div className={`text-center mb-16 transition-all duration-700 ${sectionWhyUs.isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
-            <EditableText contentKey="whyus_label" fallback="Afzalliklar" as="span" className="text-primary text-xs tracking-[0.3em] uppercase font-medium" section="whyus" />
-            <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mt-4">
-              <EditableText contentKey="whyus_title" fallback="Nega aynan biz" as="span" className="font-serif text-3xl md:text-4xl lg:text-5xl font-bold" section="whyus" />
+      {/* WHY US - Quality grid + Mission panel (Noir & Gold) */}
+      <section ref={sectionWhyUs.ref} className="py-20 md:py-28 bg-background relative overflow-hidden">
+        <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-primary/5 rounded-full blur-3xl pointer-events-none" />
+        <div className="container mx-auto px-4 lg:px-8 relative">
+          <div className={`mb-16 transition-all duration-700 ${sectionWhyUs.isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
+            <h2 className="font-serif text-3xl md:text-5xl lg:text-6xl font-normal text-foreground leading-[1.1]">
+              <EditableText contentKey="whyus_title_line1" fallback="SIFAT VA STIL" as="span" className="block tracking-wide" section="whyus" />
+              <EditableText contentKey="whyus_title_line2" fallback="HAR BIR TAFSILOTDA" as="span" className="block text-primary italic pl-12 md:pl-32" section="whyus" />
             </h2>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-            {whyUsItems.map((item, i) => {
-              const IconComp = iconMap[item.icon] || Shield;
-              return (
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            {/* 4 cards in 2x2 grid */}
+            <div className="lg:col-span-2 grid grid-cols-1 sm:grid-cols-2 gap-6">
+              {whyUsItems.map((item, i) => (
                 <div
                   key={item.key}
-                  className={`text-center p-8 rounded-xl shadow-md hover:shadow-xl transition-all duration-500 group relative overflow-hidden bg-gradient-to-br from-card via-card to-primary/5 border border-primary/10 hover:-translate-y-1 ${sectionWhyUs.isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'}`}
+                  className={`group relative overflow-hidden bg-card border border-primary/10 rounded-sm p-6 transition-all duration-500 hover:border-primary/40 ${sectionWhyUs.isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'}`}
                   style={{ transitionDelay: `${i * 100}ms` }}
                 >
-                  <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                  <div className="relative z-10">
-                    <div className="w-16 h-16 mx-auto mb-6 bg-primary/10 rounded-xl flex items-center justify-center group-hover:bg-primary/20 group-hover:scale-110 transition-all duration-300">
-                      <IconComp className="w-7 h-7 text-primary" />
-                    </div>
-                    <h3 className="font-serif text-lg font-semibold text-foreground mb-2">
-                      <EditableText contentKey={`${item.key}_title`} fallback={item.titleFallback} as="span" className="font-serif text-lg font-semibold" section="whyus" />
-                    </h3>
-                    <p className="text-muted-foreground text-sm">
-                      <EditableText contentKey={`${item.key}_desc`} fallback={item.descFallback} as="span" className="text-sm" section="whyus" />
-                    </p>
+                  <h3 className="font-sans text-xs tracking-[0.2em] text-primary font-semibold mb-3">
+                    <EditableText contentKey={`${item.key}_title`} fallback={item.titleFallback} as="span" section="whyus" />
+                  </h3>
+                  <p className="text-muted-foreground text-sm leading-relaxed mb-5">
+                    <EditableText contentKey={`${item.key}_desc`} fallback={item.descFallback} as="span" section="whyus" />
+                  </p>
+                  <div className="aspect-[16/9] overflow-hidden rounded-sm">
+                    <img
+                      src={item.image}
+                      alt={item.titleFallback}
+                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                      loading="lazy"
+                    />
                   </div>
                 </div>
-              );
-            })}
+              ))}
+            </div>
+
+            {/* Mission panel */}
+            <div className={`flex flex-col justify-center px-2 lg:pl-8 transition-all duration-700 ${sectionWhyUs.isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'}`} style={{ transitionDelay: '400ms' }}>
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-12 h-12 bg-primary/10 border border-primary/30 rounded-sm flex items-center justify-center">
+                  <Gem className="w-5 h-5 text-primary" />
+                </div>
+                <h3 className="font-serif text-3xl md:text-4xl text-foreground">
+                  <EditableText contentKey="mission_title" fallback="BIZNING MISSIYA" as="span" section="whyus" />
+                </h3>
+              </div>
+              <p className="text-muted-foreground text-base leading-relaxed mb-4">
+                <EditableText
+                  contentKey="mission_desc_1"
+                  fallback="O'zbekistonning eng yaxshi mahsulotlarini xalqaro bozorga olib chiqish — bizning asosiy maqsadimiz. Har bir mijoz va sherik uchun ishonchli yetkazib beruvchi bo'lish."
+                  as="span"
+                  section="whyus"
+                />
+              </p>
+              <p className="text-muted-foreground/80 text-sm leading-relaxed italic">
+                <EditableText
+                  contentKey="mission_desc_2"
+                  fallback="Biz bilan siz sifat, halollik va o'z vaqtida yetkazib berish kafolatiga ega bo'lasiz."
+                  as="span"
+                  section="whyus"
+                />
+              </p>
+            </div>
           </div>
         </div>
       </section>
