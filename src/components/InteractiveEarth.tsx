@@ -434,7 +434,7 @@ function Scene({
               selected={selected === m.code}
               hovered={hovered === m.code}
               onPointerOver={() => setHovered(m.code)}
-              onPointerOut={() => setHovered((h) => (h === m.code ? null : h) as any)}
+              onPointerOut={() => setHovered(hovered === m.code ? null : hovered)}
               onClick={() => setSelected(m.code)}
             />
           ))}
