@@ -777,6 +777,57 @@ export default function Index() {
         </div>
       </section>
 
+      {/* CHAIRMAN MESSAGE / FOUNDER STORY */}
+      <section ref={sectionChairman.ref} className="py-24 md:py-32 bg-secondary/40 relative overflow-hidden border-y border-primary/10">
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,hsl(var(--primary)/0.08),transparent_60%)] pointer-events-none" />
+        <div className="max-w-[1200px] mx-auto px-4 lg:px-8 relative">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
+            <div className={`lg:col-span-5 transition-all duration-700 ${sectionChairman.isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'}`}>
+              <div className="relative aspect-[4/5] rounded-sm overflow-hidden border border-primary/20">
+                <img src={imgLeadership} alt="Chairman" className="w-full h-full object-cover" loading="lazy" />
+                <div className="absolute inset-0 bg-gradient-to-t from-background/80 via-transparent to-transparent" />
+                <div className="absolute bottom-6 left-6 right-6">
+                  <div className="text-primary text-[11px] tracking-[0.3em] uppercase font-semibold mb-2">
+                    <EditableText contentKey="chairman_role" fallback="RAIS / TA'SISCHI" as="span" section="chairman" />
+                  </div>
+                  <div className="font-serif text-2xl md:text-3xl text-white leading-tight">
+                    <EditableText contentKey="chairman_name" fallback="MIR MEXA Group" as="span" section="chairman" />
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className={`lg:col-span-7 transition-all duration-700 ${sectionChairman.isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`} style={{ transitionDelay: '150ms' }}>
+              <div className="flex items-center gap-3 mb-5">
+                <span className="w-10 h-px bg-primary" />
+                <EditableText contentKey="chairman_label" fallback="RAHBAR SO'ZI" as="span" className="text-primary text-xs tracking-[0.4em] uppercase font-semibold" section="chairman" />
+              </div>
+              <Quote className="w-12 h-12 text-primary/30 mb-4" strokeWidth={1.2} />
+              <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl text-foreground leading-[1.15] mb-8">
+                <EditableText contentKey="chairman_quote_1" fallback="\u201CBizning vazifamiz — O'zbekiston sifatini" as="span" className="block" section="chairman" />
+                <EditableText contentKey="chairman_quote_2" fallback="dunyo bozoriga olib chiqish.\u201D" as="span" className="block text-primary italic" section="chairman" />
+              </h2>
+              <div className="space-y-4 text-muted-foreground text-base md:text-lg leading-relaxed mb-8">
+                <p>
+                  <EditableText contentKey="chairman_p1" fallback="MIR MEXA — bu 15 yildan ortiq tajriba va xalqaro hamkorlik asosida shakllangan biznes ekotizim. Biz O'zbekistonni global savdo xaritasida munosib o'rinda ko'rishni xohlaymiz." as="span" section="chairman" />
+                </p>
+                <p>
+                  <EditableText contentKey="chairman_p2" fallback="Har bir hamkor uchun shaffoflik, sifat va o'z vaqtida bajarish — bizning yagona standartimiz. Bu — bizning brendimizning poydevori." as="span" section="chairman" />
+                </p>
+              </div>
+              <div className="flex flex-wrap gap-4">
+                <Button asChild size="lg" className="bg-primary text-primary-foreground hover:bg-primary/90 rounded-sm px-8 tracking-wider text-sm uppercase h-13">
+                  <Link to="/about"><EditableText contentKey="chairman_cta_1" fallback="Biz haqimizda" as="span" section="chairman" /><ArrowRight className="w-4 h-4 ml-2" /></Link>
+                </Button>
+                <Button asChild size="lg" variant="outline" className="border-primary/40 text-foreground hover:bg-primary/10 hover:text-foreground rounded-sm px-8 tracking-wider text-sm uppercase h-13 bg-transparent">
+                  <Link to="/contact"><EditableText contentKey="chairman_cta_2" fallback="Hamkorlik so'rovi" as="span" section="chairman" /></Link>
+                </Button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* TESTIMONIALS - editable */}
       <section ref={sectionTestimonials.ref} className="py-20 md:py-28 bg-background">
         <div className="container mx-auto px-4 lg:px-8">
