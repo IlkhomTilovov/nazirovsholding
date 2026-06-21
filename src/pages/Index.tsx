@@ -15,6 +15,11 @@ import serviceWardrobe from '@/assets/service-wardrobe.jpg';
 import serviceKitchen from '@/assets/service-kitchen.jpg';
 import serviceTvzone from '@/assets/service-tvzone.jpg';
 import serviceBedroom from '@/assets/service-bedroom.jpg';
+import heroExportFruits from '@/assets/hero-export-fruits.jpg';
+import heroExportLogistics from '@/assets/hero-export-logistics.jpg';
+import heroExportFactory from '@/assets/hero-export-factory.jpg';
+
+const heroSlides = [heroExportFruits, heroExportLogistics, heroExportFactory];
 
 const defaultServiceImages: Record<string, string> = {
   'shkaflar': serviceWardrobe,
