@@ -48,8 +48,48 @@ function useInView(threshold = 0.15) {
 }
 
 const iconMap: Record<string, any> = {
-  Shield, Ruler, Gem, Truck, Star, Paintbrush, Users, FileText, Briefcase, Factory, Ship,
+  Shield, Ruler, Gem, Truck, Star, Paintbrush, Users, FileText, Briefcase, Factory, Ship, Globe2, TrendingUp, Building2, Handshake, Award, BadgeCheck, ScrollText, Target,
 };
+
+// Animated counter that runs once when section enters viewport
+function useCountUp(target: number, isVisible: boolean, duration = 1800) {
+  const [value, setValue] = useState(0);
+  useEffect(() => {
+    if (!isVisible) return;
+    let start: number | null = null;
+    let raf = 0;
+    const step = (ts: number) => {
+      if (start === null) start = ts;
+      const p = Math.min((ts - start) / duration, 1);
+      // easeOutCubic
+      const eased = 1 - Math.pow(1 - p, 3);
+      setValue(Math.floor(eased * target));
+      if (p < 1) raf = requestAnimationFrame(step);
+      else setValue(target);
+    };
+    raf = requestAnimationFrame(step);
+    return () => cancelAnimationFrame(raf);
+  }, [target, isVisible, duration]);
+  return value;
+}
+
+function StatCounter({ value, suffix = '+', label, isVisible, delay = 0 }: { value: number; suffix?: string; label: string; isVisible: boolean; delay?: number; }) {
+  const n = useCountUp(value, isVisible);
+  return (
+    <div
+      className={`text-center transition-all duration-700 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}`}
+      style={{ transitionDelay: `${delay}ms` }}
+    >
+      <div className="font-serif text-5xl md:text-6xl lg:text-7xl text-primary leading-none mb-3 tabular-nums">
+        {n}<span className="text-primary/70">{suffix}</span>
+      </div>
+      <div className="h-px w-10 bg-primary/40 mx-auto mb-4" />
+      <div className="text-[11px] tracking-[0.3em] uppercase text-muted-foreground font-medium">
+        {label}
+      </div>
+    </div>
+  );
+}
 
 export default function Index() {
   const { language } = useLanguage();
