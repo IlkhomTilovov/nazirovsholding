@@ -15,6 +15,11 @@ import serviceWardrobe from '@/assets/service-wardrobe.jpg';
 import serviceKitchen from '@/assets/service-kitchen.jpg';
 import serviceTvzone from '@/assets/service-tvzone.jpg';
 import serviceBedroom from '@/assets/service-bedroom.jpg';
+import heroExportFruits from '@/assets/hero-export-fruits.jpg';
+import heroExportLogistics from '@/assets/hero-export-logistics.jpg';
+import heroExportFactory from '@/assets/hero-export-factory.jpg';
+
+const heroSlides = [heroExportFruits, heroExportLogistics, heroExportFactory];
 
 const defaultServiceImages: Record<string, string> = {
   'shkaflar': serviceWardrobe,
@@ -51,12 +56,10 @@ export default function Index() {
   const contactPhone = settings?.contact_phone || '+998 90 123 45 67';
 
   const whyUsItems = [
-    { key: 'whyus_1', icon: 'Shield', titleFallback: '5 yil kafolat', descFallback: 'Barcha mahsulotlarga 5 yillik kafolat' },
-    { key: 'whyus_2', icon: 'Paintbrush', titleFallback: 'Individual dizayn', descFallback: 'Sizning didingizga mos dizayn' },
-    { key: 'whyus_3', icon: 'Ruler', titleFallback: "O'lchov asosida", descFallback: "Aniq o'lchovlar bo'yicha ishlab chiqarish" },
-    { key: 'whyus_4', icon: 'Users', titleFallback: 'Tajribali ustalar', descFallback: '10+ yillik tajribaga ega mutaxassislar' },
-    { key: 'whyus_5', icon: 'Gem', titleFallback: 'Premium materiallar', descFallback: 'Faqat yuqori sifatli materiallar' },
-    { key: 'whyus_6', icon: 'Truck', titleFallback: 'Tez yetkazib berish', descFallback: "Toshkent bo'ylab bepul yetkazib berish" },
+    { key: 'whyus_1', icon: 'Shield', image: heroExportFactory, titleFallback: 'SIFAT VA ISHONCH', descFallback: 'Biz har bir bosqichda yuqori xalqaro standartlarga rioya qilamiz. Xom ashyo tanlashdan to tayyor mahsulotni jo\'natishgacha.' },
+    { key: 'whyus_2', icon: 'Gem', image: heroExportFruits, titleFallback: 'SHAFFOFLIK VA HALOLLIK', descFallback: 'Mijozlar bilan ochiq va halol munosabatlarni qadrlaymiz. Barcha narxlar, muddatlar va xarajatlar oldindan aniq.' },
+    { key: 'whyus_3', icon: 'Users', image: heroExportLogistics, titleFallback: 'JAMOAVIY ISH', descFallback: 'Bizning kuchimiz — birlashgan professionallar jamoasida. Har biri natija uchun ishlaydi va o\'sib boradi.' },
+    { key: 'whyus_4', icon: 'Star', image: heroExportFactory, titleFallback: 'YETAKCHILIK', descFallback: 'Biz yetakchilik madaniyatini qo\'llab-quvvatlaymiz. Har bir xodim mijozlar uchun eng yaxshi yechimga intiladi.' },
   ];
 
   const steps = [
@@ -86,20 +89,28 @@ export default function Index() {
   const sectionTestimonials = useInView();
   const sectionCta = useInView();
 
+  const [heroSlide, setHeroSlide] = useState(0);
+  useEffect(() => {
+    const id = setInterval(() => setHeroSlide(s => (s + 1) % heroSlides.length), 6000);
+    return () => clearInterval(id);
+  }, []);
+
   return (
     <div className="min-h-screen">
       {/* HERO */}
-      <section className="relative flex items-center" style={{ minHeight: 'calc(100vh - 80px)' }}>
-        <div className="absolute inset-0 z-0">
-          <EditableImage
-            contentKey="hero_background_image"
-            fallbackSrc="/images/hero-default.jpg"
-            alt="Premium mebel showroom"
-            className="w-full h-full object-cover"
-            wrapperClassName="w-full h-full"
-            section="hero"
-          />
-          <div className="absolute inset-0 bg-gradient-to-r from-black/90 via-black/60 to-black/30 z-20 pointer-events-none" />
+      <section className="relative flex items-center overflow-hidden" style={{ minHeight: 'calc(100vh - 80px)' }}>
+        <div className="absolute inset-0 z-0 bg-background">
+          {heroSlides.map((src, i) => (
+            <img
+              key={src}
+              src={src}
+              alt="MIR MEXA export"
+              className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-[1500ms] ${i === heroSlide ? 'opacity-100 scale-105' : 'opacity-0 scale-100'} transition-transform`}
+              loading={i === 0 ? 'eager' : 'lazy'}
+            />
+          ))}
+          <div className="absolute inset-0 bg-gradient-to-r from-black/95 via-black/75 to-black/40 z-20 pointer-events-none" />
+          <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent z-20 pointer-events-none" />
         </div>
 
         <div className="container mx-auto px-4 lg:px-8 relative z-10 py-20 pointer-events-none">
@@ -107,25 +118,32 @@ export default function Index() {
             <div className="inline-block mb-6 px-4 py-1.5 border border-primary/40 rounded-sm">
               <EditableText
                 contentKey="hero_badge"
-                fallback="Premium mebel"
+                fallback="MIR MEXA · EXPORT"
                 as="span"
                 className="text-primary text-xs font-medium tracking-[0.3em] uppercase"
                 section="hero"
               />
             </div>
-            <h1 className="font-serif text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-white leading-[1.1] mb-6">
+            <h1 className="font-serif text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-normal text-white leading-[1.05] mb-6">
               <EditableText
-                contentKey="hero_title"
-                fallback="Premium Mebel Dizayni"
+                contentKey="hero_title_line1"
+                fallback="Premium mahsulotlar"
                 as="span"
-                className="font-serif text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold"
+                className="block font-serif"
+                section="hero"
+              />
+              <EditableText
+                contentKey="hero_title_line2"
+                fallback="dunyo bozoriga"
+                as="span"
+                className="block font-serif text-primary italic"
                 section="hero"
               />
             </h1>
             <p className="text-lg md:text-xl text-white/70 mb-10 max-w-lg leading-relaxed">
               <EditableText
                 contentKey="hero_subtitle"
-                fallback="Zamonaviy, sifatli va individual buyurtma asosida ishlab chiqariladi"
+                fallback="O'zbekistondan Yevropa va MDH davlatlariga ishonchli eksport. Sifat, shaffoflik va o'z vaqtida yetkazib berish kafolati."
                 as="span"
                 className="text-lg md:text-xl"
                 section="hero"
@@ -133,13 +151,14 @@ export default function Index() {
             </p>
             <div className="flex flex-wrap gap-4 mb-16">
               <Button asChild size="lg" className="bg-primary text-primary-foreground hover:bg-primary/90 rounded-sm px-8 tracking-wider text-sm uppercase h-14">
-                <Link to="/contact">
-                  <EditableText contentKey="hero_cta_primary" fallback={language === 'ru' ? 'Оформить заказ' : "Buyurtma berish"} as="span" section="hero" />
+                <Link to="/catalog">
+                  <EditableText contentKey="hero_cta_primary" fallback={language === 'ru' ? 'Смотреть каталог' : "Katalogni ko'rish"} as="span" section="hero" />
+                  <ArrowRight className="w-4 h-4 ml-2" />
                 </Link>
               </Button>
-              <Button asChild variant="outline" size="lg" className="border-white/30 bg-transparent text-white hover:bg-transparent hover:text-white hover:border-white/30 rounded-sm px-8 tracking-wider text-sm uppercase h-14 transition-none">
-                <Link to="/about">
-                  <EditableText contentKey="hero_cta_secondary" fallback={language === 'ru' ? 'Посмотреть портфолио' : "Portfolio ko'rish"} as="span" section="hero" />
+              <Button asChild variant="outline" size="lg" className="border-white/30 bg-transparent text-white hover:bg-white/5 hover:text-white hover:border-white/50 rounded-sm px-8 tracking-wider text-sm uppercase h-14">
+                <Link to="/contact">
+                  <EditableText contentKey="hero_cta_secondary" fallback={language === 'ru' ? 'Связаться с нами' : "Biz bilan bog'lanish"} as="span" section="hero" />
                 </Link>
               </Button>
             </div>
@@ -161,45 +180,88 @@ export default function Index() {
             </div>
           </div>
         </div>
+
+        {/* Slide indicators */}
+        <div className="absolute bottom-8 right-8 z-30 flex gap-2">
+          {heroSlides.map((_, i) => (
+            <button
+              key={i}
+              onClick={() => setHeroSlide(i)}
+              aria-label={`Slayd ${i + 1}`}
+              className={`h-1 transition-all duration-500 ${i === heroSlide ? 'w-12 bg-primary' : 'w-6 bg-white/30 hover:bg-white/50'}`}
+            />
+          ))}
+        </div>
       </section>
 
       {/* BRANDS - dynamic */}
       <BrandsSection />
 
-      {/* WHY US - editable */}
-      <section ref={sectionWhyUs.ref} className="py-20 md:py-28 bg-secondary">
-        <div className="container mx-auto px-4 lg:px-8">
-          <div className={`text-center mb-16 transition-all duration-700 ${sectionWhyUs.isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
-            <EditableText contentKey="whyus_label" fallback="Afzalliklar" as="span" className="text-primary text-xs tracking-[0.3em] uppercase font-medium" section="whyus" />
-            <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mt-4">
-              <EditableText contentKey="whyus_title" fallback="Nega aynan biz" as="span" className="font-serif text-3xl md:text-4xl lg:text-5xl font-bold" section="whyus" />
+      {/* WHY US - Quality grid + Mission panel (Noir & Gold) */}
+      <section ref={sectionWhyUs.ref} className="py-20 md:py-28 bg-background relative overflow-hidden">
+        <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-primary/5 rounded-full blur-3xl pointer-events-none" />
+        <div className="container mx-auto px-4 lg:px-8 relative">
+          <div className={`mb-16 transition-all duration-700 ${sectionWhyUs.isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
+            <h2 className="font-serif text-3xl md:text-5xl lg:text-6xl font-normal text-foreground leading-[1.1]">
+              <EditableText contentKey="whyus_title_line1" fallback="SIFAT VA STIL" as="span" className="block tracking-wide" section="whyus" />
+              <EditableText contentKey="whyus_title_line2" fallback="HAR BIR TAFSILOTDA" as="span" className="block text-primary italic pl-12 md:pl-32" section="whyus" />
             </h2>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-            {whyUsItems.map((item, i) => {
-              const IconComp = iconMap[item.icon] || Shield;
-              return (
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            {/* 4 cards in 2x2 grid */}
+            <div className="lg:col-span-2 grid grid-cols-1 sm:grid-cols-2 gap-6">
+              {whyUsItems.map((item, i) => (
                 <div
                   key={item.key}
-                  className={`text-center p-8 rounded-xl shadow-md hover:shadow-xl transition-all duration-500 group relative overflow-hidden bg-gradient-to-br from-card via-card to-primary/5 border border-primary/10 hover:-translate-y-1 ${sectionWhyUs.isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'}`}
+                  className={`group relative overflow-hidden bg-card border border-primary/10 rounded-sm p-6 transition-all duration-500 hover:border-primary/40 ${sectionWhyUs.isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'}`}
                   style={{ transitionDelay: `${i * 100}ms` }}
                 >
-                  <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                  <div className="relative z-10">
-                    <div className="w-16 h-16 mx-auto mb-6 bg-primary/10 rounded-xl flex items-center justify-center group-hover:bg-primary/20 group-hover:scale-110 transition-all duration-300">
-                      <IconComp className="w-7 h-7 text-primary" />
-                    </div>
-                    <h3 className="font-serif text-lg font-semibold text-foreground mb-2">
-                      <EditableText contentKey={`${item.key}_title`} fallback={item.titleFallback} as="span" className="font-serif text-lg font-semibold" section="whyus" />
-                    </h3>
-                    <p className="text-muted-foreground text-sm">
-                      <EditableText contentKey={`${item.key}_desc`} fallback={item.descFallback} as="span" className="text-sm" section="whyus" />
-                    </p>
+                  <h3 className="font-sans text-xs tracking-[0.2em] text-primary font-semibold mb-3">
+                    <EditableText contentKey={`${item.key}_title`} fallback={item.titleFallback} as="span" section="whyus" />
+                  </h3>
+                  <p className="text-muted-foreground text-sm leading-relaxed mb-5">
+                    <EditableText contentKey={`${item.key}_desc`} fallback={item.descFallback} as="span" section="whyus" />
+                  </p>
+                  <div className="aspect-[16/9] overflow-hidden rounded-sm">
+                    <img
+                      src={item.image}
+                      alt={item.titleFallback}
+                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                      loading="lazy"
+                    />
                   </div>
                 </div>
-              );
-            })}
+              ))}
+            </div>
+
+            {/* Mission panel */}
+            <div className={`flex flex-col justify-center px-2 lg:pl-8 transition-all duration-700 ${sectionWhyUs.isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'}`} style={{ transitionDelay: '400ms' }}>
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-12 h-12 bg-primary/10 border border-primary/30 rounded-sm flex items-center justify-center">
+                  <Gem className="w-5 h-5 text-primary" />
+                </div>
+                <h3 className="font-serif text-3xl md:text-4xl text-foreground">
+                  <EditableText contentKey="mission_title" fallback="BIZNING MISSIYA" as="span" section="whyus" />
+                </h3>
+              </div>
+              <p className="text-muted-foreground text-base leading-relaxed mb-4">
+                <EditableText
+                  contentKey="mission_desc_1"
+                  fallback="O'zbekistonning eng yaxshi mahsulotlarini xalqaro bozorga olib chiqish — bizning asosiy maqsadimiz. Har bir mijoz va sherik uchun ishonchli yetkazib beruvchi bo'lish."
+                  as="span"
+                  section="whyus"
+                />
+              </p>
+              <p className="text-muted-foreground/80 text-sm leading-relaxed italic">
+                <EditableText
+                  contentKey="mission_desc_2"
+                  fallback="Biz bilan siz sifat, halollik va o'z vaqtida yetkazib berish kafolatiga ega bo'lasiz."
+                  as="span"
+                  section="whyus"
+                />
+              </p>
+            </div>
           </div>
         </div>
       </section>
