@@ -118,25 +118,32 @@ export default function Index() {
             <div className="inline-block mb-6 px-4 py-1.5 border border-primary/40 rounded-sm">
               <EditableText
                 contentKey="hero_badge"
-                fallback="Premium mebel"
+                fallback="MIR MEXA · EXPORT"
                 as="span"
                 className="text-primary text-xs font-medium tracking-[0.3em] uppercase"
                 section="hero"
               />
             </div>
-            <h1 className="font-serif text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-white leading-[1.1] mb-6">
+            <h1 className="font-serif text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-normal text-white leading-[1.05] mb-6">
               <EditableText
-                contentKey="hero_title"
-                fallback="Premium Mebel Dizayni"
+                contentKey="hero_title_line1"
+                fallback="Premium mahsulotlar"
                 as="span"
-                className="font-serif text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold"
+                className="block font-serif"
+                section="hero"
+              />
+              <EditableText
+                contentKey="hero_title_line2"
+                fallback="dunyo bozoriga"
+                as="span"
+                className="block font-serif text-primary italic"
                 section="hero"
               />
             </h1>
             <p className="text-lg md:text-xl text-white/70 mb-10 max-w-lg leading-relaxed">
               <EditableText
                 contentKey="hero_subtitle"
-                fallback="Zamonaviy, sifatli va individual buyurtma asosida ishlab chiqariladi"
+                fallback="O'zbekistondan Yevropa va MDH davlatlariga ishonchli eksport. Sifat, shaffoflik va o'z vaqtida yetkazib berish kafolati."
                 as="span"
                 className="text-lg md:text-xl"
                 section="hero"
@@ -144,13 +151,14 @@ export default function Index() {
             </p>
             <div className="flex flex-wrap gap-4 mb-16">
               <Button asChild size="lg" className="bg-primary text-primary-foreground hover:bg-primary/90 rounded-sm px-8 tracking-wider text-sm uppercase h-14">
-                <Link to="/contact">
-                  <EditableText contentKey="hero_cta_primary" fallback={language === 'ru' ? 'Оформить заказ' : "Buyurtma berish"} as="span" section="hero" />
+                <Link to="/catalog">
+                  <EditableText contentKey="hero_cta_primary" fallback={language === 'ru' ? 'Смотреть каталог' : "Katalogni ko'rish"} as="span" section="hero" />
+                  <ArrowRight className="w-4 h-4 ml-2" />
                 </Link>
               </Button>
-              <Button asChild variant="outline" size="lg" className="border-white/30 bg-transparent text-white hover:bg-transparent hover:text-white hover:border-white/30 rounded-sm px-8 tracking-wider text-sm uppercase h-14 transition-none">
-                <Link to="/about">
-                  <EditableText contentKey="hero_cta_secondary" fallback={language === 'ru' ? 'Посмотреть портфолио' : "Portfolio ko'rish"} as="span" section="hero" />
+              <Button asChild variant="outline" size="lg" className="border-white/30 bg-transparent text-white hover:bg-white/5 hover:text-white hover:border-white/50 rounded-sm px-8 tracking-wider text-sm uppercase h-14">
+                <Link to="/contact">
+                  <EditableText contentKey="hero_cta_secondary" fallback={language === 'ru' ? 'Связаться с нами' : "Biz bilan bog'lanish"} as="span" section="hero" />
                 </Link>
               </Button>
             </div>
@@ -171,6 +179,18 @@ export default function Index() {
               ))}
             </div>
           </div>
+        </div>
+
+        {/* Slide indicators */}
+        <div className="absolute bottom-8 right-8 z-30 flex gap-2">
+          {heroSlides.map((_, i) => (
+            <button
+              key={i}
+              onClick={() => setHeroSlide(i)}
+              aria-label={`Slayd ${i + 1}`}
+              className={`h-1 transition-all duration-500 ${i === heroSlide ? 'w-12 bg-primary' : 'w-6 bg-white/30 hover:bg-white/50'}`}
+            />
+          ))}
         </div>
       </section>
 
