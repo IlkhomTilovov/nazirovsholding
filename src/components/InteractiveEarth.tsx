@@ -303,7 +303,7 @@ function Scene({ highlightedCode, setHighlighted, setSelected }: {
 
   return (
     <>
-      <color attach="background" args={['#070707']} />
+      
       <ambientLight intensity={0.28} />
       <directionalLight position={[4, 2.4, 4.8]} intensity={2.6} color="#fff0c6" />
       <directionalLight position={[-3.8, -1.4, -4]} intensity={0.55} color="#c9a84c" />
@@ -367,7 +367,7 @@ export function InteractiveEarthSection() {
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true, amount: 0.25 }}
             transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
-            className="relative min-h-[580px] overflow-hidden border border-[#c9a84c]/15 bg-[#080808] shadow-[0_40px_120px_-70px_rgba(201,168,76,0.72)] md:min-h-[700px] lg:min-h-0"
+            className="relative min-h-[580px] overflow-hidden md:min-h-[700px] lg:min-h-0"
           >
             <div className="absolute left-4 top-4 z-10 flex items-center gap-2 text-[10px] uppercase tracking-[0.35em] text-[#c9a84c]/70">
               <span className="inline-block h-1.5 w-1.5 rounded-full bg-[#c9a84c] shadow-[0_0_16px_rgba(201,168,76,0.9)]" />
@@ -380,7 +380,7 @@ export function InteractiveEarthSection() {
             <div className="absolute bottom-4 right-4 z-10 text-[10px] uppercase tracking-[0.3em] text-white/35">Drag · Scroll · Rotate</div>
 
             <Canvas
-              gl={{ antialias: true, alpha: false, powerPreference: 'high-performance' }}
+              gl={{ antialias: true, alpha: true, powerPreference: 'high-performance' }}
               dpr={[1, 1.75]}
               camera={{ position: [0, 0.08, 5.35], fov: 36 }}
               shadows
