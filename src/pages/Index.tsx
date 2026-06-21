@@ -63,10 +63,10 @@ export default function Index() {
   ];
 
   const steps = [
-    { key: 'step_1', num: '01', titleFallback: "O'lchov olish", descFallback: "Ustamiz siznikiga kelib bepul o'lchov oladi" },
-    { key: 'step_2', num: '02', titleFallback: 'Dizayn yaratish', descFallback: '3D dizayn tayyorlab, sizga taqdim etamiz' },
-    { key: 'step_3', num: '03', titleFallback: 'Ishlab chiqarish', descFallback: 'Premium materiallarda tayyor qilamiz' },
-    { key: 'step_4', num: '04', titleFallback: "O'rnatish", descFallback: "Professional o'rnatish va sozlash" },
+    { key: 'step_1', num: '01', icon: 'FileText', titleFallback: "So'rov yuborish", descFallback: "Mijoz RFQ shakli yoki mahsulot katalogi orqali o'z ehtiyojlarini yuboradi. Talab qilinadigan mahsulot, hajm va yetkazib berish shartlari aniqlashtiriladi." },
+    { key: 'step_2', num: '02', icon: 'Briefcase', titleFallback: 'Tijorat taklifi', descFallback: 'MOQ, narx, ishlab chiqarish muddati va logistika shartlari asosida individual tijorat taklifi tayyorlanadi.' },
+    { key: 'step_3', num: '03', icon: 'Factory', titleFallback: 'Ishlab chiqarish', descFallback: "Mahsulot ishlab chiqariladi, sifat nazoratidan o'tkaziladi va eksport standartlariga muvofiqligi tekshiriladi." },
+    { key: 'step_4', num: '04', icon: 'Ship', titleFallback: 'Yetkazib berish', descFallback: 'Mahsulot FOB, CIF, FCA yoki DAP shartlari asosida xalqaro logistika orqali mijoz manziliga yetkaziladi.' },
   ];
 
   const testimonials = [
