@@ -6,10 +6,10 @@ import { useLanguage } from '@/hooks/useLanguage';
 import { useSystemSettings } from '@/hooks/useSystemSettings';
 
 const navLinks = [
-  { href: '/', label: 'Bosh Sahifa', num: '01' },
-  { href: '/about', label: 'Biz Haqimizda', num: '02' },
-  { href: '/sectors', label: "Faoliyat Yo'nalishlari", num: '03' },
-  { href: '/international', label: 'Xalqaro Faoliyat', num: '04' },
+  { href: '/', label: 'Bosh', num: '01' },
+  { href: '/about', label: 'Kompaniya', num: '02' },
+  { href: '/sectors', label: "Yo'nalishlar", num: '03' },
+  { href: '/international', label: 'Global', num: '04' },
   { href: '/projects', label: 'Loyihalar', num: '05' },
   { href: '/contact', label: 'Aloqa', num: '06' },
 ];
