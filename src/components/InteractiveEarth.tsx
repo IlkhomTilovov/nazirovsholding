@@ -316,12 +316,12 @@ function Scene({ highlightedCode, setHighlighted, setSelected }: {
       <OrbitControls
         ref={controlsRef}
         enablePan={false}
+        enableZoom={false}
         enableDamping
         dampingFactor={0.065}
         minDistance={3.15}
         maxDistance={7.4}
         rotateSpeed={0.55}
-        zoomSpeed={0.65}
         autoRotate
         autoRotateSpeed={0.35}
         onStart={pauseRotation}
@@ -377,7 +377,7 @@ export function InteractiveEarthSection() {
               <div className="text-[9px] uppercase tracking-[0.35em] text-[#c9a84c]/60">Center Origin</div>
               <div className="mt-1 text-xs uppercase tracking-[0.25em] text-white/90">Uzbekistan · Tashkent</div>
             </div>
-            <div className="absolute bottom-4 right-4 z-10 text-[10px] uppercase tracking-[0.3em] text-white/35">Drag · Scroll · Rotate</div>
+            <div className="absolute bottom-4 right-4 z-10 text-[10px] uppercase tracking-[0.3em] text-white/35">Drag · Rotate</div>
 
             <Canvas
               gl={{ antialias: true, alpha: true, powerPreference: 'high-performance' }}
