@@ -245,7 +245,7 @@ function SmartControls() {
   const ref = useRef<any>(null);
   const { camera } = useThree();
   useEffect(() => {
-    camera.position.set(0, 0.5, 3.4);
+    camera.position.set(0, 0.3, 4.2);
   }, [camera]);
   return (
     <OrbitControls
@@ -253,8 +253,8 @@ function SmartControls() {
       enablePan={false}
       enableDamping
       dampingFactor={0.08}
-      minDistance={1.8}
-      maxDistance={5.5}
+      minDistance={2.4}
+      maxDistance={6.5}
       rotateSpeed={0.7}
       zoomSpeed={0.7}
       autoRotate
