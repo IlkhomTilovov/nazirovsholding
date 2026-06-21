@@ -745,8 +745,6 @@ export default function Index() {
         </div>
       </section>
 
-      {/* GLOBAL OPERATIONS — Premium replacement for portfolio section */}
-      <GlobalOperationsSection />
 
       {/* CHAIRMAN MESSAGE / FOUNDER STORY */}
       <section ref={sectionChairman.ref} className="py-24 md:py-32 bg-secondary/40 relative overflow-hidden border-y border-primary/10">
