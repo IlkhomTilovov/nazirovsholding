@@ -602,15 +602,17 @@ export default function Index() {
           >
             <div className="mb-7 flex items-center justify-center gap-4">
               <span className="h-px w-10" style={{ background: 'rgba(201,164,106,0.5)' }} />
-              <EditableText
-                contentKey="process_label"
-                fallback="GLOBAL EXPORT PROCESS"
-                as="span"
+              <span
                 className="text-[11px] font-semibold uppercase"
                 style={{ color: '#C9A469', letterSpacing: '0.3em' }}
-                section="process"
-              />
-              <span className="h-px w-10" style={{ background: 'rgba(201,164,106,0.5)' }} />
+              >
+                <EditableText
+                  contentKey="process_label"
+                  fallback="GLOBAL EXPORT PROCESS"
+                  as="span"
+                  section="process"
+                />
+              </span>
             </div>
 
             <h2
