@@ -320,7 +320,7 @@ function Scene({ highlightedCode, setHighlighted, setSelected }: {
         enableDamping
         dampingFactor={0.065}
         minDistance={3.15}
-        maxDistance={3.15}
+        maxDistance={7.4}
         rotateSpeed={0.55}
         autoRotate
         autoRotateSpeed={0.35}
