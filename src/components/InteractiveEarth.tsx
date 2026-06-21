@@ -316,12 +316,12 @@ function Scene({ highlightedCode, setHighlighted, setSelected }: {
       <OrbitControls
         ref={controlsRef}
         enablePan={false}
+        enableZoom={false}
         enableDamping
         dampingFactor={0.065}
         minDistance={3.15}
-        maxDistance={7.4}
+        maxDistance={3.15}
         rotateSpeed={0.55}
-        zoomSpeed={0.65}
         autoRotate
         autoRotateSpeed={0.35}
         onStart={pauseRotation}
