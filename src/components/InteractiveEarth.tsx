@@ -116,7 +116,7 @@ function Globe({
       d.properties.ISO_A2 === highlightedCode ||
       d.properties.ISO_A2 === ORIGIN.code;
 
-    globe
+    (globe as any)
       .polygonsData(polygons)
       .polygonAltitude((d: any) => (isHi(d) ? 0.014 : 0.006))
       .polygonCapColor((d: any) =>
