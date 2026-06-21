@@ -177,23 +177,23 @@ export default function Index() {
             <h1 className="font-serif text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-normal text-white leading-[1.05] mb-6">
               <EditableText
                 contentKey="hero_title_line1"
-                fallback="Premium mahsulotlar"
+                fallback="Global biznes"
                 as="span"
                 className="block font-serif"
                 section="hero"
               />
               <EditableText
                 contentKey="hero_title_line2"
-                fallback="dunyo bozoriga"
+                fallback="O'zbekistondan dunyoga"
                 as="span"
                 className="block font-serif text-primary italic"
                 section="hero"
               />
             </h1>
-            <p className="text-lg md:text-xl text-white/70 mb-10 max-w-lg leading-relaxed">
+            <p className="text-lg md:text-xl text-white/70 mb-10 max-w-xl leading-relaxed">
               <EditableText
                 contentKey="hero_subtitle"
-                fallback="O'zbekistondan Yevropa va MDH davlatlariga ishonchli eksport. Sifat, shaffoflik va o'z vaqtida yetkazib berish kafolati."
+                fallback="MIR MEXA — eksport, ishlab chiqarish, logistika va xalqaro hamkorlikni birlashtirgan holding. 20+ bozor, 500+ hamkor, 15+ yillik tajriba."
                 as="span"
                 className="text-lg md:text-xl"
                 section="hero"
