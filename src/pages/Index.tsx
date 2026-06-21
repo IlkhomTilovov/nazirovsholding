@@ -138,6 +138,42 @@ export default function Index() {
   const sectionProducts = useInView();
   const sectionTestimonials = useInView();
   const sectionCta = useInView();
+  const sectionStats = useInView(0.2);
+  const sectionSectors = useInView();
+  const sectionGlobal = useInView();
+  const sectionStandards = useInView();
+  const sectionChairman = useInView();
+
+  const businessSectors = [
+    { key: 'sector_1', icon: 'Ship', titleFallback: 'Eksport savdo', descFallback: "O'zbekiston mahsulotlarini Yevropa, MDH va Yaqin Sharqqa yetkazib berish. FOB, CIF, DAP shartlari." },
+    { key: 'sector_2', icon: 'Factory', titleFallback: 'Ishlab chiqarish', descFallback: "Xalqaro standartlarga mos zamonaviy zavod va ishlab chiqarish quvvatlari." },
+    { key: 'sector_3', icon: 'Truck', titleFallback: 'Logistika & ta\'minot', descFallback: "Quruqlik, dengiz va aviakargo orqali to'liq logistik zanjir va omborxona xizmatlari." },
+    { key: 'sector_4', icon: 'TrendingUp', titleFallback: 'Investitsiya', descFallback: "Strategik investitsiya loyihalari va xalqaro hamkorlik ekotizimi." },
+  ];
+
+  const globalMarkets = [
+    { key: 'mk_de', flag: '🇩🇪', name: 'Germaniya' },
+    { key: 'mk_pl', flag: '🇵🇱', name: 'Polsha' },
+    { key: 'mk_fr', flag: '🇫🇷', name: 'Fransiya' },
+    { key: 'mk_ru', flag: '🇷🇺', name: 'Rossiya' },
+    { key: 'mk_kz', flag: '🇰🇿', name: 'Qozog\'iston' },
+    { key: 'mk_ae', flag: '🇦🇪', name: 'BAA' },
+    { key: 'mk_sa', flag: '🇸🇦', name: 'Saudiya Arabistoni' },
+    { key: 'mk_cn', flag: '🇨🇳', name: 'Xitoy' },
+    { key: 'mk_tr', flag: '🇹🇷', name: 'Turkiya' },
+    { key: 'mk_kg', flag: '🇰🇬', name: 'Qirg\'iziston' },
+    { key: 'mk_tj', flag: '🇹🇯', name: 'Tojikiston' },
+    { key: 'mk_by', flag: '🇧🇾', name: 'Belarus' },
+  ];
+
+  const standards = [
+    { key: 'std_1', icon: 'BadgeCheck', titleFallback: 'ISO 9001:2015', descFallback: 'Sifat menejmenti tizimi xalqaro sertifikati.' },
+    { key: 'std_2', icon: 'Shield', titleFallback: 'Sifat nazorati', descFallback: 'Har bir partiyada ko\'p bosqichli QC va lab testlari.' },
+    { key: 'std_3', icon: 'ScrollText', titleFallback: 'Eksport hujjatlari', descFallback: 'CO, FSC, fitosanitar, EUR.1 va barcha zarur hujjatlar.' },
+    { key: 'std_4', icon: 'Award', titleFallback: 'Compliance', descFallback: 'Xalqaro savdo qoidalari va sanksiyalarga to\'liq muvofiqlik.' },
+    { key: 'std_5', icon: 'Target', titleFallback: 'Risk boshqaruvi', descFallback: 'Logistika, valyuta va kontragent risklarini boshqarish tizimi.' },
+    { key: 'std_6', icon: 'Handshake', titleFallback: 'Kontrakt huquqi', descFallback: 'Incoterms 2020 va xalqaro tijorat huquqi standartlari.' },
+  ];
 
   const [heroSlide, setHeroSlide] = useState(0);
   useEffect(() => {
