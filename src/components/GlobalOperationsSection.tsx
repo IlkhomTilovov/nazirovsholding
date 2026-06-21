@@ -30,26 +30,6 @@ function Counter({ to, suffix = '+', duration = 1.8, start }: { to: number; suff
   return <span className="tabular-nums">{val}<span className="text-primary/70">{suffix}</span></span>;
 }
 
-// ─────────────────────────────────────────────────────────
-// World map data (approximate equirectangular coords in % of viewBox 1000x500)
-// ─────────────────────────────────────────────────────────
-const UZ = { x: 615, y: 175 };
-const COUNTRIES = [
-  { code: 'DE', name: 'Germany',      industry: 'Textile Manufacturing', direction: 'Tashkent → Hamburg',   partnership: 'Long-term Supply',     x: 510, y: 150 },
-  { code: 'AE', name: 'UAE',          industry: 'Industrial Products',   direction: 'Tashkent → Dubai',     partnership: 'Strategic Distributor', x: 580, y: 230 },
-  { code: 'KZ', name: 'Kazakhstan',   industry: 'Agricultural Products', direction: 'Tashkent → Almaty',    partnership: 'Trade Network',        x: 640, y: 140 },
-  { code: 'TR', name: 'Turkey',       industry: 'Construction Materials',direction: 'Tashkent → Istanbul',  partnership: 'Wholesale Hub',         x: 545, y: 180 },
-  { code: 'RU', name: 'Russia',       industry: 'Consumer Goods',        direction: 'Tashkent → Moscow',    partnership: 'Distribution Partner',  x: 595, y: 120 },
-  { code: 'PL', name: 'Poland',       industry: 'Logistics & Transit',   direction: 'Tashkent → Warsaw',    partnership: 'EU Gateway',            x: 525, y: 140 },
-  { code: 'SA', name: 'Saudi Arabia', industry: 'Food Export',           direction: 'Tashkent → Riyadh',    partnership: 'GCC Supply',            x: 575, y: 245 },
-  { code: 'FR', name: 'France',       industry: 'Premium Goods',         direction: 'Tashkent → Paris',     partnership: 'Boutique Network',      x: 490, y: 160 },
-];
-
-function curvedPath(a: {x:number;y:number}, b: {x:number;y:number}) {
-  const mx = (a.x + b.x) / 2;
-  const my = (a.y + b.y) / 2 - Math.abs(a.x - b.x) * 0.25 - 20;
-  return `M ${a.x} ${a.y} Q ${mx} ${my} ${b.x} ${b.y}`;
-}
 
 // ─────────────────────────────────────────────────────────
 // Main section
