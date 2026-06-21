@@ -71,7 +71,7 @@ function createRoutePoints(start: Market, end: Market) {
   for (let i = 0; i <= 72; i += 1) {
     const t = i / 72;
     const p = a.clone().lerp(b, t).normalize();
-    const arcLift = Math.sin(Math.PI * t) * 0.45;
+    const arcLift = Math.sin(Math.PI * t) * 0.32;
     points.push(p.multiplyScalar(EARTH_RADIUS + 0.035 + arcLift));
   }
 
@@ -257,7 +257,7 @@ function EarthNetwork({ highlightedCode, setHighlighted, setSelected }: {
   setSelected: (code: string) => void;
 }) {
   return (
-    <group rotation={[0.04, 2.6, 0.03]}>
+    <group rotation={[0.04, 3.5, 0.03]}>
       <EarthSphere />
       <CountryBorders />
       {MARKETS.map((market) => (
