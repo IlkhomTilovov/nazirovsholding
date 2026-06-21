@@ -7,6 +7,7 @@ import cinematicPort from '@/assets/global-cinematic-port.jpg';
 import projectGermany from '@/assets/project-germany-textile.jpg';
 import projectKazakhstan from '@/assets/project-kazakhstan-agro.jpg';
 import projectUae from '@/assets/project-uae-industrial.jpg';
+import { Globe3D, GLOBE_COUNTRIES, type GlobeCountry } from '@/components/Globe3D';
 
 // ─────────────────────────────────────────────────────────
 // Animated counter
