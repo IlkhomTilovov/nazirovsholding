@@ -867,33 +867,47 @@ export default function Index() {
         </div>
       </section>
 
-      {/* CTA - editable */}
-      <section ref={sectionCta.ref} className="py-20 md:py-28 relative overflow-hidden">
-        <div className="absolute inset-0 bg-primary" />
-        <div className="absolute inset-0 bg-[url('/images/hero-default.jpg')] bg-cover bg-center opacity-10" />
-        <div className={`container mx-auto px-4 lg:px-8 relative z-10 text-center transition-all duration-700 ${sectionCta.isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
-          <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl font-bold text-primary-foreground mb-6">
-            <EditableText contentKey="cta_title" fallback="Hoziroq buyurtma bering" as="span" className="font-serif text-3xl md:text-4xl lg:text-5xl font-bold" section="cta" />
+      {/* PARTNERSHIP CTA - editable */}
+      <section ref={sectionCta.ref} className="py-24 md:py-32 relative overflow-hidden bg-background">
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,hsl(var(--primary)/0.12),transparent_70%)] pointer-events-none" />
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-px h-16 bg-gradient-to-b from-transparent to-primary/60" />
+        <div className={`max-w-4xl mx-auto px-4 lg:px-8 relative z-10 text-center transition-all duration-700 ${sectionCta.isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
+          <div className="flex items-center justify-center gap-3 mb-6">
+            <span className="w-10 h-px bg-primary" />
+            <EditableText contentKey="cta_label" fallback="HAMKORLIK SO'ROVI" as="span" className="text-primary text-xs tracking-[0.4em] uppercase font-semibold" section="cta" />
+            <span className="w-10 h-px bg-primary" />
+          </div>
+          <h2 className="font-serif text-4xl md:text-5xl lg:text-6xl text-foreground mb-6 leading-[1.05]">
+            <EditableText contentKey="cta_title_1" fallback="Global hamkorlik" as="span" className="block" section="cta" />
+            <EditableText contentKey="cta_title_2" fallback="bir qadam narida" as="span" className="block text-primary italic" section="cta" />
           </h2>
-          <p className="text-primary-foreground/70 text-lg mb-10 max-w-xl mx-auto">
-            <EditableText contentKey="cta_subtitle" fallback="Bepul konsultatsiya va o'lchov uchun biz bilan bog'laning" as="span" className="text-lg" section="cta" />
+          <p className="text-muted-foreground text-base md:text-lg mb-10 max-w-2xl mx-auto leading-relaxed">
+            <EditableText contentKey="cta_subtitle" fallback="Eksport, distributsiya, ishlab chiqarish yoki investitsiya — qaysi yo'nalishda hamkorlik qilishingizdan qat'iy nazar, jamoamiz 24 soat ichida bog'lanadi." as="span" section="cta" />
           </p>
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <Button asChild size="lg" className="bg-primary-foreground text-primary hover:bg-primary-foreground/90 rounded-sm px-8 tracking-wider text-sm uppercase h-14">
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-10">
+            <Button asChild size="lg" className="bg-primary text-primary-foreground hover:bg-primary/90 rounded-sm px-10 tracking-wider text-sm uppercase h-14 group">
+              <Link to="/contact">
+                <Handshake className="w-4 h-4 mr-2" />
+                <EditableText contentKey="cta_btn_1" fallback="Hamkorlik so'rovi" as="span" section="cta" />
+                <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
+              </Link>
+            </Button>
+            <Button asChild size="lg" variant="outline" className="border-primary/40 text-foreground hover:bg-primary/10 hover:text-foreground rounded-sm px-10 tracking-wider text-sm uppercase h-14 bg-transparent">
               <a href={`tel:${contactPhone.replace(/\s/g, '')}`}>
                 <Phone className="w-4 h-4 mr-2" />
                 {contactPhone}
               </a>
             </Button>
-            <Button asChild size="lg" variant="outline" className="border-primary-foreground/30 text-primary-foreground hover:bg-primary-foreground/10 rounded-sm px-8 tracking-wider text-sm uppercase h-14 bg-transparent">
-              <a href={settings?.social_telegram || '#'} target="_blank" rel="noopener noreferrer">
-                <Send className="w-4 h-4 mr-2" />
-                Telegram
-              </a>
-            </Button>
+          </div>
+          <div className="flex flex-wrap items-center justify-center gap-x-8 gap-y-3 text-xs tracking-[0.2em] uppercase text-muted-foreground/80">
+            <span className="flex items-center gap-2"><BadgeCheck className="w-4 h-4 text-primary" /> ISO 9001</span>
+            <span className="flex items-center gap-2"><Globe2 className="w-4 h-4 text-primary" /> 20+ Bozor</span>
+            <span className="flex items-center gap-2"><Handshake className="w-4 h-4 text-primary" /> 500+ Hamkor</span>
+            <span className="flex items-center gap-2"><Award className="w-4 h-4 text-primary" /> 15+ Yil</span>
           </div>
         </div>
       </section>
+
 
     </div>
   );
