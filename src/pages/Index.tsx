@@ -9,6 +9,7 @@ import { useSystemSettings } from '@/hooks/useSystemSettings';
 import { EditableText } from '@/components/EditableText';
 import { EditableImage } from '@/components/EditableImage';
 import { BrandsSection } from '@/components/BrandsSection';
+import { GlobalOperationsSection } from '@/components/GlobalOperationsSection';
 import { useState, useEffect, useRef } from 'react';
 
 import serviceWardrobe from '@/assets/service-wardrobe.jpg';
@@ -744,38 +745,8 @@ export default function Index() {
         </div>
       </section>
 
-      {/* FEATURED PRODUCTS */}
-      <section ref={sectionProducts.ref} className="py-20 md:py-28 bg-secondary">
-        <div className="container mx-auto px-4 lg:px-8">
-          <div className={`flex flex-col sm:flex-row items-start sm:items-center justify-between mb-12 gap-4 transition-all duration-700 ${sectionProducts.isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
-            <div>
-              <EditableText contentKey="products_label" fallback="Katalog" as="span" className="text-primary text-xs tracking-[0.3em] uppercase font-medium" section="products" />
-              <h2 className="font-serif text-3xl md:text-4xl font-bold text-foreground mt-2">
-                <EditableText contentKey="featured_title" fallback="Tanlangan mahsulotlar" as="span" className="font-serif text-3xl md:text-4xl font-bold" section="products" />
-              </h2>
-            </div>
-            <Button asChild variant="outline" className="gap-2 rounded-sm border-border hover:border-primary text-sm tracking-wider uppercase">
-              <Link to="/catalog">Barchasini ko'rish <ArrowRight className="w-4 h-4" /></Link>
-            </Button>
-          </div>
-          
-          {productsLoading ? (
-            <div className="flex items-center justify-center py-20">
-              <Loader2 className="w-8 h-8 animate-spin text-primary" />
-            </div>
-          ) : featuredProducts.length > 0 ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-              {featuredProducts.map(product => (
-                <ProductCard key={product.id} product={product} />
-              ))}
-            </div>
-          ) : (
-            <p className="text-center text-muted-foreground py-20">
-              Hozircha tanlangan mahsulotlar yo'q
-            </p>
-          )}
-        </div>
-      </section>
+      {/* GLOBAL OPERATIONS — Premium replacement for portfolio section */}
+      <GlobalOperationsSection />
 
       {/* CHAIRMAN MESSAGE / FOUNDER STORY */}
       <section ref={sectionChairman.ref} className="py-24 md:py-32 bg-secondary/40 relative overflow-hidden border-y border-primary/10">
