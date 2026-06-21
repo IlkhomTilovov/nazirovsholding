@@ -219,51 +219,6 @@ export function GlobalOperationsSection() {
         </div>
       </div>
 
-      {/* ───────── FINAL CTA ───────── */}
-      <div className="relative py-28 md:py-40 bg-[#1a1a1a] border-t border-[#c9a84c]/15 overflow-hidden">
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(201,168,76,0.1),transparent_60%)]" />
-        <div className="absolute -top-1/2 left-1/2 -translate-x-1/2 w-[800px] h-[800px] rounded-full bg-[#c9a84c]/5 blur-3xl pointer-events-none" />
-        <div className="relative max-w-[1100px] mx-auto px-6 lg:px-10 text-center">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.4 }}
-            transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
-          >
-            <div className="flex items-center justify-center gap-3 mb-8">
-              <span className="h-px w-12 bg-[#c9a84c]" />
-              <span className="text-[#c9a84c] text-[11px] tracking-[0.45em] uppercase">Partnership</span>
-              <span className="h-px w-12 bg-[#c9a84c]" />
-            </div>
-            <h3 className="font-serif text-4xl md:text-6xl lg:text-7xl text-white leading-[1.05] mb-8">
-              Let's Build <span className="italic text-[#c9a84c]">Long-Term Partnerships</span>
-            </h3>
-            <p className="text-white/70 text-lg max-w-2xl mx-auto leading-relaxed mb-14">
-              NazirovSholding is ready to collaborate with international buyers, distributors, investors and
-              strategic partners.
-            </p>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 max-w-4xl mx-auto">
-              <Button asChild className="h-14 rounded-none bg-[#c9a84c] text-[#0d0d0d] hover:bg-[#d4b85e] text-[11px] tracking-[0.3em] uppercase font-semibold gap-2">
-                <Link to="/contact"><Handshake className="w-4 h-4" /> Request Partnership</Link>
-              </Button>
-              <Button asChild variant="outline" className="h-14 rounded-none border-[#c9a84c]/40 bg-transparent text-white hover:bg-[#c9a84c]/10 hover:text-[#c9a84c] hover:border-[#c9a84c] text-[11px] tracking-[0.3em] uppercase gap-2">
-                <Link to="/contact"><Calendar className="w-4 h-4" /> Schedule Meeting</Link>
-              </Button>
-              <Button asChild variant="outline" className="h-14 rounded-none border-[#c9a84c]/40 bg-transparent text-white hover:bg-[#c9a84c]/10 hover:text-[#c9a84c] hover:border-[#c9a84c] text-[11px] tracking-[0.3em] uppercase gap-2">
-                <Link to="/about"><FileDown className="w-4 h-4" /> Company Profile</Link>
-              </Button>
-              <Button asChild variant="outline" className="h-14 rounded-none border-[#c9a84c]/40 bg-transparent text-white hover:bg-[#c9a84c]/10 hover:text-[#c9a84c] hover:border-[#c9a84c] text-[11px] tracking-[0.3em] uppercase gap-2">
-                <Link to="/contact"><MessageSquare className="w-4 h-4" /> Business Dev</Link>
-              </Button>
-            </div>
-
-            <div className="mt-12 flex items-center justify-center gap-3 text-white/40 text-xs tracking-[0.3em] uppercase">
-              <span className="h-px w-8 bg-white/20" />
-              <span>NazirovSholding · Tashkent → World</span>
-              <ArrowRight className="w-3 h-3" />
-            </div>
-          </motion.div>
-        </div>
-      </div>
     </section>
   );
 }
