@@ -9,7 +9,7 @@ import { useSystemSettings } from '@/hooks/useSystemSettings';
 import { EditableText } from '@/components/EditableText';
 import { EditableImage } from '@/components/EditableImage';
 import { BrandsSection } from '@/components/BrandsSection';
-import { GlobalOperationsSection } from '@/components/GlobalOperationsSection';
+
 import { useState, useEffect, useRef } from 'react';
 
 import serviceWardrobe from '@/assets/service-wardrobe.jpg';
@@ -745,8 +745,6 @@ export default function Index() {
         </div>
       </section>
 
-      {/* GLOBAL OPERATIONS — Premium replacement for portfolio section */}
-      <GlobalOperationsSection />
 
       {/* CHAIRMAN MESSAGE / FOUNDER STORY */}
       <section ref={sectionChairman.ref} className="py-24 md:py-32 bg-secondary/40 relative overflow-hidden border-y border-primary/10">
