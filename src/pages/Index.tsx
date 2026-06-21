@@ -89,20 +89,28 @@ export default function Index() {
   const sectionTestimonials = useInView();
   const sectionCta = useInView();
 
+  const [heroSlide, setHeroSlide] = useState(0);
+  useEffect(() => {
+    const id = setInterval(() => setHeroSlide(s => (s + 1) % heroSlides.length), 6000);
+    return () => clearInterval(id);
+  }, []);
+
   return (
     <div className="min-h-screen">
       {/* HERO */}
-      <section className="relative flex items-center" style={{ minHeight: 'calc(100vh - 80px)' }}>
-        <div className="absolute inset-0 z-0">
-          <EditableImage
-            contentKey="hero_background_image"
-            fallbackSrc="/images/hero-default.jpg"
-            alt="Premium mebel showroom"
-            className="w-full h-full object-cover"
-            wrapperClassName="w-full h-full"
-            section="hero"
-          />
-          <div className="absolute inset-0 bg-gradient-to-r from-black/90 via-black/60 to-black/30 z-20 pointer-events-none" />
+      <section className="relative flex items-center overflow-hidden" style={{ minHeight: 'calc(100vh - 80px)' }}>
+        <div className="absolute inset-0 z-0 bg-background">
+          {heroSlides.map((src, i) => (
+            <img
+              key={src}
+              src={src}
+              alt="MIR MEXA export"
+              className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-[1500ms] ${i === heroSlide ? 'opacity-100 scale-105' : 'opacity-0 scale-100'} transition-transform`}
+              loading={i === 0 ? 'eager' : 'lazy'}
+            />
+          ))}
+          <div className="absolute inset-0 bg-gradient-to-r from-black/95 via-black/75 to-black/40 z-20 pointer-events-none" />
+          <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent z-20 pointer-events-none" />
         </div>
 
         <div className="container mx-auto px-4 lg:px-8 relative z-10 py-20 pointer-events-none">
