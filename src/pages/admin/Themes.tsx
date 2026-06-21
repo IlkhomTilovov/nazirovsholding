@@ -1,22 +1,19 @@
 import { useState, useMemo } from 'react';
 import { useTheme } from '@/hooks/useTheme';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter, DialogDescription } from '@/components/ui/dialog';
+import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Switch } from '@/components/ui/switch';
-import { Slider } from '@/components/ui/slider';
 import { Theme, ThemeColors, ThemeTypography, ThemeComponentStyles, ThemeLayoutSettings } from '@/lib/themes';
-import { 
-  Check, Eye, EyeOff, Palette, Moon, Sun, RefreshCw, Plus, Copy, 
-  Lock, Trash2, Settings2, Monitor, Smartphone, Type, Pencil
+import {
+  Check, Eye, EyeOff, Palette, Moon, Sun, RefreshCw, Plus, Copy,
+  Trash2, Pencil
 } from 'lucide-react';
 import { toast } from 'sonner';
 import { supabase } from '@/integrations/supabase/client';
+import { ThemeBuilderDialog } from '@/components/admin/ThemeBuilderDialog';
 
 const FONT_OPTIONS = [
   // Sans-serif
