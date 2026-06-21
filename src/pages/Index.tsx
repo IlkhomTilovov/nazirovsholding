@@ -564,57 +564,164 @@ export default function Index() {
         </div>
       </section>
 
-      {/* EXPORT PROCESS - editable */}
-      <section ref={sectionProcess.ref} className="py-20 md:py-32 bg-background relative overflow-hidden">
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,hsl(var(--primary)/0.06),transparent_70%)] pointer-events-none" />
-        <div className="max-w-[1200px] mx-auto px-4 lg:px-8 relative">
-          <div className={`text-center mb-20 transition-all duration-700 ${sectionProcess.isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
-            <EditableText
-              contentKey="process_label"
-              fallback="EKSPORT JARAYONI"
-              as="span"
-              className="text-primary text-xs tracking-[0.4em] uppercase font-semibold"
-              section="process"
-            />
-            <h2 className="font-serif text-4xl md:text-5xl lg:text-6xl font-normal text-foreground mt-5 mb-5 leading-[1.1]">
+      {/* GLOBAL EXPORT PROCESS — Luxury Noir & Gold */}
+      <section
+        ref={sectionProcess.ref}
+        className="relative overflow-hidden py-24 md:py-36"
+        style={{ backgroundColor: '#0D0D0D' }}
+      >
+        {/* Subtle luxury texture + radial gold glow */}
+        <div
+          className="pointer-events-none absolute inset-0 opacity-[0.04]"
+          style={{
+            backgroundImage:
+              "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='120'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/></filter><rect width='100%' height='100%' filter='url(%23n)' opacity='0.6'/></svg>\")",
+          }}
+        />
+        <div
+          className="pointer-events-none absolute left-1/2 top-1/2 h-[720px] w-[1100px] -translate-x-1/2 -translate-y-1/2 rounded-full blur-3xl"
+          style={{
+            background:
+              'radial-gradient(ellipse at center, rgba(201,164,106,0.10), rgba(201,164,106,0.04) 40%, transparent 70%)',
+          }}
+        />
+        <div
+          className="pointer-events-none absolute inset-x-0 top-0 h-px"
+          style={{
+            background:
+              'linear-gradient(90deg, transparent, rgba(201,164,106,0.4), transparent)',
+          }}
+        />
+
+        <div className="relative mx-auto max-w-[1400px] px-6 lg:px-10">
+          {/* Header */}
+          <div
+            className={`mx-auto mb-20 max-w-[820px] text-center transition-all duration-[900ms] ${
+              sectionProcess.isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'
+            }`}
+          >
+            <div className="mb-7 flex items-center justify-center gap-4">
+              <span className="h-px w-10" style={{ background: 'rgba(201,164,106,0.5)' }} />
+              <EditableText
+                contentKey="process_label"
+                fallback="GLOBAL EXPORT PROCESS"
+                as="span"
+                className="text-[11px] font-semibold uppercase"
+                style={{ color: '#C9A469', letterSpacing: '0.3em' }}
+                section="process"
+              />
+              <span className="h-px w-10" style={{ background: 'rgba(201,164,106,0.5)' }} />
+            </div>
+
+            <h2
+              className="font-serif font-semibold leading-[1.05] tracking-[-0.01em] text-[36px] md:text-[48px] lg:text-[56px]"
+              style={{ color: '#F6F2EA' }}
+            >
               <EditableText
                 contentKey="process_title"
-                fallback="Eksport jarayoni qanday ishlaydi"
+                fallback="Xalqaro hamkorlik jarayoni"
                 as="span"
                 section="process"
               />
             </h2>
-            <p className="text-muted-foreground text-base md:text-lg max-w-2xl mx-auto leading-relaxed">
+
+            <p
+              className="mx-auto mt-6 text-[17px] leading-[1.7]"
+              style={{ color: 'rgba(246,242,234,0.8)', maxWidth: '700px' }}
+            >
               <EditableText
                 contentKey="process_subtitle"
-                fallback="MIR MEXA xalqaro hamkorlari uchun eksportning barcha bosqichlarini professional tarzda boshqaradi."
+                fallback="NazirovSholding xalqaro hamkorlari uchun eksport, logistika va yetkazib berish jarayonlarini professional va shaffof tarzda boshqaradi."
                 as="span"
                 section="process"
               />
             </p>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-4 relative">
+          {/* Cards */}
+          <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4 lg:gap-10">
             {steps.map((step, i) => {
               const IconComp = iconMap[step.icon] || FileText;
               return (
                 <div
                   key={step.key}
-                  className={`relative group transition-all duration-700 ${sectionProcess.isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'}`}
-                  style={{ transitionDelay: `${i * 150}ms` }}
+                  className={`group relative transition-all ease-out ${
+                    sectionProcess.isVisible
+                      ? 'opacity-100 translate-y-0'
+                      : 'opacity-0 translate-y-10'
+                  }`}
+                  style={{
+                    transitionDuration: '800ms',
+                    transitionDelay: `${i * 150}ms`,
+                  }}
                 >
-                  <div className="relative h-full p-7 border border-primary/15 rounded-sm bg-card/40 backdrop-blur-sm transition-all duration-500 hover:border-primary/60 hover:bg-card/60 hover:shadow-[0_0_40px_-10px_hsl(var(--primary)/0.4)] hover:-translate-y-1">
+                  {/* Glow halo */}
+                  <div
+                    className="pointer-events-none absolute -inset-4 rounded-[28px] opacity-0 blur-2xl transition-opacity duration-[350ms] ease-out group-hover:opacity-100"
+                    style={{
+                      background:
+                        'radial-gradient(ellipse at center, rgba(201,164,106,0.18), transparent 70%)',
+                    }}
+                  />
+
+                  <div
+                    className="relative h-full overflow-hidden rounded-[24px] p-10 backdrop-blur-[12px] transition-all duration-[350ms] ease-out group-hover:-translate-y-2"
+                    style={{
+                      backgroundColor: 'rgba(255,255,255,0.02)',
+                      border: '1px solid rgba(201,164,106,0.15)',
+                      boxShadow: '0 20px 60px rgba(0,0,0,0.25)',
+                    }}
+                  >
+                    {/* Hover border + shadow overlay */}
+                    <div
+                      className="pointer-events-none absolute inset-0 rounded-[24px] opacity-0 transition-opacity duration-[350ms] ease-out group-hover:opacity-100"
+                      style={{
+                        border: '1px solid rgba(201,164,106,0.55)',
+                        boxShadow:
+                          '0 30px 80px rgba(0,0,0,0.45), 0 0 60px -10px rgba(201,164,106,0.25)',
+                      }}
+                    />
+
                     {/* Number watermark */}
-                    <span className="absolute top-4 right-5 font-serif text-5xl font-normal text-primary/15 group-hover:text-primary/30 transition-colors duration-500 select-none">
-                      {step.num}
+                    <span
+                      className="pointer-events-none absolute right-6 top-4 select-none font-serif transition-all duration-[350ms] ease-out"
+                      style={{
+                        fontSize: '72px',
+                        fontWeight: 700,
+                        lineHeight: 1,
+                        color: 'rgba(201,164,106,0.15)',
+                      }}
+                    >
+                      <span className="block transition-colors duration-[350ms] ease-out group-hover:[color:#C9A469]">
+                        {step.num}
+                      </span>
                     </span>
 
                     {/* Icon */}
-                    <div className="w-12 h-12 mb-6 flex items-center justify-center border border-primary/30 rounded-sm bg-primary/5 group-hover:bg-primary/15 group-hover:border-primary/60 transition-all duration-500">
-                      <IconComp className="w-5 h-5 text-primary" strokeWidth={1.5} />
+                    <div
+                      className="relative mb-8 flex h-14 w-14 items-center justify-center rounded-[14px] transition-all duration-[350ms] ease-out group-hover:rotate-[6deg]"
+                      style={{
+                        border: '1px solid rgba(201,164,106,0.4)',
+                        backgroundColor: 'rgba(201,164,106,0.04)',
+                      }}
+                    >
+                      <IconComp size={28} strokeWidth={1.4} style={{ color: '#C9A469' }} />
+                      <div
+                        className="pointer-events-none absolute inset-0 rounded-[14px] opacity-0 blur-md transition-opacity duration-[350ms] ease-out group-hover:opacity-100"
+                        style={{ background: 'rgba(201,164,106,0.35)' }}
+                      />
                     </div>
 
-                    <h3 className="font-serif text-xl md:text-2xl font-normal text-foreground mb-3 leading-snug">
+                    {/* Gold divider */}
+                    <div
+                      className="mb-6 h-px w-12 transition-all duration-[350ms] ease-out group-hover:w-20"
+                      style={{ background: 'rgba(201,164,106,0.4)' }}
+                    />
+
+                    <h3
+                      className="font-serif leading-tight"
+                      style={{ color: '#F6F2EA', fontSize: '32px', fontWeight: 500 }}
+                    >
                       <EditableText
                         contentKey={`${step.key}_title`}
                         fallback={step.titleFallback}
@@ -622,7 +729,15 @@ export default function Index() {
                         section="process"
                       />
                     </h3>
-                    <p className="text-muted-foreground text-sm leading-relaxed">
+
+                    <p
+                      className="relative mt-4"
+                      style={{
+                        color: 'rgba(246,242,234,0.75)',
+                        fontSize: '17px',
+                        lineHeight: 1.8,
+                      }}
+                    >
                       <EditableText
                         contentKey={`${step.key}_desc`}
                         fallback={step.descFallback}
@@ -631,21 +746,28 @@ export default function Index() {
                       />
                     </p>
 
-                    {/* Gold bottom accent */}
-                    <div className="absolute bottom-0 left-0 h-px w-0 bg-gradient-to-r from-primary to-transparent group-hover:w-full transition-all duration-700" />
+                    {/* Bottom gold accent line */}
+                    <div
+                      className="absolute bottom-0 left-0 h-[2px] w-0 transition-all duration-[700ms] ease-out group-hover:w-full"
+                      style={{
+                        background:
+                          'linear-gradient(90deg, rgba(201,164,106,0.9), rgba(201,164,106,0))',
+                      }}
+                    />
                   </div>
-
-                  {/* Connector arrow (desktop only, between cards) */}
-                  {i < steps.length - 1 && (
-                    <div className="hidden lg:flex absolute top-1/2 -right-2 z-10 -translate-y-1/2 items-center justify-center w-4 h-4">
-                      <ChevronRight className="w-4 h-4 text-primary/40" strokeWidth={1.5} />
-                    </div>
-                  )}
                 </div>
               );
             })}
           </div>
         </div>
+
+        <div
+          className="pointer-events-none absolute inset-x-0 bottom-0 h-px"
+          style={{
+            background:
+              'linear-gradient(90deg, transparent, rgba(201,164,106,0.25), transparent)',
+          }}
+        />
       </section>
 
       {/* CORPORATE STANDARDS */}
