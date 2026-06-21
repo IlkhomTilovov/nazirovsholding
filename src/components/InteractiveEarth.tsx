@@ -367,7 +367,7 @@ export function InteractiveEarthSection() {
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true, amount: 0.25 }}
             transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
-            className="relative h-[340px] overflow-hidden sm:h-[420px] md:min-h-[700px] lg:min-h-[560px]"
+            className="relative h-[340px] overflow-hidden sm:h-[420px] md:min-h-[700px] lg:min-h-[520px]"
           >
             <div className="absolute left-4 top-4 z-10 flex items-center gap-2 text-[10px] uppercase tracking-[0.35em] text-[#c9a84c]/70">
               <span className="inline-block h-1.5 w-1.5 rounded-full bg-[#c9a84c] shadow-[0_0_16px_rgba(201,168,76,0.9)]" />
