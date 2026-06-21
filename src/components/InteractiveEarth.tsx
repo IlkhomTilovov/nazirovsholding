@@ -124,13 +124,7 @@ function Globe({
       )
       .polygonSideColor(() => 'rgba(201,168,76,0.06)')
       .polygonStrokeColor(() => 'rgba(201,168,76,0.55)')
-      .polygonsTransitionDuration(450)
-      .onPolygonHover((d: any) =>
-        onCountryHover(d ? d.properties.ISO_A2 : null),
-      )
-      .onPolygonClick((d: any) =>
-        onCountryClick(d ? d.properties.ISO_A2 : null),
-      );
+      .polygonsTransitionDuration(450);
   }, [polygons, highlightedCode, globe, onCountryHover, onCountryClick]);
 
   // Arcs (Uzbekistan → markets)
