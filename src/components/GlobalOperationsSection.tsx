@@ -193,83 +193,10 @@ export function GlobalOperationsSection() {
             </p>
           </motion.div>
 
-          <div className="relative aspect-[2/1] w-full">
-            <svg viewBox="0 0 1000 500" className="w-full h-full" preserveAspectRatio="xMidYMid meet">
-              <defs>
-                <linearGradient id="routeGrad" x1="0" x2="1">
-                  <stop offset="0%" stopColor="#c9a84c" stopOpacity="0.1" />
-                  <stop offset="50%" stopColor="#c9a84c" stopOpacity="0.9" />
-                  <stop offset="100%" stopColor="#c9a84c" stopOpacity="0.1" />
-                </linearGradient>
-                <radialGradient id="pulseGrad">
-                  <stop offset="0%" stopColor="#c9a84c" stopOpacity="0.6" />
-                  <stop offset="100%" stopColor="#c9a84c" stopOpacity="0" />
-                </radialGradient>
-              </defs>
-
-              {/* Dotted world silhouette */}
-              <g fill="#c9a84c" opacity="0.18">
-                {Array.from({ length: 950 }).map((_, i) => {
-                  const cx = (i * 53) % 1000;
-                  const cy = ((i * 31) % 500);
-                  // Crude landmass mask — keep dots inside rough continents
-                  const inland =
-                    (cx > 80  && cx < 280 && cy > 80  && cy < 280) ||  // Americas
-                    (cx > 200 && cx < 320 && cy > 280 && cy < 420) ||
-                    (cx > 460 && cx < 580 && cy > 100 && cy < 250) ||  // Europe
-                    (cx > 480 && cx < 620 && cy > 230 && cy < 360) ||  // Africa
-                    (cx > 580 && cx < 820 && cy > 90  && cy < 280) ||  // Asia
-                    (cx > 820 && cx < 920 && cy > 320 && cy < 420);    // Oceania
-                  return inland ? <circle key={i} cx={cx} cy={cy} r="1.4" /> : null;
-                })}
-              </g>
-
-              {/* Routes from UZ */}
-              {COUNTRIES.map((c, i) => (
-                <g key={c.code}>
-                  <motion.path
-                    d={curvedPath(UZ, c)}
-                    stroke="url(#routeGrad)"
-                    strokeWidth={activeCountry?.code === c.code ? 2 : 1}
-                    fill="none"
-                    initial={{ pathLength: 0, opacity: 0 }}
-                    animate={mapInView ? { pathLength: 1, opacity: 1 } : {}}
-                    transition={{ duration: 1.8, delay: 0.4 + i * 0.12, ease: 'easeInOut' }}
-                  />
-                </g>
-              ))}
-
-              {/* Country dots */}
-              {COUNTRIES.map((c, i) => (
-                <motion.g
-                  key={`dot-${c.code}`}
-                  initial={{ opacity: 0, scale: 0 }}
-                  animate={mapInView ? { opacity: 1, scale: 1 } : {}}
-                  transition={{ duration: 0.5, delay: 1.2 + i * 0.08 }}
-                  onMouseEnter={() => setActiveCountry(c)}
-                  onMouseLeave={() => setActiveCountry(null)}
-                  style={{ cursor: 'pointer' }}
-                >
-                  <circle cx={c.x} cy={c.y} r="18" fill="url(#pulseGrad)">
-                    <animate attributeName="r" values="14;22;14" dur="2.4s" repeatCount="indefinite" begin={`${i * 0.3}s`} />
-                  </circle>
-                  <circle cx={c.x} cy={c.y} r="4" fill="#c9a84c" />
-                  <circle cx={c.x} cy={c.y} r="7" fill="none" stroke="#c9a84c" strokeWidth="1" opacity="0.5" />
-                  <text x={c.x + 12} y={c.y - 8} fontSize="11" fill="#ffffff" opacity="0.7" fontFamily="sans-serif">
-                    {c.name}
-                  </text>
-                </motion.g>
-              ))}
-
-              {/* Uzbekistan origin */}
-              <motion.g initial={{ opacity: 0, scale: 0 }} animate={mapInView ? { opacity: 1, scale: 1 } : {}} transition={{ delay: 0.2 }}>
-                <circle cx={UZ.x} cy={UZ.y} r="6" fill="#c9a84c" />
-                <circle cx={UZ.x} cy={UZ.y} r="14" fill="none" stroke="#c9a84c" strokeWidth="1.5" />
-                <text x={UZ.x + 14} y={UZ.y + 4} fontSize="12" fill="#c9a84c" fontWeight="600" fontFamily="sans-serif">
-                  Uzbekistan
-                </text>
-              </motion.g>
-            </svg>
+          <div className="relative w-full">
+            <div className="relative mx-auto" style={{ maxWidth: 760 }}>
+              <Globe3D size={720} countries={GLOBE_COUNTRIES} onSelect={setActiveCountry} />
+            </div>
 
             {/* Country detail panel */}
             <AnimatePresence mode="wait">
