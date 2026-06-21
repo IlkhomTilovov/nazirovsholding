@@ -6,12 +6,11 @@ import { useLanguage } from '@/hooks/useLanguage';
 import { useSystemSettings } from '@/hooks/useSystemSettings';
 
 const navLinks = [
-  { href: '/', label: 'Bosh', num: '01' },
-  { href: '/about', label: 'Kompaniya', num: '02' },
-  { href: '/sectors', label: "Yo'nalishlar", num: '03' },
-  { href: '/international', label: 'Global', num: '04' },
-  { href: '/projects', label: 'Loyihalar', num: '05' },
-  { href: '/contact', label: 'Aloqa', num: '06' },
+  { href: '/about', label: 'Haqimizda', num: '01' },
+  { href: '/sectors', label: "Yo'nalishlar", num: '02' },
+  { href: '/international', label: 'Bozorlar', num: '03' },
+  { href: '/projects', label: 'Loyihalar', num: '04' },
+  { href: '/contact', label: 'Aloqa', num: '05' },
 ];
 
 export function Header() {
