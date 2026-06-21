@@ -18,6 +18,10 @@ import serviceBedroom from '@/assets/service-bedroom.jpg';
 import heroExportFruits from '@/assets/hero-export-fruits.jpg';
 import heroExportLogistics from '@/assets/hero-export-logistics.jpg';
 import heroExportFactory from '@/assets/hero-export-factory.jpg';
+import imgQuality from '@/assets/quality-control.jpg';
+import imgTransparency from '@/assets/transparency-handshake.jpg';
+import imgTeamwork from '@/assets/teamwork.jpg';
+import imgLeadership from '@/assets/leadership.jpg';
 
 const heroSlides = [heroExportFruits, heroExportLogistics, heroExportFactory];
 
@@ -56,10 +60,16 @@ export default function Index() {
   const contactPhone = settings?.contact_phone || '+998 90 123 45 67';
 
   const whyUsItems = [
-    { key: 'whyus_1', icon: 'Shield', image: heroExportFactory, titleFallback: 'SIFAT VA ISHONCH', descFallback: 'Biz har bir bosqichda yuqori xalqaro standartlarga rioya qilamiz. Xom ashyo tanlashdan to tayyor mahsulotni jo\'natishgacha.' },
-    { key: 'whyus_2', icon: 'Gem', image: heroExportFruits, titleFallback: 'SHAFFOFLIK VA HALOLLIK', descFallback: 'Mijozlar bilan ochiq va halol munosabatlarni qadrlaymiz. Barcha narxlar, muddatlar va xarajatlar oldindan aniq.' },
-    { key: 'whyus_3', icon: 'Users', image: heroExportLogistics, titleFallback: 'JAMOAVIY ISH', descFallback: 'Bizning kuchimiz — birlashgan professionallar jamoasida. Har biri natija uchun ishlaydi va o\'sib boradi.' },
-    { key: 'whyus_4', icon: 'Star', image: heroExportFactory, titleFallback: 'YETAKCHILIK', descFallback: 'Biz yetakchilik madaniyatini qo\'llab-quvvatlaymiz. Har bir xodim mijozlar uchun eng yaxshi yechimga intiladi.' },
+    { key: 'whyus_1', num: '01', icon: 'Shield', image: imgQuality, titleFallback: 'SIFAT VA ISHONCH', descFallback: 'Biz har bir bosqichda yuqori xalqaro standartlarga rioya qilamiz. Xom ashyo tanlashdan to tayyor mahsulotni jo\'natishgacha.' },
+    { key: 'whyus_2', num: '02', icon: 'Gem', image: imgTransparency, titleFallback: 'SHAFFOFLIK VA HALOLLIK', descFallback: 'Mijozlar bilan ochiq va halol munosabatlarni qadrlaymiz. Barcha narxlar, muddatlar va xarajatlar oldindan aniq.' },
+    { key: 'whyus_3', num: '03', icon: 'Users', image: imgTeamwork, titleFallback: 'JAMOAVIY ISH', descFallback: 'Bizning kuchimiz — birlashgan professionallar jamoasida. Har biri natija uchun ishlaydi va o\'sib boradi.' },
+    { key: 'whyus_4', num: '04', icon: 'Star', image: imgLeadership, titleFallback: 'YETAKCHILIK', descFallback: 'Biz yetakchilik madaniyatini qo\'llab-quvvatlaymiz. Har bir xodim mijozlar uchun eng yaxshi yechimga intiladi.' },
+  ];
+
+  const missionStats = [
+    { key: 'stat_1', value: '15+', label: 'Yillik tajriba' },
+    { key: 'stat_2', value: '20+', label: 'Eksport davlatlari' },
+    { key: 'stat_3', value: '500+', label: 'Faol hamkorlar' },
   ];
 
   const steps = [
