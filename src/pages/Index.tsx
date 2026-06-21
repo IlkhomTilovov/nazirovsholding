@@ -804,8 +804,8 @@ export default function Index() {
               </div>
               <Quote className="w-12 h-12 text-primary/30 mb-4" strokeWidth={1.2} />
               <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl text-foreground leading-[1.15] mb-8">
-                <EditableText contentKey="chairman_quote_1" fallback="\u201CBizning vazifamiz — O'zbekiston sifatini" as="span" className="block" section="chairman" />
-                <EditableText contentKey="chairman_quote_2" fallback="dunyo bozoriga olib chiqish.\u201D" as="span" className="block text-primary italic" section="chairman" />
+                <EditableText contentKey="chairman_quote_1" fallback={'\u201CBizning vazifamiz — O\u2019zbekiston sifatini'} as="span" className="block" section="chairman" />
+                <EditableText contentKey="chairman_quote_2" fallback={'dunyo bozoriga olib chiqish.\u201D'} as="span" className="block text-primary italic" section="chairman" />
               </h2>
               <div className="space-y-4 text-muted-foreground text-base md:text-lg leading-relaxed mb-8">
                 <p>
