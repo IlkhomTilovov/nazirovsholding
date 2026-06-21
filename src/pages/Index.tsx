@@ -647,6 +647,53 @@ export default function Index() {
         </div>
       </section>
 
+      {/* CORPORATE STANDARDS */}
+      <section ref={sectionStandards.ref} className="py-24 md:py-32 bg-background relative overflow-hidden">
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom,hsl(var(--primary)/0.05),transparent_60%)] pointer-events-none" />
+        <div className="max-w-[1320px] mx-auto px-4 lg:px-8 relative">
+          <div className={`text-center mb-16 max-w-3xl mx-auto transition-all duration-700 ${sectionStandards.isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
+            <div className="flex items-center justify-center gap-3 mb-5">
+              <span className="w-10 h-px bg-primary" />
+              <EditableText contentKey="std_label" fallback="KORPORATIV STANDARTLAR" as="span" className="text-primary text-xs tracking-[0.4em] uppercase font-semibold" section="standards" />
+              <span className="w-10 h-px bg-primary" />
+            </div>
+            <h2 className="font-serif text-4xl md:text-5xl lg:text-6xl text-foreground leading-[1.05] mb-5">
+              <EditableText contentKey="std_title_1" fallback="Xalqaro daraja —" as="span" className="block" section="standards" />
+              <EditableText contentKey="std_title_2" fallback="har bir bosqichda" as="span" className="block text-primary italic" section="standards" />
+            </h2>
+            <p className="text-muted-foreground text-base md:text-lg leading-relaxed">
+              <EditableText contentKey="std_intro" fallback="Sifat, shaffoflik va xalqaro savdo qoidalariga to'liq muvofiqlik — bizning B2B hamkorligimizning poydevori." as="span" section="standards" />
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+            {standards.map((st, i) => {
+              const IconComp = iconMap[st.icon] || BadgeCheck;
+              return (
+                <div
+                  key={st.key}
+                  className={`group relative p-7 border border-primary/15 rounded-sm bg-card/40 backdrop-blur-sm transition-all duration-500 hover:border-primary/50 hover:bg-card/70 hover:-translate-y-1 ${sectionStandards.isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}
+                  style={{ transitionDelay: `${i * 80}ms` }}
+                >
+                  <div className="flex items-center gap-4 mb-4">
+                    <div className="w-11 h-11 flex items-center justify-center border border-primary/40 bg-primary/5 rounded-sm group-hover:bg-primary/15 transition-colors">
+                      <IconComp className="w-5 h-5 text-primary" strokeWidth={1.5} />
+                    </div>
+                    <h3 className="font-serif text-xl text-foreground leading-tight">
+                      <EditableText contentKey={`${st.key}_title`} fallback={st.titleFallback} as="span" section="standards" />
+                    </h3>
+                  </div>
+                  <p className="text-muted-foreground text-sm leading-relaxed">
+                    <EditableText contentKey={`${st.key}_desc`} fallback={st.descFallback} as="span" section="standards" />
+                  </p>
+                  <div className="absolute bottom-0 left-0 h-px w-0 bg-primary group-hover:w-full transition-all duration-700" />
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+
       {/* SERVICES - editable */}
       <section ref={sectionServices.ref} className="py-20 md:py-28 bg-background">
         <div className="container mx-auto px-4 lg:px-8">
