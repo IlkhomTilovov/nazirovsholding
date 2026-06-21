@@ -354,8 +354,8 @@ export function InteractiveEarthSection() {
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true, amount: 0.3 }}
             transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
-            className="lg:col-span-2 relative rounded-sm border border-[#c9a84c]/15 bg-gradient-to-b from-[#101010] to-[#070707] overflow-hidden"
-            style={{ minHeight: 560 }}
+            className="lg:col-span-2 relative rounded-sm border border-[#c9a84c]/15 bg-gradient-to-b from-[#101010] to-[#070707] overflow-hidden flex"
+            style={{ minHeight: 'min(85vh, 760px)' }}
           >
             <div className="absolute top-4 left-4 z-10 flex items-center gap-2 text-[10px] tracking-[0.35em] uppercase text-[#c9a84c]/70">
               <span className="inline-block h-1.5 w-1.5 rounded-full bg-[#c9a84c] animate-pulse" />
@@ -369,11 +369,12 @@ export function InteractiveEarthSection() {
               Drag · Scroll · Click
             </div>
 
-            <div className="h-[560px] md:h-[640px] w-full">
+            <div className="flex-1 w-full min-h-[560px] md:min-h-[640px]">
               <Canvas
                 gl={{ antialias: true, alpha: false, powerPreference: 'high-performance' }}
                 dpr={[1, 2]}
-                camera={{ position: [0, 0.5, 3.4], fov: 42 }}
+                camera={{ position: [0, 0.3, 4.2], fov: 42 }}
+                style={{ width: '100%', height: '100%' }}
               >
                 <Scene
                   highlightedCode={selected ?? hovered}
