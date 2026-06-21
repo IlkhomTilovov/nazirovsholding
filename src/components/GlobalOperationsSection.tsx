@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { motion, useInView, useScroll, useTransform, AnimatePresence } from 'framer-motion';
+import { motion, useInView, useScroll, useTransform } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { ArrowRight, Calendar, FileDown, Handshake, MessageSquare } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -7,7 +7,6 @@ import cinematicPort from '@/assets/global-cinematic-port.jpg';
 import projectGermany from '@/assets/project-germany-textile.jpg';
 import projectKazakhstan from '@/assets/project-kazakhstan-agro.jpg';
 import projectUae from '@/assets/project-uae-industrial.jpg';
-import { Globe3D, GLOBE_COUNTRIES, type GlobeCountry } from '@/components/Globe3D';
 
 // ─────────────────────────────────────────────────────────
 // Animated counter
@@ -44,7 +43,7 @@ export function GlobalOperationsSection() {
   const statsInView = useInView(statsRef, { once: true, amount: 0.4 });
 
   const mapRef = useRef<HTMLDivElement>(null);
-  const [activeCountry, setActiveCountry] = useState<GlobeCountry | null>(null);
+  void mapRef;
 
   const fadeUp = {
     hidden: { opacity: 0, y: 40 },
@@ -150,57 +149,6 @@ export function GlobalOperationsSection() {
         </div>
       </div>
 
-      {/* ───────── BLOCK 4 — INTERACTIVE GLOBAL MAP ───────── */}
-      <div ref={mapRef} className="relative py-28 md:py-36 bg-[#1a1a1a] border-y border-[#c9a84c]/15">
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(201,168,76,0.05),transparent_70%)]" />
-        <div className="relative max-w-[1320px] mx-auto px-6 lg:px-10">
-          <motion.div
-            variants={fadeUp} initial="hidden" whileInView="show" viewport={{ once: true, amount: 0.4 }}
-            className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-16"
-          >
-            <div>
-              <div className="flex items-center gap-3 mb-6">
-                <span className="text-[#c9a84c] font-serif italic text-lg">—  03</span>
-                <span className="text-white/40 text-[11px] tracking-[0.4em] uppercase">Global Reach</span>
-              </div>
-              <h3 className="font-serif text-4xl md:text-5xl text-white max-w-xl leading-[1.1]">
-                Export <span className="italic text-[#c9a84c]">destinations</span> across 3 continents
-              </h3>
-            </div>
-            <p className="text-white/60 max-w-sm text-sm leading-relaxed">
-              Hover over any market to explore the industry, route and partnership model behind it.
-            </p>
-          </motion.div>
-
-          <div className="relative w-full">
-            <div className="relative mx-auto" style={{ maxWidth: 760 }}>
-              <Globe3D size={720} countries={GLOBE_COUNTRIES} onSelect={setActiveCountry} />
-            </div>
-
-            {/* Country detail panel */}
-            <AnimatePresence mode="wait">
-              {activeCountry && (
-                <motion.div
-                  key={activeCountry.code}
-                  initial={{ opacity: 0, y: 8 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: 8 }}
-                  transition={{ duration: 0.25 }}
-                  className="absolute bottom-4 left-4 md:bottom-8 md:left-8 bg-[#0d0d0d]/95 backdrop-blur-md border border-[#c9a84c]/30 p-6 md:p-7 min-w-[280px] shadow-[0_0_60px_-15px_rgba(201,168,76,0.3)]"
-                >
-                  <div className="text-[10px] tracking-[0.4em] uppercase text-[#c9a84c] mb-3">Market</div>
-                  <div className="font-serif text-2xl text-white mb-4">{activeCountry.name}</div>
-                  <div className="space-y-2 text-sm">
-                    <div className="flex justify-between gap-6"><span className="text-white/40">Industry</span><span className="text-white/90 text-right">{activeCountry.industry}</span></div>
-                    <div className="flex justify-between gap-6"><span className="text-white/40">Direction</span><span className="text-white/90 text-right">{activeCountry.direction}</span></div>
-                    <div className="flex justify-between gap-6"><span className="text-white/40">Partnership</span><span className="text-white/90 text-right">{activeCountry.partnership}</span></div>
-                  </div>
-                </motion.div>
-              )}
-            </AnimatePresence>
-          </div>
-        </div>
-      </div>
 
       {/* ───────── FEATURED GLOBAL PROJECTS ───────── */}
       <div className="relative py-28 md:py-36 bg-[#0d0d0d]">
