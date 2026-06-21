@@ -44,7 +44,6 @@ export function GlobalOperationsSection() {
   const statsInView = useInView(statsRef, { once: true, amount: 0.4 });
 
   const mapRef = useRef<HTMLDivElement>(null);
-  const mapInView = useInView(mapRef, { once: true, amount: 0.3 });
   const [activeCountry, setActiveCountry] = useState<GlobeCountry | null>(null);
 
   const fadeUp = {
