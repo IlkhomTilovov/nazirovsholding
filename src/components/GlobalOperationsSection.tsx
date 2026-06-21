@@ -7,6 +7,7 @@ import cinematicPort from '@/assets/global-cinematic-port.jpg';
 import projectGermany from '@/assets/project-germany-textile.jpg';
 import projectKazakhstan from '@/assets/project-kazakhstan-agro.jpg';
 import projectUae from '@/assets/project-uae-industrial.jpg';
+import { Globe3D, GLOBE_COUNTRIES, type GlobeCountry } from '@/components/Globe3D';
 
 // ─────────────────────────────────────────────────────────
 // Animated counter
@@ -29,26 +30,6 @@ function Counter({ to, suffix = '+', duration = 1.8, start }: { to: number; suff
   return <span className="tabular-nums">{val}<span className="text-primary/70">{suffix}</span></span>;
 }
 
-// ─────────────────────────────────────────────────────────
-// World map data (approximate equirectangular coords in % of viewBox 1000x500)
-// ─────────────────────────────────────────────────────────
-const UZ = { x: 615, y: 175 };
-const COUNTRIES = [
-  { code: 'DE', name: 'Germany',      industry: 'Textile Manufacturing', direction: 'Tashkent → Hamburg',   partnership: 'Long-term Supply',     x: 510, y: 150 },
-  { code: 'AE', name: 'UAE',          industry: 'Industrial Products',   direction: 'Tashkent → Dubai',     partnership: 'Strategic Distributor', x: 580, y: 230 },
-  { code: 'KZ', name: 'Kazakhstan',   industry: 'Agricultural Products', direction: 'Tashkent → Almaty',    partnership: 'Trade Network',        x: 640, y: 140 },
-  { code: 'TR', name: 'Turkey',       industry: 'Construction Materials',direction: 'Tashkent → Istanbul',  partnership: 'Wholesale Hub',         x: 545, y: 180 },
-  { code: 'RU', name: 'Russia',       industry: 'Consumer Goods',        direction: 'Tashkent → Moscow',    partnership: 'Distribution Partner',  x: 595, y: 120 },
-  { code: 'PL', name: 'Poland',       industry: 'Logistics & Transit',   direction: 'Tashkent → Warsaw',    partnership: 'EU Gateway',            x: 525, y: 140 },
-  { code: 'SA', name: 'Saudi Arabia', industry: 'Food Export',           direction: 'Tashkent → Riyadh',    partnership: 'GCC Supply',            x: 575, y: 245 },
-  { code: 'FR', name: 'France',       industry: 'Premium Goods',         direction: 'Tashkent → Paris',     partnership: 'Boutique Network',      x: 490, y: 160 },
-];
-
-function curvedPath(a: {x:number;y:number}, b: {x:number;y:number}) {
-  const mx = (a.x + b.x) / 2;
-  const my = (a.y + b.y) / 2 - Math.abs(a.x - b.x) * 0.25 - 20;
-  return `M ${a.x} ${a.y} Q ${mx} ${my} ${b.x} ${b.y}`;
-}
 
 // ─────────────────────────────────────────────────────────
 // Main section
@@ -63,8 +44,7 @@ export function GlobalOperationsSection() {
   const statsInView = useInView(statsRef, { once: true, amount: 0.4 });
 
   const mapRef = useRef<HTMLDivElement>(null);
-  const mapInView = useInView(mapRef, { once: true, amount: 0.3 });
-  const [activeCountry, setActiveCountry] = useState<typeof COUNTRIES[number] | null>(null);
+  const [activeCountry, setActiveCountry] = useState<GlobeCountry | null>(null);
 
   const fadeUp = {
     hidden: { opacity: 0, y: 40 },
@@ -192,83 +172,10 @@ export function GlobalOperationsSection() {
             </p>
           </motion.div>
 
-          <div className="relative aspect-[2/1] w-full">
-            <svg viewBox="0 0 1000 500" className="w-full h-full" preserveAspectRatio="xMidYMid meet">
-              <defs>
-                <linearGradient id="routeGrad" x1="0" x2="1">
-                  <stop offset="0%" stopColor="#c9a84c" stopOpacity="0.1" />
-                  <stop offset="50%" stopColor="#c9a84c" stopOpacity="0.9" />
-                  <stop offset="100%" stopColor="#c9a84c" stopOpacity="0.1" />
-                </linearGradient>
-                <radialGradient id="pulseGrad">
-                  <stop offset="0%" stopColor="#c9a84c" stopOpacity="0.6" />
-                  <stop offset="100%" stopColor="#c9a84c" stopOpacity="0" />
-                </radialGradient>
-              </defs>
-
-              {/* Dotted world silhouette */}
-              <g fill="#c9a84c" opacity="0.18">
-                {Array.from({ length: 950 }).map((_, i) => {
-                  const cx = (i * 53) % 1000;
-                  const cy = ((i * 31) % 500);
-                  // Crude landmass mask — keep dots inside rough continents
-                  const inland =
-                    (cx > 80  && cx < 280 && cy > 80  && cy < 280) ||  // Americas
-                    (cx > 200 && cx < 320 && cy > 280 && cy < 420) ||
-                    (cx > 460 && cx < 580 && cy > 100 && cy < 250) ||  // Europe
-                    (cx > 480 && cx < 620 && cy > 230 && cy < 360) ||  // Africa
-                    (cx > 580 && cx < 820 && cy > 90  && cy < 280) ||  // Asia
-                    (cx > 820 && cx < 920 && cy > 320 && cy < 420);    // Oceania
-                  return inland ? <circle key={i} cx={cx} cy={cy} r="1.4" /> : null;
-                })}
-              </g>
-
-              {/* Routes from UZ */}
-              {COUNTRIES.map((c, i) => (
-                <g key={c.code}>
-                  <motion.path
-                    d={curvedPath(UZ, c)}
-                    stroke="url(#routeGrad)"
-                    strokeWidth={activeCountry?.code === c.code ? 2 : 1}
-                    fill="none"
-                    initial={{ pathLength: 0, opacity: 0 }}
-                    animate={mapInView ? { pathLength: 1, opacity: 1 } : {}}
-                    transition={{ duration: 1.8, delay: 0.4 + i * 0.12, ease: 'easeInOut' }}
-                  />
-                </g>
-              ))}
-
-              {/* Country dots */}
-              {COUNTRIES.map((c, i) => (
-                <motion.g
-                  key={`dot-${c.code}`}
-                  initial={{ opacity: 0, scale: 0 }}
-                  animate={mapInView ? { opacity: 1, scale: 1 } : {}}
-                  transition={{ duration: 0.5, delay: 1.2 + i * 0.08 }}
-                  onMouseEnter={() => setActiveCountry(c)}
-                  onMouseLeave={() => setActiveCountry(null)}
-                  style={{ cursor: 'pointer' }}
-                >
-                  <circle cx={c.x} cy={c.y} r="18" fill="url(#pulseGrad)">
-                    <animate attributeName="r" values="14;22;14" dur="2.4s" repeatCount="indefinite" begin={`${i * 0.3}s`} />
-                  </circle>
-                  <circle cx={c.x} cy={c.y} r="4" fill="#c9a84c" />
-                  <circle cx={c.x} cy={c.y} r="7" fill="none" stroke="#c9a84c" strokeWidth="1" opacity="0.5" />
-                  <text x={c.x + 12} y={c.y - 8} fontSize="11" fill="#ffffff" opacity="0.7" fontFamily="sans-serif">
-                    {c.name}
-                  </text>
-                </motion.g>
-              ))}
-
-              {/* Uzbekistan origin */}
-              <motion.g initial={{ opacity: 0, scale: 0 }} animate={mapInView ? { opacity: 1, scale: 1 } : {}} transition={{ delay: 0.2 }}>
-                <circle cx={UZ.x} cy={UZ.y} r="6" fill="#c9a84c" />
-                <circle cx={UZ.x} cy={UZ.y} r="14" fill="none" stroke="#c9a84c" strokeWidth="1.5" />
-                <text x={UZ.x + 14} y={UZ.y + 4} fontSize="12" fill="#c9a84c" fontWeight="600" fontFamily="sans-serif">
-                  Uzbekistan
-                </text>
-              </motion.g>
-            </svg>
+          <div className="relative w-full">
+            <div className="relative mx-auto" style={{ maxWidth: 760 }}>
+              <Globe3D size={720} countries={GLOBE_COUNTRIES} onSelect={setActiveCountry} />
+            </div>
 
             {/* Country detail panel */}
             <AnimatePresence mode="wait">
