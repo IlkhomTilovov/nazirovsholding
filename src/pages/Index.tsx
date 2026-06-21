@@ -56,12 +56,10 @@ export default function Index() {
   const contactPhone = settings?.contact_phone || '+998 90 123 45 67';
 
   const whyUsItems = [
-    { key: 'whyus_1', icon: 'Shield', titleFallback: '5 yil kafolat', descFallback: 'Barcha mahsulotlarga 5 yillik kafolat' },
-    { key: 'whyus_2', icon: 'Paintbrush', titleFallback: 'Individual dizayn', descFallback: 'Sizning didingizga mos dizayn' },
-    { key: 'whyus_3', icon: 'Ruler', titleFallback: "O'lchov asosida", descFallback: "Aniq o'lchovlar bo'yicha ishlab chiqarish" },
-    { key: 'whyus_4', icon: 'Users', titleFallback: 'Tajribali ustalar', descFallback: '10+ yillik tajribaga ega mutaxassislar' },
-    { key: 'whyus_5', icon: 'Gem', titleFallback: 'Premium materiallar', descFallback: 'Faqat yuqori sifatli materiallar' },
-    { key: 'whyus_6', icon: 'Truck', titleFallback: 'Tez yetkazib berish', descFallback: "Toshkent bo'ylab bepul yetkazib berish" },
+    { key: 'whyus_1', icon: 'Shield', image: heroExportFactory, titleFallback: 'SIFAT VA ISHONCH', descFallback: 'Biz har bir bosqichda yuqori xalqaro standartlarga rioya qilamiz. Xom ashyo tanlashdan to tayyor mahsulotni jo\'natishgacha.' },
+    { key: 'whyus_2', icon: 'Gem', image: heroExportFruits, titleFallback: 'SHAFFOFLIK VA HALOLLIK', descFallback: 'Mijozlar bilan ochiq va halol munosabatlarni qadrlaymiz. Barcha narxlar, muddatlar va xarajatlar oldindan aniq.' },
+    { key: 'whyus_3', icon: 'Users', image: heroExportLogistics, titleFallback: 'JAMOAVIY ISH', descFallback: 'Bizning kuchimiz — birlashgan professionallar jamoasida. Har biri natija uchun ishlaydi va o\'sib boradi.' },
+    { key: 'whyus_4', icon: 'Star', image: heroExportFactory, titleFallback: 'YETAKCHILIK', descFallback: 'Biz yetakchilik madaniyatini qo\'llab-quvvatlaymiz. Har bir xodim mijozlar uchun eng yaxshi yechimga intiladi.' },
   ];
 
   const steps = [
