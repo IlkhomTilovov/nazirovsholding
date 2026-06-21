@@ -9,6 +9,7 @@ import { useSystemSettings } from '@/hooks/useSystemSettings';
 import { EditableText } from '@/components/EditableText';
 import { EditableImage } from '@/components/EditableImage';
 import { BrandsSection } from '@/components/BrandsSection';
+import { GlobalOperationsSection } from '@/components/GlobalOperationsSection';
 import { useState, useEffect, useRef } from 'react';
 
 import serviceWardrobe from '@/assets/service-wardrobe.jpg';
