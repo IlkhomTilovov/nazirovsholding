@@ -493,183 +493,317 @@ const Themes = () => {
 
       {/* Theme Builder Dialog */}
       <Dialog open={showBuilder} onOpenChange={setShowBuilder}>
-        <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
-          <DialogHeader>
-            <DialogTitle className="flex items-center gap-2">
-              <Settings2 className="h-5 w-5" />
-              {builderMode === 'create' ? 'Yangi mavzu yaratish' : 
-               builderMode === 'clone' ? 'Mavzuni nusxalash' : 'Mavzuni tahrirlash'}
-            </DialogTitle>
-            <DialogDescription>
-              O'zingizning brend ranglaringiz bilan yangi mavzu yarating
-            </DialogDescription>
+        <DialogContent className="max-w-5xl p-0 gap-0 max-h-[92vh] overflow-hidden bg-background">
+          {/* Header */}
+          <DialogHeader className="px-6 py-5 border-b bg-muted/30 space-y-1">
+            <div className="flex items-center gap-3">
+              <div className="h-10 w-10 rounded-lg bg-primary/10 flex items-center justify-center shrink-0">
+                <Settings2 className="h-5 w-5 text-primary" />
+              </div>
+              <div className="min-w-0">
+                <DialogTitle className="text-lg font-semibold leading-tight">
+                  {builderMode === 'create' ? 'Yangi mavzu yaratish' :
+                   builderMode === 'clone' ? 'Mavzuni nusxalash' : 'Mavzuni tahrirlash'}
+                </DialogTitle>
+                <DialogDescription className="text-sm">
+                  Brend ranglari, shrift va komponent uslublarini sozlang
+                </DialogDescription>
+              </div>
+            </div>
           </DialogHeader>
 
-          <div className="space-y-6 py-4">
-            {/* Theme Name */}
-            <div className="space-y-2">
-              <Label>Mavzu nomi</Label>
-              <Input
-                value={formData.name}
-                onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                placeholder="Masalan: Zamonaviy Oq"
-              />
-            </div>
+          {/* Body — 2 column layout */}
+          <div className="grid md:grid-cols-[1fr_380px] overflow-hidden" style={{ maxHeight: 'calc(92vh - 165px)' }}>
+            {/* Left: Form */}
+            <div className="overflow-y-auto px-6 py-6 space-y-8">
+              {/* Section: General */}
+              <section className="space-y-4">
+                <div className="flex items-center gap-2">
+                  <div className="h-1 w-6 rounded-full bg-primary" />
+                  <h3 className="text-sm font-semibold uppercase tracking-wider text-muted-foreground">
+                    Umumiy
+                  </h3>
+                </div>
 
-            {/* Dark/Light Toggle */}
-            <div className="flex items-center justify-between">
-              <div className="space-y-0.5">
-                <Label>Qorong'i rejim</Label>
-                <p className="text-sm text-muted-foreground">Mavzuni qorong'i sifatida belgilash</p>
-              </div>
-              <Switch
-                checked={formData.isDark}
-                onCheckedChange={(checked) => setFormData({ ...formData, isDark: checked })}
-              />
-            </div>
-
-            {/* Colors Grid */}
-            <div className="space-y-3">
-              <Label>Ranglar</Label>
-              <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-                <ColorInput
-                  label="Asosiy rang"
-                  value={formData.primaryColor}
-                  onChange={(v) => setFormData({ ...formData, primaryColor: v })}
-                />
-                <ColorInput
-                  label="Ikkinchi darajali"
-                  value={formData.secondaryColor}
-                  onChange={(v) => setFormData({ ...formData, secondaryColor: v })}
-                />
-                <ColorInput
-                  label="Urg'u rang"
-                  value={formData.accentColor}
-                  onChange={(v) => setFormData({ ...formData, accentColor: v })}
-                />
-                <ColorInput
-                  label="Orqa fon"
-                  value={formData.backgroundColor}
-                  onChange={(v) => setFormData({ ...formData, backgroundColor: v })}
-                />
-                <ColorInput
-                  label="Matn rangi"
-                  value={formData.foregroundColor}
-                  onChange={(v) => setFormData({ ...formData, foregroundColor: v })}
-                />
-              </div>
-            </div>
-
-            {/* Font Family */}
-            <div className="space-y-2">
-              <Label className="flex items-center gap-2">
-                <Type className="h-4 w-4" />
-                Shrift
-              </Label>
-              <Select
-                value={formData.fontFamily}
-                onValueChange={(v) => setFormData({ ...formData, fontFamily: v })}
-              >
-                <SelectTrigger>
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent className="max-h-80">
-                  {FONT_OPTIONS.map((font) => (
-                    <SelectItem key={font.value} value={font.value}>
-                      <span style={{ fontFamily: font.value }}>{font.label}</span>
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-
-            {/* Border Radius */}
-            <div className="space-y-2">
-              <Label>Burchak radiusi</Label>
-              <Select
-                value={formData.borderRadius}
-                onValueChange={(v) => setFormData({ ...formData, borderRadius: v })}
-              >
-                <SelectTrigger>
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  {RADIUS_OPTIONS.map((opt) => (
-                    <SelectItem key={opt.value} value={opt.value}>
-                      {opt.label}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-
-            {/* Shadow Level */}
-            <div className="space-y-2">
-              <Label>Soya darajasi</Label>
-              <Select
-                value={formData.shadowLevel}
-                onValueChange={(v) => setFormData({ ...formData, shadowLevel: v })}
-              >
-                <SelectTrigger>
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="none">Yo'q</SelectItem>
-                  <SelectItem value="light">Engil</SelectItem>
-                  <SelectItem value="medium">O'rta</SelectItem>
-                  <SelectItem value="heavy">Kuchli</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-
-            {/* Preview */}
-            <div className="space-y-2">
-              <Label>Ko'rinish</Label>
-              <div 
-                className="p-4 rounded-lg border"
-                style={{ 
-                  backgroundColor: `hsl(${formData.backgroundColor})`,
-                  borderRadius: formData.borderRadius,
-                }}
-              >
-                <div 
-                  className="h-8 rounded mb-2"
-                  style={{ 
-                    backgroundColor: `hsl(${formData.primaryColor})`,
-                    borderRadius: formData.borderRadius,
-                  }}
-                />
-                <div className="flex gap-2">
-                  <div 
-                    className="flex-1 h-16 rounded"
-                    style={{ 
-                      backgroundColor: `hsl(${formData.secondaryColor})`,
-                      borderRadius: formData.borderRadius,
-                    }}
-                  />
-                  <div 
-                    className="w-1/3 h-16 rounded"
-                    style={{ 
-                      backgroundColor: `hsl(${formData.accentColor})`,
-                      borderRadius: formData.borderRadius,
-                    }}
+                <div className="space-y-2">
+                  <Label htmlFor="theme-name">Mavzu nomi</Label>
+                  <Input
+                    id="theme-name"
+                    value={formData.name}
+                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                    placeholder="Masalan: Zamonaviy Oq"
+                    className="h-10"
                   />
                 </div>
-                <p 
-                  className="mt-2 text-sm"
-                  style={{ color: `hsl(${formData.foregroundColor})` }}
-                >
-                  Namuna matn ko'rinishi
+
+                <div className="flex items-center justify-between rounded-lg border bg-card p-4">
+                  <div className="space-y-0.5 pr-4">
+                    <Label className="text-sm font-medium">Qorong'i rejim</Label>
+                    <p className="text-xs text-muted-foreground">
+                      Mavzuni qorong'i tema sifatida belgilash
+                    </p>
+                  </div>
+                  <Switch
+                    checked={formData.isDark}
+                    onCheckedChange={(checked) => setFormData({ ...formData, isDark: checked })}
+                  />
+                </div>
+              </section>
+
+              {/* Section: Colors */}
+              <section className="space-y-4">
+                <div className="flex items-center gap-2">
+                  <div className="h-1 w-6 rounded-full bg-primary" />
+                  <h3 className="text-sm font-semibold uppercase tracking-wider text-muted-foreground">
+                    Rang palitrasi
+                  </h3>
+                </div>
+
+                <div className="grid grid-cols-2 gap-3">
+                  <ColorInput
+                    label="Asosiy rang"
+                    value={formData.primaryColor}
+                    onChange={(v) => setFormData({ ...formData, primaryColor: v })}
+                  />
+                  <ColorInput
+                    label="Ikkinchi darajali"
+                    value={formData.secondaryColor}
+                    onChange={(v) => setFormData({ ...formData, secondaryColor: v })}
+                  />
+                  <ColorInput
+                    label="Urg'u rang"
+                    value={formData.accentColor}
+                    onChange={(v) => setFormData({ ...formData, accentColor: v })}
+                  />
+                  <ColorInput
+                    label="Orqa fon"
+                    value={formData.backgroundColor}
+                    onChange={(v) => setFormData({ ...formData, backgroundColor: v })}
+                  />
+                  <ColorInput
+                    label="Matn rangi"
+                    value={formData.foregroundColor}
+                    onChange={(v) => setFormData({ ...formData, foregroundColor: v })}
+                  />
+                </div>
+              </section>
+
+              {/* Section: Typography & Shape */}
+              <section className="space-y-4">
+                <div className="flex items-center gap-2">
+                  <div className="h-1 w-6 rounded-full bg-primary" />
+                  <h3 className="text-sm font-semibold uppercase tracking-wider text-muted-foreground">
+                    Tipografiya va shakl
+                  </h3>
+                </div>
+
+                <div className="space-y-2">
+                  <Label className="flex items-center gap-2 text-sm">
+                    <Type className="h-3.5 w-3.5" />
+                    Shrift oilasi
+                  </Label>
+                  <Select
+                    value={formData.fontFamily}
+                    onValueChange={(v) => setFormData({ ...formData, fontFamily: v })}
+                  >
+                    <SelectTrigger className="h-10">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent className="max-h-80">
+                      {FONT_OPTIONS.map((font) => (
+                        <SelectItem key={font.value} value={font.value}>
+                          <span style={{ fontFamily: font.value }}>{font.label}</span>
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                <div className="grid grid-cols-2 gap-3">
+                  <div className="space-y-2">
+                    <Label className="text-sm">Burchak radiusi</Label>
+                    <Select
+                      value={formData.borderRadius}
+                      onValueChange={(v) => setFormData({ ...formData, borderRadius: v })}
+                    >
+                      <SelectTrigger className="h-10">
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {RADIUS_OPTIONS.map((opt) => (
+                          <SelectItem key={opt.value} value={opt.value}>
+                            {opt.label}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label className="text-sm">Soya darajasi</Label>
+                    <Select
+                      value={formData.shadowLevel}
+                      onValueChange={(v) => setFormData({ ...formData, shadowLevel: v })}
+                    >
+                      <SelectTrigger className="h-10">
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="none">Yo'q</SelectItem>
+                        <SelectItem value="light">Engil</SelectItem>
+                        <SelectItem value="medium">O'rta</SelectItem>
+                        <SelectItem value="heavy">Kuchli</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                </div>
+              </section>
+            </div>
+
+            {/* Right: Live Preview */}
+            <aside className="hidden md:flex flex-col border-l bg-muted/20 overflow-y-auto">
+              <div className="px-5 py-4 border-b bg-background/50 backdrop-blur sticky top-0 z-10">
+                <div className="flex items-center gap-2">
+                  <Eye className="h-4 w-4 text-muted-foreground" />
+                  <h4 className="text-sm font-semibold">Jonli ko'rinish</h4>
+                </div>
+                <p className="text-xs text-muted-foreground mt-0.5">
+                  O'zgarishlar darhol ko'rinadi
                 </p>
               </div>
-            </div>
+
+              <div className="p-5 space-y-4">
+                {/* Mock preview card */}
+                <div
+                  className="rounded-xl border shadow-sm overflow-hidden"
+                  style={{
+                    backgroundColor: `hsl(${formData.backgroundColor})`,
+                    color: `hsl(${formData.foregroundColor})`,
+                    borderRadius: formData.borderRadius,
+                    fontFamily: formData.fontFamily,
+                  }}
+                >
+                  {/* Header bar */}
+                  <div
+                    className="px-4 py-3 flex items-center justify-between"
+                    style={{ backgroundColor: `hsl(${formData.primaryColor})` }}
+                  >
+                    <span
+                      className="text-sm font-semibold"
+                      style={{ color: `hsl(${formData.backgroundColor})` }}
+                    >
+                      Brand Name
+                    </span>
+                    <div className="flex gap-1.5">
+                      <div className="h-2 w-2 rounded-full opacity-50" style={{ backgroundColor: `hsl(${formData.backgroundColor})` }} />
+                      <div className="h-2 w-2 rounded-full opacity-70" style={{ backgroundColor: `hsl(${formData.backgroundColor})` }} />
+                      <div className="h-2 w-2 rounded-full" style={{ backgroundColor: `hsl(${formData.backgroundColor})` }} />
+                    </div>
+                  </div>
+
+                  {/* Body */}
+                  <div className="p-4 space-y-3">
+                    <div>
+                      <h5 className="text-base font-bold leading-tight">
+                        Sarlavha namunasi
+                      </h5>
+                      <p className="text-xs mt-1 opacity-70">
+                        Bu yerda matn shrift va ranglar bilan ko'rsatiladi.
+                      </p>
+                    </div>
+
+                    <div className="flex gap-2">
+                      <button
+                        type="button"
+                        className="text-xs px-3 py-1.5 font-medium"
+                        style={{
+                          backgroundColor: `hsl(${formData.primaryColor})`,
+                          color: `hsl(${formData.backgroundColor})`,
+                          borderRadius: formData.borderRadius,
+                        }}
+                      >
+                        Asosiy
+                      </button>
+                      <button
+                        type="button"
+                        className="text-xs px-3 py-1.5 font-medium"
+                        style={{
+                          backgroundColor: `hsl(${formData.secondaryColor})`,
+                          color: `hsl(${formData.foregroundColor})`,
+                          borderRadius: formData.borderRadius,
+                        }}
+                      >
+                        Ikkinchi
+                      </button>
+                      <button
+                        type="button"
+                        className="text-xs px-3 py-1.5 font-medium"
+                        style={{
+                          backgroundColor: `hsl(${formData.accentColor})`,
+                          color: `hsl(${formData.backgroundColor})`,
+                          borderRadius: formData.borderRadius,
+                        }}
+                      >
+                        Urg'u
+                      </button>
+                    </div>
+
+                    <div
+                      className="p-3 text-xs"
+                      style={{
+                        backgroundColor: `hsl(${formData.secondaryColor})`,
+                        borderRadius: formData.borderRadius,
+                      }}
+                    >
+                      Karta ichidagi kontent namunasi
+                    </div>
+                  </div>
+                </div>
+
+                {/* Color tokens row */}
+                <div className="rounded-lg border bg-card p-3">
+                  <p className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground mb-2">
+                    Ranglar
+                  </p>
+                  <div className="grid grid-cols-5 gap-1.5">
+                    {[
+                      { c: formData.primaryColor, l: 'P' },
+                      { c: formData.secondaryColor, l: 'S' },
+                      { c: formData.accentColor, l: 'A' },
+                      { c: formData.backgroundColor, l: 'Bg' },
+                      { c: formData.foregroundColor, l: 'Tx' },
+                    ].map((s, i) => (
+                      <div key={i} className="space-y-1">
+                        <div
+                          className="aspect-square rounded-md border"
+                          style={{ backgroundColor: `hsl(${s.c})` }}
+                        />
+                        <p className="text-[9px] text-center text-muted-foreground">{s.l}</p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Typography sample */}
+                <div className="rounded-lg border bg-card p-3" style={{ fontFamily: formData.fontFamily }}>
+                  <p className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground mb-2">
+                    Shrift
+                  </p>
+                  <p className="text-lg font-bold leading-tight">Aa Bb Cc</p>
+                  <p className="text-xs text-muted-foreground mt-1 truncate">
+                    {formData.fontFamily.split(',')[0].replace(/'/g, '')}
+                  </p>
+                </div>
+              </div>
+            </aside>
           </div>
 
-          <DialogFooter>
+          {/* Footer */}
+          <DialogFooter className="px-6 py-4 border-t bg-muted/30 gap-2 sm:gap-2">
             <Button variant="outline" onClick={() => setShowBuilder(false)}>
               Bekor qilish
             </Button>
-            <Button onClick={handleSaveTheme}>
+            <Button onClick={handleSaveTheme} className="min-w-[120px]">
               <Check className="h-4 w-4 mr-2" />
               Saqlash
             </Button>
