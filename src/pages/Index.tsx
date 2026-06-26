@@ -9,6 +9,7 @@ import { useSystemSettings } from '@/hooks/useSystemSettings';
 import { EditableText } from '@/components/EditableText';
 import { EditableImage } from '@/components/EditableImage';
 import { BrandsSection } from '@/components/BrandsSection';
+import { InteractiveEarthSection } from '@/components/InteractiveEarth';
 
 import { useState, useEffect, useRef } from 'react';
 
