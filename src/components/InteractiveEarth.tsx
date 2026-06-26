@@ -377,11 +377,21 @@ export function InteractiveEarthSection() {
             <div className="absolute bottom-4 right-4 z-10 text-[10px] uppercase tracking-[0.3em] text-white/35">Drag · Rotate</div>
 
             <Canvas
-              gl={{ antialias: true, alpha: true, powerPreference: 'high-performance' }}
-              dpr={[1, 1.75]}
+              gl={{ antialias: true, alpha: true, powerPreference: 'high-performance', preserveDrawingBuffer: false, failIfMajorPerformanceCaveat: false }}
+              dpr={[1, 1.5]}
               camera={{ position: [0, 0.08, 5.35], fov: 36 }}
               shadows
               className="h-full w-full"
+              onCreated={({ gl }) => {
+                const canvas = gl.domElement;
+                canvas.addEventListener('webglcontextlost', (event) => {
+                  event.preventDefault();
+                  console.warn('WebGL context lost — will attempt to restore');
+                }, false);
+                canvas.addEventListener('webglcontextrestored', () => {
+                  console.info('WebGL context restored');
+                }, false);
+              }}
             >
               <Scene highlightedCode={selected ?? hovered} setHighlighted={setHovered} setSelected={setSelected} />
             </Canvas>
