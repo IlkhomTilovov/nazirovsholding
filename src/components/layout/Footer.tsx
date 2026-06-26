@@ -23,22 +23,22 @@ export function Footer() {
   };
 
   const navLinks = [
-    { key: 'home', label: 'Home', to: '/' },
-    { key: 'about', label: 'About', to: '/about' },
-    { key: 'sectors', label: 'Business Sectors', to: '/sectors' },
-    { key: 'markets', label: 'Markets', to: '/international' },
-    { key: 'projects', label: 'Projects', to: '/projects' },
-    { key: 'contact', label: 'Contact', to: '/contact' },
+    { key: 'home', label: 'Bosh sahifa', to: '/' },
+    { key: 'about', label: 'Haqimizda', to: '/about' },
+    { key: 'sectors', label: "Yo'nalishlar", to: '/sectors' },
+    { key: 'markets', label: 'Bozorlar', to: '/international' },
+    { key: 'projects', label: 'Loyihalar', to: '/projects' },
+    { key: 'contact', label: 'Aloqa', to: '/contact' },
   ];
 
   const sectors = [
-    'Export',
-    'Agriculture',
-    'Food Products',
-    'Industrial Materials',
-    'Logistics',
-    'Investment',
-    'Manufacturing',
+    "Yog' mahsulotlari",
+    'Qandolat mahsulotlari',
+    "Xo'l mevalar",
+    'Mis va metall',
+    'Korbamit (karbamid)',
+    'Xalqaro eksport',
+    'Logistika yechimlari',
   ];
 
   const socials = [
