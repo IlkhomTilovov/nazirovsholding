@@ -59,18 +59,34 @@ export default function Sectors() {
         <div className="relative max-w-[1200px] mx-auto px-6 lg:px-10">
           <div className="flex flex-col md:flex-row md:items-end justify-between mb-14 gap-6">
             <div>
-              <p className="text-[10px] tracking-[0.5em] uppercase text-[#d4af37] mb-4">— 04 Bizning Brendlar</p>
+              <EditableText
+                contentKey="sectors.brands.eyebrow"
+                fallback="— 04 Bizning Brendlar"
+                as="p"
+                className="text-[10px] tracking-[0.5em] uppercase text-[#d4af37] mb-4"
+                section="sectors-brands"
+              />
               <h2
                 className="text-4xl md:text-5xl font-light max-w-2xl leading-[1.1]"
                 style={{ fontFamily: "'Instrument Serif', serif" }}
               >
-                Holding tarkibidagi <span className="italic text-[#d4af37]">strategik brendlar</span>
+                <EditableText
+                  contentKey="sectors.brands.title"
+                  fallback="Holding tarkibidagi strategik brendlar"
+                  multiline
+                  section="sectors-brands"
+                />
               </h2>
             </div>
-            <p className="text-white/50 text-sm max-w-md leading-relaxed">
-              Har bir brend o'z sohasida yetakchi mavqega ega bo'lib, NazirovSholding global
-              ekspor tinfratuzilmasi orqali xalqaro bozorlarga chiqariladi.
-            </p>
+            <EditableText
+              contentKey="sectors.brands.subtitle"
+              fallback="Har bir brend o'z sohasida yetakchi mavqega ega bo'lib, NazirovSholding global eksport infratuzilmasi orqali xalqaro bozorlarga chiqariladi."
+              as="p"
+              multiline
+              className="text-white/50 text-sm max-w-md leading-relaxed block"
+              section="sectors-brands"
+            />
+
           </div>
 
           {brandsLoading ? (
