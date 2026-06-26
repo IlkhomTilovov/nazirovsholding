@@ -156,12 +156,12 @@ export function GlobalOperationsSection() {
 
           <div className="space-y-6">
             {[
-              { img: projectGermany,    flag: '🇩🇪', country: 'Germany',    title: 'Germany Textile Export',       industry: 'Textile Manufacturing',  result: '120 Containers Delivered',     year: '2024' },
-              { img: projectKazakhstan, flag: '🇰🇿', country: 'Kazakhstan', title: 'Kazakhstan Trade Partnership', industry: 'Agricultural Products',  result: 'Strategic Distribution Network',year: '2024' },
-              { img: projectUae,        flag: '🇦🇪', country: 'UAE',        title: 'UAE Supply Project',           industry: 'Industrial Products',    result: 'Long-Term Supply Agreement',   year: '2025' },
+              { id: 'de', img: projectGermany,    flag: '🇩🇪', country: 'Germany',    title: 'Germany Textile Export',       industry: 'Textile Manufacturing',  result: '120 Containers Delivered',     year: '2024' },
+              { id: 'kz', img: projectKazakhstan, flag: '🇰🇿', country: 'Kazakhstan', title: 'Kazakhstan Trade Partnership', industry: 'Agricultural Products',  result: 'Strategic Distribution Network',year: '2024' },
+              { id: 'ae', img: projectUae,        flag: '🇦🇪', country: 'UAE',        title: 'UAE Supply Project',           industry: 'Industrial Products',    result: 'Long-Term Supply Agreement',   year: '2025' },
             ].map((p, i) => (
               <motion.article
-                key={p.title}
+                key={p.id}
                 variants={fadeUp} custom={i} initial="hidden" whileInView="show" viewport={{ once: true, amount: 0.2 }}
                 className="group relative grid grid-cols-1 md:grid-cols-12 gap-0 border border-[#c9a84c]/15 bg-[#0f0f0f] overflow-hidden hover:border-[#c9a84c]/50 transition-all duration-700 hover:shadow-[0_0_60px_-20px_rgba(201,168,76,0.35)]"
               >
@@ -175,27 +175,25 @@ export function GlobalOperationsSection() {
                   <div className="absolute inset-0 bg-gradient-to-r from-[#0d0d0d]/60 via-transparent to-transparent md:bg-gradient-to-r md:from-transparent md:via-transparent md:to-[#0f0f0f]" />
                   <div className="absolute top-5 left-5 bg-[#0d0d0d]/80 backdrop-blur-sm px-3 py-1.5 text-xs tracking-[0.3em] uppercase text-white/90 border border-[#c9a84c]/30 flex items-center gap-2">
                     <span className="text-base leading-none">{p.flag}</span>
-                    <span>{p.country}</span>
+                    <EditableText contentKey={`bozorlar.case.${p.id}.country`} fallback={p.country} section="bozorlar-cases" />
                   </div>
                 </div>
 
                 <div className="md:col-span-7 p-8 md:p-12 lg:p-14 flex flex-col justify-between gap-8">
                   <div>
-                    <div className="text-[#c9a84c] text-[11px] tracking-[0.35em] uppercase mb-4">{p.industry}</div>
-                    <h4 className="font-serif text-3xl md:text-4xl text-white leading-tight mb-6 group-hover:text-[#c9a84c] transition-colors duration-500">
-                      {p.title}
-                    </h4>
+                    <EditableText contentKey={`bozorlar.case.${p.id}.industry`} fallback={p.industry} section="bozorlar-cases" className="block text-[#c9a84c] text-[11px] tracking-[0.35em] uppercase mb-4" />
+                    <EditableText as="h4" contentKey={`bozorlar.case.${p.id}.title`} fallback={p.title} section="bozorlar-cases" className="font-serif text-3xl md:text-4xl text-white leading-tight mb-6 group-hover:text-[#c9a84c] transition-colors duration-500" />
                     <div className="h-px w-16 bg-[#c9a84c]/40 group-hover:w-28 transition-all duration-700" />
                   </div>
 
                   <div className="grid grid-cols-2 gap-8 pt-4">
                     <div>
-                      <div className="text-[10px] tracking-[0.4em] uppercase text-white/40 mb-2">Result</div>
-                      <div className="font-serif text-xl text-white">{p.result}</div>
+                      <EditableText contentKey="bozorlar.case.label.result" fallback="Result" section="bozorlar-cases" className="block text-[10px] tracking-[0.4em] uppercase text-white/40 mb-2" />
+                      <EditableText contentKey={`bozorlar.case.${p.id}.result`} fallback={p.result} section="bozorlar-cases" className="block font-serif text-xl text-white" />
                     </div>
                     <div>
-                      <div className="text-[10px] tracking-[0.4em] uppercase text-white/40 mb-2">Year</div>
-                      <div className="font-serif text-xl text-[#c9a84c]">{p.year}</div>
+                      <EditableText contentKey="bozorlar.case.label.year" fallback="Year" section="bozorlar-cases" className="block text-[10px] tracking-[0.4em] uppercase text-white/40 mb-2" />
+                      <EditableText contentKey={`bozorlar.case.${p.id}.year`} fallback={p.year} section="bozorlar-cases" className="block font-serif text-xl text-[#c9a84c]" />
                     </div>
                   </div>
                 </div>
