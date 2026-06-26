@@ -1,50 +1,55 @@
 import { useSEO } from '@/hooks/useSEO';
 import { Link } from 'react-router-dom';
 import { ArrowUpRight, Target, Eye, Gem, Shield, Award, Globe2 } from 'lucide-react';
+import { EditableText } from '@/components/EditableText';
 
 const stats = [
-  { value: '12+', label: 'Yillik tajriba' },
-  { value: '25', label: 'Hamkor mamlakat' },
-  { value: '500+', label: 'Yetkazib berilgan konteyner' },
-  { value: '8', label: 'Strategik yo‘nalish' },
+  { key: 'value', fallbackValue: '12+', fallbackLabel: 'Yillik tajriba' },
+  { key: 'partners', fallbackValue: '25', fallbackLabel: 'Hamkor mamlakat' },
+  { key: 'containers', fallbackValue: '500+', fallbackLabel: 'Yetkazib berilgan konteyner' },
+  { key: 'sectors', fallbackValue: '8', fallbackLabel: 'Strategik yo‘nalish' },
 ];
 
 const values = [
   {
+    id: 'trust',
     icon: Shield,
-    title: 'Ishonch',
-    desc: 'Har bir bitim shaffof shartnoma, aniq muddat va kafolatlangan sifat asosida tuziladi.',
+    fallbackTitle: 'Ishonch',
+    fallbackDesc: 'Har bir bitim shaffof shartnoma, aniq muddat va kafolatlangan sifat asosida tuziladi.',
   },
   {
+    id: 'quality',
     icon: Gem,
-    title: 'Sifat',
-    desc: 'Xalqaro standartlar (ISO, HACCP) va qat’iy ichki nazorat — har bir mahsulot uchun.',
+    fallbackTitle: 'Sifat',
+    fallbackDesc: 'Xalqaro standartlar (ISO, HACCP) va qat’iy ichki nazorat — har bir mahsulot uchun.',
   },
   {
+    id: 'global',
     icon: Globe2,
-    title: 'Global qarash',
-    desc: 'Yevropa, MDH, Yaqin Sharq va Osiyo bozorlariga moslashgan eksport strategiyasi.',
+    fallbackTitle: 'Global qarash',
+    fallbackDesc: 'Yevropa, MDH, Yaqin Sharq va Osiyo bozorlariga moslashgan eksport strategiyasi.',
   },
   {
+    id: 'responsibility',
     icon: Award,
-    title: 'Mas’uliyat',
-    desc: 'Hamkorlar, xodimlar va mahalliy iqtisodiyot oldidagi uzoq muddatli majburiyatlar.',
+    fallbackTitle: 'Mas’uliyat',
+    fallbackDesc: 'Hamkorlar, xodimlar va mahalliy iqtisodiyot oldidagi uzoq muddatli majburiyatlar.',
   },
 ];
 
 const timeline = [
-  { year: '2013', title: 'Asos solinishi', desc: 'Toshkentda mahalliy savdo kompaniyasi sifatida faoliyat boshlandi.' },
-  { year: '2017', title: 'Birinchi eksport', desc: 'Qozog‘iston va Rossiya bozorlariga muntazam yetkazib berishlar yo‘lga qo‘yildi.' },
-  { year: '2020', title: 'Holding tuzilmasi', desc: 'Bir necha yo‘nalish bo‘yicha kompaniyalar yagona holding ostida birlashtirildi.' },
-  { year: '2023', title: 'Yevropa va BAA', desc: 'Germaniya va Birlashgan Arab Amirliklari bilan strategik shartnomalar imzolandi.' },
-  { year: '2026', title: 'Yangi bosqich', desc: 'Ishlab chiqarish va logistika quvvatlari kengaytirilib, 8 sohaga diversifikatsiya.' },
+  { id: '1', fallbackYear: '2013', fallbackTitle: 'Asos solinishi', fallbackDesc: 'Toshkentda mahalliy savdo kompaniyasi sifatida faoliyat boshlandi.' },
+  { id: '2', fallbackYear: '2017', fallbackTitle: 'Birinchi eksport', fallbackDesc: 'Qozog‘iston va Rossiya bozorlariga muntazam yetkazib berishlar yo‘lga qo‘yildi.' },
+  { id: '3', fallbackYear: '2020', fallbackTitle: 'Holding tuzilmasi', fallbackDesc: 'Bir necha yo‘nalish bo‘yicha kompaniyalar yagona holding ostida birlashtirildi.' },
+  { id: '4', fallbackYear: '2023', fallbackTitle: 'Yevropa va BAA', fallbackDesc: 'Germaniya va Birlashgan Arab Amirliklari bilan strategik shartnomalar imzolandi.' },
+  { id: '5', fallbackYear: '2026', fallbackTitle: 'Yangi bosqich', fallbackDesc: 'Ishlab chiqarish va logistika quvvatlari kengaytirilib, 8 sohaga diversifikatsiya.' },
 ];
 
 export default function About() {
   useSEO({
     title: 'Haqimizda — NazirovSholding International Holding Group',
     description:
-      'NazirovSholding — eksport, logistika, ishlab chiqarish, investitsiya va agrosanoat yo‘nalishlarida faoliyat yurituvchi xalqaro holding. Bizning tarix, missiya va qadriyatlarimiz.',
+      'NazirovSholding — eksport, logistika, ishlab chiqarish, investitsiya va agrosanoat yo‘nalishlarida faoliyat yurituvchi xalqaro holding.',
   });
 
   return (
@@ -56,18 +61,32 @@ export default function About() {
           style={{ backgroundImage: 'radial-gradient(circle at 20% 30%, rgba(212,175,55,0.14), transparent 60%)' }}
         />
         <div className="relative max-w-[1200px] mx-auto px-6 lg:px-10">
-          <p className="text-[10px] tracking-[0.5em] uppercase text-[#d4af37] mb-6">01 — Kompaniya</p>
+          <EditableText
+            contentKey="about.hero.eyebrow"
+            fallback="01 — Kompaniya"
+            as="p"
+            className="text-[10px] tracking-[0.5em] uppercase text-[#d4af37] mb-6"
+            section="about-hero"
+          />
           <h1
             className="text-5xl md:text-7xl font-light tracking-tight max-w-5xl leading-[1.02]"
             style={{ fontFamily: "'Instrument Serif', serif" }}
           >
-            O‘n yildan ortiq <span className="italic text-[#d4af37]">global savdo</span> va sanoat tajribasi
+            <EditableText
+              contentKey="about.hero.title"
+              fallback="O‘n yildan ortiq global savdo va sanoat tajribasi"
+              multiline
+              section="about-hero"
+            />
           </h1>
-          <p className="mt-10 max-w-2xl text-white/60 text-lg leading-relaxed">
-            NazirovSholding International Holding Group — O‘zbekistondan boshlanib, bugun Yevropa,
-            MDH, Yaqin Sharq va Osiyoda faoliyat yurituvchi diversifikatsiyalashgan holding.
-            Eksport, ishlab chiqarish, logistika va strategik investitsiyalarni yagona qiymat zanjirida birlashtiramiz.
-          </p>
+          <EditableText
+            contentKey="about.hero.subtitle"
+            fallback="NazirovSholding International Holding Group — O‘zbekistondan boshlanib, bugun Yevropa, MDH, Yaqin Sharq va Osiyoda faoliyat yurituvchi diversifikatsiyalashgan holding. Eksport, ishlab chiqarish, logistika va strategik investitsiyalarni yagona qiymat zanjirida birlashtiramiz."
+            as="p"
+            multiline
+            className="mt-10 max-w-2xl text-white/60 text-lg leading-relaxed block"
+            section="about-hero"
+          />
         </div>
       </section>
 
@@ -75,14 +94,21 @@ export default function About() {
       <section className="border-b border-white/5">
         <div className="max-w-[1200px] mx-auto px-6 lg:px-10 grid grid-cols-2 lg:grid-cols-4 gap-px bg-white/5">
           {stats.map((s) => (
-            <div key={s.label} className="bg-[#0d0d0d] p-10">
-              <div
-                className="text-5xl md:text-6xl font-light text-[#d4af37] mb-3"
-                style={{ fontFamily: "'Instrument Serif', serif" }}
-              >
-                {s.value}
-              </div>
-              <p className="text-[11px] tracking-[0.3em] uppercase text-white/50">{s.label}</p>
+            <div key={s.key} className="bg-[#0d0d0d] p-10">
+              <EditableText
+                contentKey={`about.stats.${s.key}.value`}
+                fallback={s.fallbackValue}
+                as="div"
+                className="text-5xl md:text-6xl font-light text-[#d4af37] mb-3 block"
+                section="about-stats"
+              />
+              <EditableText
+                contentKey={`about.stats.${s.key}.label`}
+                fallback={s.fallbackLabel}
+                as="p"
+                className="text-[11px] tracking-[0.3em] uppercase text-white/50"
+                section="about-stats"
+              />
             </div>
           ))}
         </div>
@@ -91,35 +117,41 @@ export default function About() {
       {/* Mission / Vision */}
       <section className="py-28 border-b border-white/5">
         <div className="max-w-[1200px] mx-auto px-6 lg:px-10">
-          <p className="text-[10px] tracking-[0.5em] uppercase text-[#d4af37] mb-12">— 02 Yo‘nalish</p>
+          <EditableText
+            contentKey="about.mv.eyebrow"
+            fallback="— 02 Yo‘nalish"
+            as="p"
+            className="text-[10px] tracking-[0.5em] uppercase text-[#d4af37] mb-12"
+            section="about-mv"
+          />
           <div className="grid md:grid-cols-2 gap-px bg-white/5">
             <div className="bg-[#0d0d0d] p-10 md:p-14">
               <Target className="w-7 h-7 text-[#d4af37] mb-8" strokeWidth={1.2} />
-              <h2
-                className="text-3xl md:text-4xl font-light mb-6"
-                style={{ fontFamily: "'Instrument Serif', serif" }}
-              >
-                Missiya
+              <h2 className="text-3xl md:text-4xl font-light mb-6" style={{ fontFamily: "'Instrument Serif', serif" }}>
+                <EditableText contentKey="about.mission.title" fallback="Missiya" section="about-mv" />
               </h2>
-              <p className="text-white/60 leading-relaxed">
-                O‘zbekiston ishlab chiqaruvchilarini xalqaro bozorlarga professional, ishonchli
-                va uzoq muddatli sherik sifatida olib chiqish. Har bir yo‘nalishda — eksportdan
-                sanoatgacha — global standartlarda qiymat yaratish.
-              </p>
+              <EditableText
+                contentKey="about.mission.desc"
+                fallback="O‘zbekiston ishlab chiqaruvchilarini xalqaro bozorlarga professional, ishonchli va uzoq muddatli sherik sifatida olib chiqish. Har bir yo‘nalishda — eksportdan sanoatgacha — global standartlarda qiymat yaratish."
+                as="p"
+                multiline
+                className="text-white/60 leading-relaxed block"
+                section="about-mv"
+              />
             </div>
             <div className="bg-[#0d0d0d] p-10 md:p-14">
               <Eye className="w-7 h-7 text-[#d4af37] mb-8" strokeWidth={1.2} />
-              <h2
-                className="text-3xl md:text-4xl font-light mb-6"
-                style={{ fontFamily: "'Instrument Serif', serif" }}
-              >
-                Vizyon
+              <h2 className="text-3xl md:text-4xl font-light mb-6" style={{ fontFamily: "'Instrument Serif', serif" }}>
+                <EditableText contentKey="about.vision.title" fallback="Vizyon" section="about-mv" />
               </h2>
-              <p className="text-white/60 leading-relaxed">
-                2030 yilga qadar Markaziy Osiyoning yetakchi xalqaro savdo va sanoat holdinglaridan
-                biriga aylanish. Eksport, ishlab chiqarish va investitsiyalarning yagona, raqamlashtirilgan
-                ekotizimini qurish.
-              </p>
+              <EditableText
+                contentKey="about.vision.desc"
+                fallback="2030 yilga qadar Markaziy Osiyoning yetakchi xalqaro savdo va sanoat holdinglaridan biriga aylanish. Eksport, ishlab chiqarish va investitsiyalarning yagona, raqamlashtirilgan ekotizimini qurish."
+                as="p"
+                multiline
+                className="text-white/60 leading-relaxed block"
+                section="about-mv"
+              />
             </div>
           </div>
         </div>
@@ -130,12 +162,23 @@ export default function About() {
         <div className="max-w-[1200px] mx-auto px-6 lg:px-10">
           <div className="flex flex-col md:flex-row md:items-end justify-between mb-14 gap-6">
             <div>
-              <p className="text-[10px] tracking-[0.5em] uppercase text-[#d4af37] mb-4">— 03 Qadriyatlar</p>
+              <EditableText
+                contentKey="about.values.eyebrow"
+                fallback="— 03 Qadriyatlar"
+                as="p"
+                className="text-[10px] tracking-[0.5em] uppercase text-[#d4af37] mb-4"
+                section="about-values"
+              />
               <h2
                 className="text-4xl md:text-5xl font-light max-w-2xl leading-[1.1]"
                 style={{ fontFamily: "'Instrument Serif', serif" }}
               >
-                Holdingni <span className="italic text-[#d4af37]">harakatga keltiruvchi</span> tamoyillar
+                <EditableText
+                  contentKey="about.values.title"
+                  fallback="Holdingni harakatga keltiruvchi tamoyillar"
+                  multiline
+                  section="about-values"
+                />
               </h2>
             </div>
           </div>
@@ -143,15 +186,26 @@ export default function About() {
             {values.map((v) => {
               const Icon = v.icon;
               return (
-                <div key={v.title} className="group bg-[#0d0d0d] p-10 hover:bg-[#141414] transition-colors duration-500">
+                <div key={v.id} className="group bg-[#0d0d0d] p-10 hover:bg-[#141414] transition-colors duration-500">
                   <Icon className="w-7 h-7 text-[#d4af37] mb-10" strokeWidth={1.2} />
                   <h3
                     className="text-2xl font-light mb-3 group-hover:text-[#d4af37] transition-colors"
                     style={{ fontFamily: "'Instrument Serif', serif" }}
                   >
-                    {v.title}
+                    <EditableText
+                      contentKey={`about.values.${v.id}.title`}
+                      fallback={v.fallbackTitle}
+                      section="about-values"
+                    />
                   </h3>
-                  <p className="text-sm text-white/50 leading-relaxed">{v.desc}</p>
+                  <EditableText
+                    contentKey={`about.values.${v.id}.desc`}
+                    fallback={v.fallbackDesc}
+                    as="p"
+                    multiline
+                    className="text-sm text-white/50 leading-relaxed block"
+                    section="about-values"
+                  />
                 </div>
               );
             })}
@@ -166,24 +220,39 @@ export default function About() {
           style={{ backgroundImage: 'radial-gradient(circle at 80% 40%, rgba(212,175,55,0.10), transparent 60%)' }}
         />
         <div className="relative max-w-[1200px] mx-auto px-6 lg:px-10">
-          <p className="text-[10px] tracking-[0.5em] uppercase text-[#d4af37] mb-4">— 04 Tarix</p>
+          <EditableText
+            contentKey="about.timeline.eyebrow"
+            fallback="— 04 Tarix"
+            as="p"
+            className="text-[10px] tracking-[0.5em] uppercase text-[#d4af37] mb-4"
+            section="about-timeline"
+          />
           <h2
             className="text-4xl md:text-5xl font-light max-w-2xl leading-[1.1] mb-16"
             style={{ fontFamily: "'Instrument Serif', serif" }}
           >
-            O‘sish <span className="italic text-[#d4af37]">bosqichlari</span>
+            <EditableText
+              contentKey="about.timeline.title"
+              fallback="O‘sish bosqichlari"
+              multiline
+              section="about-timeline"
+            />
           </h2>
 
           <div className="relative">
             <div className="absolute left-[88px] md:left-[120px] top-0 bottom-0 w-px bg-white/10" />
             <div className="space-y-12">
               {timeline.map((t) => (
-                <div key={t.year} className="grid grid-cols-[88px_1fr] md:grid-cols-[120px_1fr] gap-8 items-start">
+                <div key={t.id} className="grid grid-cols-[88px_1fr] md:grid-cols-[120px_1fr] gap-8 items-start">
                   <div
                     className="text-2xl md:text-3xl text-[#d4af37] font-light"
                     style={{ fontFamily: "'Instrument Serif', serif" }}
                   >
-                    {t.year}
+                    <EditableText
+                      contentKey={`about.timeline.${t.id}.year`}
+                      fallback={t.fallbackYear}
+                      section="about-timeline"
+                    />
                   </div>
                   <div className="relative pl-8">
                     <div className="absolute left-0 top-3 w-2 h-2 rounded-full bg-[#d4af37] -translate-x-1/2" />
@@ -191,9 +260,20 @@ export default function About() {
                       className="text-xl md:text-2xl font-light mb-2"
                       style={{ fontFamily: "'Instrument Serif', serif" }}
                     >
-                      {t.title}
+                      <EditableText
+                        contentKey={`about.timeline.${t.id}.title`}
+                        fallback={t.fallbackTitle}
+                        section="about-timeline"
+                      />
                     </h3>
-                    <p className="text-sm text-white/55 leading-relaxed max-w-xl">{t.desc}</p>
+                    <EditableText
+                      contentKey={`about.timeline.${t.id}.desc`}
+                      fallback={t.fallbackDesc}
+                      as="p"
+                      multiline
+                      className="text-sm text-white/55 leading-relaxed max-w-xl block"
+                      section="about-timeline"
+                    />
                   </div>
                 </div>
               ))}
@@ -206,19 +286,35 @@ export default function About() {
       <section className="py-24">
         <div className="max-w-[1200px] mx-auto px-6 lg:px-10 flex flex-col md:flex-row items-start md:items-end justify-between gap-8">
           <div>
-            <p className="text-[10px] tracking-[0.5em] uppercase text-[#d4af37] mb-4">Hamkorlik</p>
+            <EditableText
+              contentKey="about.cta.eyebrow"
+              fallback="Hamkorlik"
+              as="p"
+              className="text-[10px] tracking-[0.5em] uppercase text-[#d4af37] mb-4"
+              section="about-cta"
+            />
             <h2
               className="text-4xl md:text-5xl font-light max-w-2xl leading-tight"
               style={{ fontFamily: "'Instrument Serif', serif" }}
             >
-              Birgalikda yangi bozorlarni o‘zlashtiramiz.
+              <EditableText
+                contentKey="about.cta.title"
+                fallback="Birgalikda yangi bozorlarni o‘zlashtiramiz."
+                multiline
+                section="about-cta"
+              />
             </h2>
           </div>
           <Link
             to="/contact"
             className="group inline-flex items-center gap-3 bg-[#d4af37] hover:bg-[#c9a230] text-black px-8 py-4 text-xs font-semibold tracking-[0.3em] uppercase transition-colors"
           >
-            Aloqaga chiqish <ArrowUpRight className="w-4 h-4 group-hover:rotate-45 transition-transform" />
+            <EditableText
+              contentKey="about.cta.button"
+              fallback="Aloqaga chiqish"
+              section="about-cta"
+            />
+            <ArrowUpRight className="w-4 h-4 group-hover:rotate-45 transition-transform" />
           </Link>
         </div>
       </section>
