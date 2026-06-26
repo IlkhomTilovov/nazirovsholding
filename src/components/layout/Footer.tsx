@@ -1,192 +1,222 @@
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Phone, Send, Instagram, Clock, MapPin, BarChart3 } from 'lucide-react';
-import { useLanguage } from '@/hooks/useLanguage';
+import { Linkedin, Send, Instagram, Youtube, ArrowUpRight, MapPin } from 'lucide-react';
 import { useSystemSettings } from '@/hooks/useSystemSettings';
+import { useLanguage } from '@/hooks/useLanguage';
 import { EditableText } from '@/components/EditableText';
-import { EditableLink } from '@/components/EditableLink';
-import { useQuery } from '@tanstack/react-query';
-import { supabase } from '@/integrations/supabase/client';
+import { toast } from 'sonner';
 
 export function Footer() {
   const { language } = useLanguage();
-  const { settings, getAddress, getWorkingHours } = useSystemSettings();
+  const { settings, getAddress } = useSystemSettings();
+  const [email, setEmail] = useState('');
 
-  const { data: categories } = useQuery({
-    queryKey: ['footer-categories'],
-    queryFn: async () => {
-      const { data } = await supabase
-        .from('categories')
-        .select('id, name_uz, name_ru, slug')
-        .eq('is_active', true)
-        .order('sort_order', { ascending: true });
-      return data || [];
-    },
-  });
+  const phone = settings?.contact_phone || '+998 90 123 45 67';
+  const emailAddr = 'info@nazirovsholding.com';
+  const address = getAddress(language) || 'Tashkent, Uzbekistan';
 
-  const contactPhone = settings?.contact_phone || '+998 90 123 45 67';
-  const address = getAddress(language);
-  const workingHours = getWorkingHours(language);
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!email) return;
+    toast.success('Murojaatingiz uchun rahmat. Tez orada bog\'lanamiz.');
+    setEmail('');
+  };
 
   const navLinks = [
-    { to: '/', label: 'Bosh sahifa' },
-    { to: '/catalog', label: 'Katalog' },
-    { to: '/about', label: 'Portfolio' },
-    { to: '/contact', label: 'Aloqa' },
-    { to: '/stats', label: 'Sayt statistikasi' },
+    { key: 'home', label: 'Home', to: '/' },
+    { key: 'about', label: 'About', to: '/about' },
+    { key: 'sectors', label: 'Business Sectors', to: '/sectors' },
+    { key: 'markets', label: 'Markets', to: '/international' },
+    { key: 'projects', label: 'Projects', to: '/projects' },
+    { key: 'contact', label: 'Contact', to: '/contact' },
+  ];
+
+  const sectors = [
+    'Export',
+    'Agriculture',
+    'Food Products',
+    'Industrial Materials',
+    'Logistics',
+    'Investment',
+    'Manufacturing',
+  ];
+
+  const socials = [
+    { icon: Linkedin, label: 'LinkedIn', href: '#' },
+    { icon: Send, label: 'Telegram', href: '#' },
+    { icon: Instagram, label: 'Instagram', href: '#' },
+    { icon: Youtube, label: 'YouTube', href: '#' },
   ];
 
   return (
-    <footer className="bg-secondary border-t border-border">
-      <div className="container mx-auto px-4 lg:px-8 py-16 md:py-20">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-8">
-          {/* Brand */}
-          <div className="space-y-6">
-            <Link to="/" className="inline-block">
-              <span className="font-serif text-2xl font-bold tracking-wider text-foreground">
-                TILLA <span className="text-primary">KAMILOV</span>
-              </span>
-            </Link>
+    <footer className="bg-[#0D0D0D] text-[#F6F2EA]">
+      <div className="max-w-[1400px] mx-auto px-6 lg:px-10 pt-20 pb-10">
+        {/* CTA Block */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 pb-16 border-b border-[#C9A469]/[0.12]">
+          <div>
             <EditableText
-              contentKey="footer_description"
-              fallback="Zamonaviy, sifatli va individual buyurtma asosida ishlab chiqariladigan premium mebellar."
-              as="p"
-              className="text-muted-foreground text-sm leading-relaxed max-w-xs"
-              multiline
-              section="footer"
+              contentKey="footer.cta.eyebrow"
+              fallback="Partnership"
+              section="footer-cta"
+              className="text-[10px] tracking-[0.5em] uppercase text-[#C9A469] mb-6 block"
             />
-            <div className="flex gap-3">
-              <EditableLink
-                contentKey="footer_social_telegram"
-                fallback={settings?.social_telegram || '#'}
-                className="w-10 h-10 border border-border rounded-sm flex items-center justify-center hover:bg-primary hover:border-primary hover:text-primary-foreground transition-all duration-300 text-muted-foreground"
-                section="footer"
+            <EditableText
+              as="h3"
+              contentKey="footer.cta.title"
+              fallback="Let's Build Global Partnerships Together"
+              section="footer-cta"
+              className="font-serif text-3xl md:text-5xl leading-[1.1] text-[#F6F2EA] max-w-xl"
+            />
+            <EditableText
+              as="p"
+              multiline
+              contentKey="footer.cta.desc"
+              fallback="NazirovSholding exports premium products from Uzbekistan to international markets through trusted logistics and strategic partnerships."
+              section="footer-cta"
+              className="mt-6 text-[15px] leading-relaxed text-[#F6F2EA]/70 max-w-lg"
+            />
+          </div>
+
+          <form onSubmit={handleSubmit} className="flex flex-col justify-center">
+            <label className="text-[10px] tracking-[0.4em] uppercase text-[#F6F2EA]/50 mb-4">
+              Business Inquiry
+            </label>
+            <div className="flex flex-col sm:flex-row items-stretch gap-3 border-b border-[#C9A469]/30 pb-2">
+              <input
+                type="email"
+                required
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="your@company.com"
+                className="flex-1 bg-transparent outline-none text-[#F6F2EA] placeholder:text-[#F6F2EA]/30 py-3 text-base"
+              />
+              <button
+                type="submit"
+                className="group inline-flex items-center justify-center gap-3 px-7 py-3 bg-[#C9A469] text-[#0D0D0D] text-[11px] tracking-[0.3em] uppercase font-medium hover:bg-[#d4b274] hover:shadow-[0_0_30px_rgba(201,164,105,0.4)] transition-all duration-500"
               >
-                <Send className="w-4 h-4" />
-              </EditableLink>
-              <EditableLink
-                contentKey="footer_social_instagram"
-                fallback={settings?.social_instagram || '#'}
-                className="w-10 h-10 border border-border rounded-sm flex items-center justify-center hover:bg-primary hover:border-primary hover:text-primary-foreground transition-all duration-300 text-muted-foreground"
-                section="footer"
-              >
-                <Instagram className="w-4 h-4" />
-              </EditableLink>
+                <EditableText contentKey="footer.cta.button" fallback="Start Partnership" section="footer-cta" />
+                <ArrowUpRight className="w-4 h-4 group-hover:rotate-45 transition-transform" />
+              </button>
+            </div>
+          </form>
+        </div>
+
+        {/* Four Columns */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-10 py-16">
+          {/* Column 1 — Brand */}
+          <div>
+            <EditableText
+              as="div"
+              contentKey="footer.brand.name"
+              fallback="NazirovSholding"
+              section="footer-brand"
+              className="font-serif text-2xl text-[#F6F2EA]"
+            />
+            <EditableText
+              contentKey="footer.brand.tagline"
+              fallback="International Holding Group"
+              section="footer-brand"
+              className="text-[10px] tracking-[0.4em] uppercase text-[#C9A469] mt-2 block"
+            />
+            <EditableText
+              as="p"
+              multiline
+              contentKey="footer.brand.desc"
+              fallback="NazirovSholding is an international holding company specializing in export, manufacturing, logistics and strategic business partnerships."
+              section="footer-brand"
+              className="mt-6 text-sm leading-relaxed text-[#F6F2EA]/70"
+            />
+            <div className="flex items-center gap-4 mt-8">
+              {socials.map(({ icon: Icon, label, href }) => (
+                <a
+                  key={label}
+                  href={href}
+                  aria-label={label}
+                  className="w-9 h-9 flex items-center justify-center rounded-full border border-[#C9A469]/20 text-[#F6F2EA]/70 hover:text-[#C9A469] hover:border-[#C9A469] hover:scale-110 hover:shadow-[0_0_20px_rgba(201,164,105,0.35)] transition-all duration-300"
+                >
+                  <Icon className="w-4 h-4" />
+                </a>
+              ))}
             </div>
           </div>
 
-          {/* Navigation */}
+          {/* Column 2 — Navigation */}
           <div>
-            <EditableText
-              contentKey="footer_nav_title"
-              fallback="Sahifalar"
-              as="h4"
-              className="font-serif text-lg font-semibold text-foreground mb-6 tracking-wide"
-              section="footer"
-            />
+            <h4 className="text-[10px] tracking-[0.4em] uppercase text-[#F6F2EA]/50 mb-6">Navigation</h4>
             <ul className="space-y-3">
-              {navLinks.map((link) => (
-                <li key={link.to}>
+              {navLinks.map((l) => (
+                <li key={l.key}>
                   <Link
-                    to={link.to}
-                    className="text-muted-foreground hover:text-primary text-sm transition-colors duration-300"
+                    to={l.to}
+                    className="text-sm text-[#F6F2EA]/80 hover:text-[#C9A469] transition-colors duration-300"
                   >
-                    {link.label}
+                    <EditableText contentKey={`footer.nav.${l.key}`} fallback={l.label} section="footer-nav" />
                   </Link>
                 </li>
               ))}
             </ul>
           </div>
 
-          {/* Services - editable */}
+          {/* Column 3 — Sectors */}
           <div>
-            <EditableText
-              contentKey="footer_services_title"
-              fallback="Xizmatlar"
-              as="h4"
-              className="font-serif text-lg font-semibold text-foreground mb-6 tracking-wide"
-              section="footer"
-            />
+            <h4 className="text-[10px] tracking-[0.4em] uppercase text-[#F6F2EA]/50 mb-6">Business Sectors</h4>
             <ul className="space-y-3">
-              {categories && categories.length > 0 ? (
-                categories.map((cat) => (
-                  <li key={cat.id}>
-                    <Link
-                      to={`/catalog?category=${cat.slug}`}
-                      className="text-muted-foreground hover:text-primary text-sm transition-colors duration-300"
-                    >
-                      {language === 'ru' ? cat.name_ru : cat.name_uz}
-                    </Link>
-                  </li>
-                ))
-              ) : (
-                <li className="text-muted-foreground text-sm">—</li>
-              )}
+              {sectors.map((s, i) => (
+                <li key={s}>
+                  <Link
+                    to="/sectors"
+                    className="text-sm text-[#F6F2EA]/80 hover:text-[#C9A469] transition-colors duration-300"
+                  >
+                    <EditableText contentKey={`footer.sector.${i}`} fallback={s} section="footer-sectors" />
+                  </Link>
+                </li>
+              ))}
             </ul>
           </div>
 
-          {/* Contact - editable */}
+          {/* Column 4 — Contact */}
           <div>
-            <EditableText
-              contentKey="footer_contact_title"
-              fallback="Bog'lanish"
-              as="h4"
-              className="font-serif text-lg font-semibold text-foreground mb-6 tracking-wide"
-              section="footer"
-            />
-            <ul className="space-y-4">
-              <li className="flex items-start gap-3">
-                <MapPin className="w-4 h-4 flex-shrink-0 mt-1 text-primary" />
-                <EditableText
-                  contentKey="footer_address"
-                  fallback={address || "Toshkent sh., Chilonzor tumani"}
-                  as="span"
-                  className="text-muted-foreground text-sm leading-relaxed"
-                  multiline
-                  section="footer"
-                />
-              </li>
-              <li className="flex items-center gap-3">
-                <Phone className="w-4 h-4 flex-shrink-0 text-primary" />
-                <EditableText
-                  contentKey="footer_phone"
-                  fallback={contactPhone}
-                  as="span"
-                  className="text-muted-foreground text-sm"
-                  section="footer"
-                />
-              </li>
-              <li className="flex items-start gap-3">
-                <Clock className="w-4 h-4 flex-shrink-0 mt-1 text-primary" />
-                <EditableText
-                  contentKey="footer_working_hours"
-                  fallback={workingHours || "Dush–Shan: 09:00–18:00"}
-                  as="span"
-                  className="text-muted-foreground text-sm leading-relaxed"
-                  multiline
-                  section="footer"
-                />
-              </li>
-              <li>
-                <Link
-                  to="/stats"
-                  className="inline-flex items-center gap-2 text-primary hover:underline text-sm font-medium"
+            <h4 className="text-[10px] tracking-[0.4em] uppercase text-[#F6F2EA]/50 mb-6">Contact</h4>
+            <div className="space-y-5 text-sm text-[#F6F2EA]/80">
+              <div>
+                <div className="text-[10px] tracking-[0.3em] uppercase text-[#F6F2EA]/40 mb-1">Head Office</div>
+                <EditableText contentKey="footer.contact.address" fallback={address} section="footer-contact" />
+                <a
+                  href="https://maps.google.com/?q=Tashkent"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1 mt-2 text-[11px] text-[#C9A469] hover:text-[#F6F2EA] transition-colors"
                 >
-                  <BarChart3 className="w-4 h-4" />
-                  Sayt statistikasi
-                </Link>
-              </li>
-            </ul>
+                  <MapPin className="w-3 h-3" /> View on Map
+                </a>
+              </div>
+              <div>
+                <div className="text-[10px] tracking-[0.3em] uppercase text-[#F6F2EA]/40 mb-1">Phone</div>
+                <a href={`tel:${phone}`} className="hover:text-[#C9A469] transition-colors">{phone}</a>
+              </div>
+              <div>
+                <div className="text-[10px] tracking-[0.3em] uppercase text-[#F6F2EA]/40 mb-1">Email</div>
+                <a href={`mailto:${emailAddr}`} className="hover:text-[#C9A469] transition-colors break-all">{emailAddr}</a>
+              </div>
+              <div>
+                <div className="text-[10px] tracking-[0.3em] uppercase text-[#F6F2EA]/40 mb-1">Business Hours</div>
+                <EditableText contentKey="footer.contact.hours" fallback="Monday – Friday · 09:00 – 18:00" section="footer-contact" />
+              </div>
+            </div>
           </div>
         </div>
-      </div>
 
-      {/* Bottom */}
-      <div className="border-t border-border">
-        <div className="container mx-auto px-4 py-6">
-          <p className="text-center text-xs text-muted-foreground tracking-wider">
-            © {new Date().getFullYear()}{' '}
-            <EditableText contentKey="footer_copyright" fallback="TILLA KAMILOV. Barcha huquqlar himoyalangan." as="span" className="text-xs" section="footer" />
-          </p>
+        {/* Bottom Bar */}
+        <div className="pt-8 border-t border-[#C9A469]/[0.12] flex flex-col lg:flex-row items-center justify-between gap-6 text-[11px] tracking-[0.15em] text-[#F6F2EA]/50">
+          <div>© 2026 NazirovSholding. All Rights Reserved.</div>
+          <div className="flex items-center gap-8">
+            <Link to="/privacy" className="hover:text-[#C9A469] transition-colors">Privacy Policy</Link>
+            <Link to="/terms" className="hover:text-[#C9A469] transition-colors">Terms of Service</Link>
+            <Link to="/cookies" className="hover:text-[#C9A469] transition-colors">Cookies Policy</Link>
+          </div>
+          <div className="uppercase tracking-[0.25em] text-[10px]">
+            Made with excellence in Uzbekistan
+          </div>
         </div>
       </div>
     </footer>
