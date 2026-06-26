@@ -395,21 +395,21 @@ export function InteractiveEarthSection() {
             className="flex flex-col gap-4"
           >
             <div className="border border-[#c9a84c]/20 bg-[#0d0d0d]/88 p-6 backdrop-blur">
-              <div className="mb-2 text-[10px] uppercase tracking-[0.4em] text-[#c9a84c]/70">Markets Network</div>
+              <EditableText contentKey="bozorlar.network.label" fallback="Markets Network" section="bozorlar-globe" className="mb-2 block text-[10px] uppercase tracking-[0.4em] text-[#c9a84c]/70" />
               <div className="flex items-end justify-between">
                 <div className="font-serif text-4xl text-white">{MARKETS.length}+</div>
-                <div className="text-xs text-white/50">Strategic Markets</div>
+                <EditableText contentKey="bozorlar.network.caption" fallback="Strategic Markets" section="bozorlar-globe" className="text-xs text-white/50" />
               </div>
               <div className="mt-4 h-px bg-[#c9a84c]/15" />
               <div className="mt-4 grid grid-cols-3 gap-3 text-center">
                 {[
-                  { k: '3', l: 'Continents' },
-                  { k: '15+', l: 'Years' },
-                  { k: '500+', l: 'Shipments' },
+                  { k: '3', l: 'Continents', key: 'bozorlar.network.continents' },
+                  { k: '15+', l: 'Years', key: 'bozorlar.network.years' },
+                  { k: '500+', l: 'Shipments', key: 'bozorlar.network.shipments' },
                 ].map((stat) => (
                   <div key={stat.l}>
                     <div className="font-serif text-xl text-[#c9a84c]">{stat.k}</div>
-                    <div className="mt-1 text-[9px] uppercase tracking-[0.3em] text-white/40">{stat.l}</div>
+                    <EditableText contentKey={stat.key} fallback={stat.l} section="bozorlar-globe" className="mt-1 block text-[9px] uppercase tracking-[0.3em] text-white/40" />
                   </div>
                 ))}
               </div>
