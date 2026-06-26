@@ -127,10 +127,10 @@ export default function Index() {
   ];
 
   const trustBadges = [
-    { key: 'trust_1', icon: Paintbrush, fallback: 'Individual dizayn' },
-    { key: 'trust_2', icon: Ruler, fallback: "Bepul o'lchov" },
-    { key: 'trust_3', icon: Gem, fallback: 'Premium materiallar' },
-    { key: 'trust_4', icon: Truck, fallback: 'Tez yetkazib berish' },
+    { key: 'trust_1', icon: Globe2, titleFallback: 'Xalqaro eksport', descFallback: "20+ mamlakatlarga ishonchli eksport faoliyati." },
+    { key: 'trust_2', icon: BadgeCheck, titleFallback: 'Sifat nazorati', descFallback: 'Mahsulotlar eksport standartlari asosida tekshiriladi.' },
+    { key: 'trust_3', icon: Ship, titleFallback: 'Logistika yechimlari', descFallback: 'FOB, CIF, FCA va DAP shartlari asosida global yetkazib berish.' },
+    { key: 'trust_4', icon: Handshake, titleFallback: 'Strategik hamkorlik', descFallback: "Uzoq muddatli B2B hamkorlik va xalqaro biznes aloqalari." },
   ];
 
   const sectionServices = useInView();
