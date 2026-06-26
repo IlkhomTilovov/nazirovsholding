@@ -1,50 +1,18 @@
-import { useEffect, useRef, useState } from 'react';
-import { motion, useInView, useScroll, useTransform } from 'framer-motion';
-import { Link } from 'react-router-dom';
-import { ArrowRight, Calendar, FileDown, Handshake, MessageSquare } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import { useRef } from 'react';
+import { motion, useScroll, useTransform } from 'framer-motion';
 import { EditableText } from '@/components/EditableText';
+import { EditableImage } from '@/components/EditableImage';
 import cinematicPort from '@/assets/global-cinematic-port.jpg';
 import projectGermany from '@/assets/project-germany-textile.jpg';
 import projectKazakhstan from '@/assets/project-kazakhstan-agro.jpg';
 import projectUae from '@/assets/project-uae-industrial.jpg';
 
-// ─────────────────────────────────────────────────────────
-// Animated counter
-// ─────────────────────────────────────────────────────────
-function Counter({ to, suffix = '+', duration = 1.8, start }: { to: number; suffix?: string; duration?: number; start: boolean; }) {
-  const [val, setVal] = useState(0);
-  useEffect(() => {
-    if (!start) return;
-    let raf = 0; let t0: number | null = null;
-    const tick = (t: number) => {
-      if (t0 === null) t0 = t;
-      const p = Math.min((t - t0) / (duration * 1000), 1);
-      const eased = 1 - Math.pow(1 - p, 3);
-      setVal(Math.floor(eased * to));
-      if (p < 1) raf = requestAnimationFrame(tick); else setVal(to);
-    };
-    raf = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(raf);
-  }, [start, to, duration]);
-  return <span className="tabular-nums">{val}<span className="text-primary/70">{suffix}</span></span>;
-}
-
-
-// ─────────────────────────────────────────────────────────
-// Main section
-// ─────────────────────────────────────────────────────────
 export function GlobalOperationsSection() {
   const sectionRef = useRef<HTMLElement>(null);
   const { scrollYProgress } = useScroll({ target: sectionRef, offset: ['start end', 'end start'] });
   const portY = useTransform(scrollYProgress, [0, 1], ['-8%', '8%']);
   const portScale = useTransform(scrollYProgress, [0, 1], [1.1, 1.25]);
 
-  const statsRef = useRef<HTMLDivElement>(null);
-  const statsInView = useInView(statsRef, { once: true, amount: 0.4 });
-
-  const mapRef = useRef<HTMLDivElement>(null);
-  void mapRef;
 
   const fadeUp = {
     hidden: { opacity: 0, y: 40 },
@@ -56,7 +24,14 @@ export function GlobalOperationsSection() {
       {/* ───────── BLOCK 1 — CINEMATIC SHOWCASE ───────── */}
       <div className="relative h-[80vh] min-h-[560px] w-full overflow-hidden">
         <motion.div style={{ y: portY, scale: portScale }} className="absolute inset-0">
-          <img src={cinematicPort} alt="NazirovSholding global port operations" className="w-full h-full object-cover" loading="lazy" />
+          <EditableImage
+            contentKey="bozorlar.hero.image"
+            fallbackSrc={cinematicPort}
+            alt="NazirovSholding global port operations"
+            section="bozorlar-hero"
+            wrapperClassName="w-full h-full"
+            className="w-full h-full object-cover"
+          />
         </motion.div>
         <div className="absolute inset-0 bg-gradient-to-b from-[#0d0d0d]/90 via-[#0d0d0d]/40 to-[#0d0d0d]" />
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_30%,rgba(13,13,13,0.7)_100%)]" />
@@ -104,7 +79,7 @@ export function GlobalOperationsSection() {
       </div>
 
       {/* ───────── BLOCK 3 — BUSINESS STATISTICS ───────── */}
-      <div ref={statsRef} className="relative py-28 md:py-36 bg-[#0d0d0d]">
+      <div className="relative py-28 md:py-36 bg-[#0d0d0d]">
         <div className="max-w-[1280px] mx-auto px-6 lg:px-10">
           <motion.div
             variants={fadeUp} initial="hidden" whileInView="show" viewport={{ once: true, amount: 0.4 }}
@@ -116,10 +91,10 @@ export function GlobalOperationsSection() {
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-px bg-[#c9a84c]/10 border border-[#c9a84c]/10">
             {[
-              { n: 25,  s: '+', labelKey: 'bozorlar.stat.markets',    fallback: 'International Markets', k: '01' },
-              { n: 500, s: '+', labelKey: 'bozorlar.stat.shipments',  fallback: 'Successful Shipments',  k: '02' },
-              { n: 100, s: '+', labelKey: 'bozorlar.stat.partners',   fallback: 'Strategic Partners',    k: '03' },
-              { n: 15,  s: '+', labelKey: 'bozorlar.stat.years',      fallback: 'Years Of Experience',   k: '04' },
+              { valueKey: 'bozorlar.stat.markets.value',   valueFallback: '25+',  labelKey: 'bozorlar.stat.markets',   fallback: 'International Markets', k: '01' },
+              { valueKey: 'bozorlar.stat.shipments.value', valueFallback: '500+', labelKey: 'bozorlar.stat.shipments', fallback: 'Successful Shipments',  k: '02' },
+              { valueKey: 'bozorlar.stat.partners.value',  valueFallback: '100+', labelKey: 'bozorlar.stat.partners',  fallback: 'Strategic Partners',    k: '03' },
+              { valueKey: 'bozorlar.stat.years.value',     valueFallback: '15+',  labelKey: 'bozorlar.stat.years',     fallback: 'Years Of Experience',   k: '04' },
             ].map((s, i) => (
               <motion.div
                 key={s.k}
@@ -128,9 +103,13 @@ export function GlobalOperationsSection() {
               >
                 <div className="absolute top-6 right-6 text-[#c9a84c]/30 text-xs tracking-[0.3em] font-mono">{s.k}</div>
                 <div className="absolute left-0 top-0 h-full w-px bg-[#c9a84c] origin-top scale-y-0 group-hover:scale-y-100 transition-transform duration-700" />
-                <div className="font-serif text-6xl md:text-7xl text-[#c9a84c] leading-none mb-6 group-hover:[text-shadow:0_0_30px_rgba(201,168,76,0.4)] transition-all duration-500">
-                  <Counter to={s.n} suffix={s.s} start={statsInView} />
-                </div>
+                <EditableText
+                  as="div"
+                  contentKey={s.valueKey}
+                  fallback={s.valueFallback}
+                  section="bozorlar-stats"
+                  className="font-serif text-6xl md:text-7xl text-[#c9a84c] leading-none mb-6 group-hover:[text-shadow:0_0_30px_rgba(201,168,76,0.4)] transition-all duration-500"
+                />
                 <div className="h-px w-10 bg-[#c9a84c]/40 mb-4 group-hover:w-16 transition-all duration-500" />
                 <EditableText contentKey={s.labelKey} fallback={s.fallback} section="bozorlar-stats" className="text-[11px] tracking-[0.3em] uppercase text-white/60 font-medium" />
               </motion.div>
@@ -166,14 +145,16 @@ export function GlobalOperationsSection() {
                 className="group relative grid grid-cols-1 md:grid-cols-12 gap-0 border border-[#c9a84c]/15 bg-[#0f0f0f] overflow-hidden hover:border-[#c9a84c]/50 transition-all duration-700 hover:shadow-[0_0_60px_-20px_rgba(201,168,76,0.35)]"
               >
                 <div className="md:col-span-5 relative aspect-[16/10] md:aspect-auto overflow-hidden">
-                  <img
-                    src={p.img}
+                  <EditableImage
+                    contentKey={`bozorlar.case.${p.id}.image`}
+                    fallbackSrc={p.img}
                     alt={p.title}
-                    loading="lazy"
+                    section="bozorlar-cases"
+                    wrapperClassName="absolute inset-0 w-full h-full"
                     className="absolute inset-0 w-full h-full object-cover transition-transform duration-[1600ms] ease-out group-hover:scale-110"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-r from-[#0d0d0d]/60 via-transparent to-transparent md:bg-gradient-to-r md:from-transparent md:via-transparent md:to-[#0f0f0f]" />
-                  <div className="absolute top-5 left-5 bg-[#0d0d0d]/80 backdrop-blur-sm px-3 py-1.5 text-xs tracking-[0.3em] uppercase text-white/90 border border-[#c9a84c]/30 flex items-center gap-2">
+                  <div className="absolute inset-0 bg-gradient-to-r from-[#0d0d0d]/60 via-transparent to-transparent md:bg-gradient-to-r md:from-transparent md:via-transparent md:to-[#0f0f0f] pointer-events-none" />
+                  <div className="absolute top-5 left-5 z-10 bg-[#0d0d0d]/80 backdrop-blur-sm px-3 py-1.5 text-xs tracking-[0.3em] uppercase text-white/90 border border-[#c9a84c]/30 flex items-center gap-2">
                     <span className="text-base leading-none">{p.flag}</span>
                     <EditableText contentKey={`bozorlar.case.${p.id}.country`} fallback={p.country} section="bozorlar-cases" />
                   </div>
