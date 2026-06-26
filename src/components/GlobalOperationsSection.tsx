@@ -149,11 +149,9 @@ export function GlobalOperationsSection() {
           >
             <div className="flex items-center gap-3 mb-6">
               <span className="text-[#c9a84c] font-serif italic text-lg">—  04</span>
-              <span className="text-white/40 text-[11px] tracking-[0.4em] uppercase">Case Studies</span>
+              <EditableText contentKey="bozorlar.cases.eyebrow" fallback="Case Studies" section="bozorlar-cases" className="text-white/40 text-[11px] tracking-[0.4em] uppercase" />
             </div>
-            <h3 className="font-serif text-4xl md:text-5xl lg:text-6xl text-white leading-[1.05]">
-              Featured <span className="italic text-[#c9a84c]">Global Projects</span>
-            </h3>
+            <EditableText as="h3" contentKey="bozorlar.cases.title" fallback="Featured Global Projects" section="bozorlar-cases" className="font-serif text-4xl md:text-5xl lg:text-6xl text-white leading-[1.05]" />
           </motion.div>
 
           <div className="space-y-6">
