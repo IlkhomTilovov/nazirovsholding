@@ -202,64 +202,92 @@ export default function Index() {
 
         <div className="container mx-auto px-4 lg:px-8 relative z-10 py-20 pointer-events-none">
           <div className="max-w-2xl [&_a]:pointer-events-auto [&_button]:pointer-events-auto [&_[data-editable]]:pointer-events-auto">
-            <div className="inline-block mb-6 px-4 py-1.5 border border-primary/40 rounded-sm">
+            <div className="inline-flex items-center mb-7 px-4 py-2 border border-[#C9A469]/40 rounded-full bg-white/[0.02] backdrop-blur-sm animate-fade-in">
               <EditableText
                 contentKey="hero_badge"
-                fallback="NAZIROVSHOLDING · INTERNATIONAL HOLDING"
+                fallback="NAZIROVSHOLDING • INTERNATIONAL HOLDING GROUP"
                 as="span"
-                className="text-primary text-xs font-medium tracking-[0.3em] uppercase"
+                className="text-[#C9A469] text-[10.5px] md:text-xs font-medium tracking-[0.32em] uppercase"
                 section="hero"
               />
             </div>
-            <h1 className="font-serif text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-normal text-white leading-[1.05] mb-6">
+            <h1 className="font-serif text-5xl sm:text-6xl md:text-7xl lg:text-[5rem] font-normal leading-[1.04] mb-7 animate-fade-in">
               <EditableText
                 contentKey="hero_title_line1"
                 fallback="Global biznes"
                 as="span"
-                className="block font-serif"
+                className="block font-serif text-[#F6F2EA]"
                 section="hero"
               />
               <EditableText
                 contentKey="hero_title_line2"
-                fallback="O'zbekistondan dunyoga"
+                fallback="O'zbekistondan"
                 as="span"
-                className="block font-serif text-primary italic"
+                className="block font-serif text-[#F6F2EA]"
+                section="hero"
+              />
+              <EditableText
+                contentKey="hero_title_line3"
+                fallback="dunyoga"
+                as="span"
+                className="block font-serif text-[#C9A469] italic"
                 section="hero"
               />
             </h1>
-            <p className="text-lg md:text-xl text-white/70 mb-10 max-w-xl leading-relaxed">
+            <p className="mb-10 leading-[1.8]" style={{ maxWidth: '650px', color: 'rgba(246,242,234,0.82)' }}>
               <EditableText
                 contentKey="hero_subtitle"
-                fallback="NazirovSholding — eksport, ishlab chiqarish, logistika, investitsiya va strategik hamkorlikni birlashtirgan xalqaro biznes holdingi. 20+ bozor, 500+ hamkor, 15+ yillik tajriba."
+                fallback="NazirovSholding — O'zbekistondan xalqaro bozorlarga mahsulot eksport qiluvchi biznes guruhi. Biz oziq-ovqat, xomashyo va sanoat mahsulotlarini sifat nazorati, logistika va ishonchli hamkorlik asosida dunyo bozorlariga yetkazib beramiz."
                 as="span"
-                className="text-lg md:text-xl"
+                className="text-base md:text-lg"
                 section="hero"
+                multiline
               />
             </p>
-            <div className="flex flex-wrap gap-4 mb-16">
-              <Button asChild size="lg" className="bg-primary text-primary-foreground hover:bg-primary/90 rounded-sm px-8 tracking-wider text-sm uppercase h-14">
+            <div className="flex flex-wrap gap-4 mb-14">
+              <Button asChild size="lg" className="group bg-[#C9A469] text-[#0D0D0D] hover:bg-[#d4b27d] rounded-sm px-8 tracking-[0.18em] text-xs uppercase h-14 font-semibold shadow-[0_0_0_rgba(201,164,105,0)] hover:shadow-[0_14px_40px_-12px_rgba(201,164,105,0.55)] hover:-translate-y-0.5 transition-all duration-300">
                 <Link to="/catalog">
-                  <EditableText contentKey="hero_cta_primary" fallback={language === 'ru' ? 'Смотреть каталог' : "Katalogni ko'rish"} as="span" section="hero" />
-                  <ArrowRight className="w-4 h-4 ml-2" />
+                  <EditableText contentKey="hero_cta_primary" fallback={language === 'ru' ? 'Смотреть каталог' : "MAHSULOTLARNI KO'RISH"} as="span" section="hero" />
+                  <ArrowRight className="w-4 h-4 ml-2 transition-transform duration-300 group-hover:translate-x-1" />
                 </Link>
               </Button>
-              <Button asChild variant="outline" size="lg" className="border-white/30 bg-transparent text-white hover:bg-white/5 hover:text-white hover:border-white/50 rounded-sm px-8 tracking-wider text-sm uppercase h-14">
+              <Button asChild variant="outline" size="lg" className="border border-[#C9A469]/55 bg-transparent text-[#F6F2EA] hover:bg-[#C9A469] hover:text-[#0D0D0D] hover:border-[#C9A469] rounded-sm px-8 tracking-[0.18em] text-xs uppercase h-14 font-semibold transition-all duration-300">
                 <Link to="/contact">
-                  <EditableText contentKey="hero_cta_secondary" fallback={language === 'ru' ? 'Связаться с нами' : "Biz bilan bog'lanish"} as="span" section="hero" />
+                  <EditableText contentKey="hero_cta_secondary" fallback={language === 'ru' ? 'Начать сотрудничество' : "HAMKORLIK BOSHLASH"} as="span" section="hero" />
                 </Link>
               </Button>
             </div>
 
-            {/* Trust badges - editable */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-              {trustBadges.map((badge) => (
-                <div key={badge.key} className="flex items-center gap-3 bg-white/5 backdrop-blur-sm border border-white/10 rounded-sm px-4 py-3">
-                  <badge.icon className="w-5 h-5 text-primary flex-shrink-0" />
+            {/* Business feature cards */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+              {trustBadges.map((badge, i) => (
+                <div
+                  key={badge.key}
+                  className="group p-6 backdrop-blur-sm transition-all duration-500 hover:-translate-y-1.5 hover:border-[#C9A469]/60 hover:shadow-[0_18px_50px_-20px_rgba(201,164,105,0.45)] animate-fade-in"
+                  style={{
+                    background: 'rgba(255,255,255,0.04)',
+                    border: '1px solid rgba(201,164,106,0.18)',
+                    borderRadius: '18px',
+                    animationDelay: `${0.15 * (i + 1)}s`,
+                    animationFillMode: 'backwards',
+                  }}
+                >
+                  <div className="w-11 h-11 rounded-full border border-[#C9A469]/40 flex items-center justify-center mb-4 text-[#C9A469] transition-all duration-500 group-hover:border-[#C9A469] group-hover:shadow-[0_0_22px_rgba(201,164,105,0.55)]">
+                    <badge.icon className="w-5 h-5" strokeWidth={1.5} />
+                  </div>
                   <EditableText
-                    contentKey={badge.key}
-                    fallback={badge.fallback}
-                    as="span"
-                    className="text-white/80 text-xs font-medium"
+                    contentKey={`${badge.key}_title`}
+                    fallback={badge.titleFallback}
+                    as="div"
+                    className="text-[#F6F2EA] text-[15px] font-medium tracking-wide mb-2"
+                    section="hero"
+                  />
+                  <EditableText
+                    contentKey={`${badge.key}_desc`}
+                    fallback={badge.descFallback}
+                    as="p"
+                    multiline
+                    className="text-[12.5px] leading-[1.65]"
                     section="hero"
                   />
                 </div>
@@ -275,7 +303,7 @@ export default function Index() {
               key={i}
               onClick={() => setHeroSlide(i)}
               aria-label={`Slayd ${i + 1}`}
-              className={`h-1 transition-all duration-500 ${i === heroSlide ? 'w-12 bg-primary' : 'w-6 bg-white/30 hover:bg-white/50'}`}
+              className={`h-1 transition-all duration-500 ${i === heroSlide ? 'w-12 bg-[#C9A469]' : 'w-6 bg-white/30 hover:bg-white/50'}`}
             />
           ))}
         </div>
