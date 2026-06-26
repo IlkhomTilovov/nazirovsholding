@@ -121,10 +121,10 @@ export function GlobalOperationsSection() {
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-px bg-[#c9a84c]/10 border border-[#c9a84c]/10">
             {[
-              { n: 25,  s: '+', labelKey: 'bozorlar.stat.markets',    fallback: 'International Markets', k: '01' },
-              { n: 500, s: '+', labelKey: 'bozorlar.stat.shipments',  fallback: 'Successful Shipments',  k: '02' },
-              { n: 100, s: '+', labelKey: 'bozorlar.stat.partners',   fallback: 'Strategic Partners',    k: '03' },
-              { n: 15,  s: '+', labelKey: 'bozorlar.stat.years',      fallback: 'Years Of Experience',   k: '04' },
+              { valueKey: 'bozorlar.stat.markets.value',   valueFallback: '25+',  labelKey: 'bozorlar.stat.markets',   fallback: 'International Markets', k: '01' },
+              { valueKey: 'bozorlar.stat.shipments.value', valueFallback: '500+', labelKey: 'bozorlar.stat.shipments', fallback: 'Successful Shipments',  k: '02' },
+              { valueKey: 'bozorlar.stat.partners.value',  valueFallback: '100+', labelKey: 'bozorlar.stat.partners',  fallback: 'Strategic Partners',    k: '03' },
+              { valueKey: 'bozorlar.stat.years.value',     valueFallback: '15+',  labelKey: 'bozorlar.stat.years',     fallback: 'Years Of Experience',   k: '04' },
             ].map((s, i) => (
               <motion.div
                 key={s.k}
@@ -133,9 +133,13 @@ export function GlobalOperationsSection() {
               >
                 <div className="absolute top-6 right-6 text-[#c9a84c]/30 text-xs tracking-[0.3em] font-mono">{s.k}</div>
                 <div className="absolute left-0 top-0 h-full w-px bg-[#c9a84c] origin-top scale-y-0 group-hover:scale-y-100 transition-transform duration-700" />
-                <div className="font-serif text-6xl md:text-7xl text-[#c9a84c] leading-none mb-6 group-hover:[text-shadow:0_0_30px_rgba(201,168,76,0.4)] transition-all duration-500">
-                  <Counter to={s.n} suffix={s.s} start={statsInView} />
-                </div>
+                <EditableText
+                  as="div"
+                  contentKey={s.valueKey}
+                  fallback={s.valueFallback}
+                  section="bozorlar-stats"
+                  className="font-serif text-6xl md:text-7xl text-[#c9a84c] leading-none mb-6 group-hover:[text-shadow:0_0_30px_rgba(201,168,76,0.4)] transition-all duration-500"
+                />
                 <div className="h-px w-10 bg-[#c9a84c]/40 mb-4 group-hover:w-16 transition-all duration-500" />
                 <EditableText contentKey={s.labelKey} fallback={s.fallback} section="bozorlar-stats" className="text-[11px] tracking-[0.3em] uppercase text-white/60 font-medium" />
               </motion.div>
