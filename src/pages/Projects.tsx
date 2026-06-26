@@ -1,12 +1,15 @@
 import { useSEO } from '@/hooks/useSEO';
 import { ArrowUpRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { EditableText } from '@/components/EditableText';
+import { EditableImage } from '@/components/EditableImage';
 import projectGermany from '@/assets/project-germany-textile.jpg';
 import projectKazakhstan from '@/assets/project-kazakhstan-agro.jpg';
 import projectUae from '@/assets/project-uae-industrial.jpg';
 
 const projects = [
   {
+    id: 'germany',
     num: '01',
     country: 'Germaniya',
     industry: 'Toʻqimachilik Eksporti',
@@ -17,6 +20,7 @@ const projects = [
     image: projectGermany,
   },
   {
+    id: 'kazakhstan',
     num: '02',
     country: 'Qozogʻiston',
     industry: 'Agro Savdo Hamkorligi',
@@ -27,6 +31,7 @@ const projects = [
     image: projectKazakhstan,
   },
   {
+    id: 'uae',
     num: '03',
     country: 'BAA',
     industry: 'Sanoat Yetkazib Berish',
@@ -46,17 +51,28 @@ export default function Projects() {
       {/* Hero */}
       <section className="relative pt-24 pb-20 border-b border-white/5">
         <div className="max-w-[1200px] mx-auto px-6 lg:px-10">
-          <p className="text-[10px] tracking-[0.5em] uppercase text-[#d4af37] mb-6">05 — Loyihalar</p>
-          <h1
+          <EditableText
+            contentKey="loyihalar.hero.eyebrow"
+            fallback="05 — Loyihalar"
+            section="loyihalar-hero"
+            className="text-[10px] tracking-[0.5em] uppercase text-[#d4af37] mb-6 block"
+          />
+          <EditableText
+            as="h1"
+            contentKey="loyihalar.hero.title"
+            fallback="Natijalar orqali isbotlangan salohiyat"
+            section="loyihalar-hero"
             className="text-5xl md:text-7xl font-light tracking-tight max-w-4xl leading-[1.05]"
             style={{ fontFamily: "'Instrument Serif', serif" }}
-          >
-            Natijalar orqali <span className="italic text-[#d4af37]">isbotlangan</span> salohiyat
-          </h1>
-          <p className="mt-8 max-w-2xl text-white/60 text-lg leading-relaxed">
-            Tanlangan xalqaro keyslar — har biri NazirovSholding’ning ishonchli ijro, strategik
-            rejalashtirish va uzoq muddatli sheriklik qobiliyatini namoyish etadi.
-          </p>
+          />
+          <EditableText
+            as="p"
+            multiline
+            contentKey="loyihalar.hero.desc"
+            fallback="Tanlangan xalqaro keyslar — har biri NazirovSholding’ning ishonchli ijro, strategik rejalashtirish va uzoq muddatli sheriklik qobiliyatini namoyish etadi."
+            section="loyihalar-hero"
+            className="mt-8 max-w-2xl text-white/60 text-lg leading-relaxed"
+          />
         </div>
       </section>
 
@@ -65,43 +81,59 @@ export default function Projects() {
         <div className="max-w-[1200px] mx-auto px-6 lg:px-10 space-y-28">
           {projects.map((p, i) => (
             <article
-              key={p.num}
+              key={p.id}
               className={`grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-center ${
                 i % 2 === 1 ? 'lg:[&>div:first-child]:order-2' : ''
               }`}
             >
               <div className="lg:col-span-7 relative overflow-hidden group">
-                <img
-                  src={p.image}
+                <EditableImage
+                  contentKey={`loyihalar.case.${p.id}.image`}
+                  fallbackSrc={p.image}
                   alt={p.title}
                   className="w-full h-[420px] md:h-[520px] object-cover grayscale-[20%] group-hover:grayscale-0 group-hover:scale-105 transition-all duration-[1200ms]"
-                  loading="lazy"
                 />
                 <div className="absolute inset-0 bg-gradient-to-tr from-black/60 via-transparent to-transparent pointer-events-none" />
-                <div className="absolute top-6 left-6 text-[10px] tracking-[0.4em] uppercase text-white/80">
-                  {p.country} · {p.industry}
+                <div className="absolute top-6 left-6 text-[10px] tracking-[0.4em] uppercase text-white/80 flex items-center gap-2">
+                  <EditableText contentKey={`loyihalar.case.${p.id}.country`} fallback={p.country} section="loyihalar-cases" />
+                  <span>·</span>
+                  <EditableText contentKey={`loyihalar.case.${p.id}.industry.tag`} fallback={p.industry} section="loyihalar-cases" />
                 </div>
               </div>
 
               <div className="lg:col-span-5">
                 <div className="flex items-center gap-4 mb-6">
-                  <span className="text-[10px] tracking-[0.4em] text-[#d4af37]">{p.num}</span>
+                  <EditableText contentKey={`loyihalar.case.${p.id}.num`} fallback={p.num} section="loyihalar-cases" className="text-[10px] tracking-[0.4em] text-[#d4af37]" />
                   <span className="h-px flex-1 bg-white/10" />
-                  <span className="text-[10px] tracking-[0.3em] text-white/40 uppercase">{p.timeline}</span>
+                  <EditableText contentKey={`loyihalar.case.${p.id}.timeline`} fallback={p.timeline} section="loyihalar-cases" className="text-[10px] tracking-[0.3em] text-white/40 uppercase" />
                 </div>
-                <h2
+                <EditableText
+                  as="h2"
+                  contentKey={`loyihalar.case.${p.id}.title`}
+                  fallback={p.title}
+                  section="loyihalar-cases"
                   className="text-3xl md:text-4xl font-light leading-tight mb-6"
                   style={{ fontFamily: "'Instrument Serif', serif" }}
-                >
-                  {p.title}
-                </h2>
-                <p className="text-white/60 leading-relaxed mb-8">{p.objective}</p>
+                />
+                <EditableText
+                  as="p"
+                  multiline
+                  contentKey={`loyihalar.case.${p.id}.objective`}
+                  fallback={p.objective}
+                  section="loyihalar-cases"
+                  className="text-white/60 leading-relaxed mb-8"
+                />
 
                 <div className="space-y-3 mb-10">
-                  {p.results.map((r) => (
-                    <div key={r} className="flex items-center gap-4 py-2 border-b border-white/5">
+                  {p.results.map((r, idx) => (
+                    <div key={idx} className="flex items-center gap-4 py-2 border-b border-white/5">
                       <span className="w-1 h-1 rounded-full bg-[#d4af37]" />
-                      <span className="text-sm text-white/80">{r}</span>
+                      <EditableText
+                        contentKey={`loyihalar.case.${p.id}.result.${idx}`}
+                        fallback={r}
+                        section="loyihalar-cases"
+                        className="text-sm text-white/80"
+                      />
                     </div>
                   ))}
                 </div>
@@ -110,7 +142,7 @@ export default function Projects() {
                   to="/contact"
                   className="group inline-flex items-center gap-3 text-[11px] tracking-[0.3em] uppercase text-[#d4af37] hover:text-white transition-colors"
                 >
-                  Hamkorlik bo‘yicha so‘rov
+                  <EditableText contentKey={`loyihalar.case.${p.id}.cta`} fallback="Hamkorlik bo‘yicha so‘rov" section="loyihalar-cases" />
                   <ArrowUpRight className="w-4 h-4 group-hover:rotate-45 transition-transform" />
                 </Link>
               </div>
