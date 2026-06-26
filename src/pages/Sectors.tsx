@@ -19,17 +19,33 @@ export default function Sectors() {
           style={{ backgroundImage: 'radial-gradient(circle at 30% 30%, rgba(212,175,55,0.12), transparent 60%)' }}
         />
         <div className="relative max-w-[1200px] mx-auto px-6 lg:px-10">
-          <p className="text-[10px] tracking-[0.5em] uppercase text-[#d4af37] mb-6">03 — Faoliyat</p>
+          <EditableText
+            contentKey="sectors.hero.eyebrow"
+            fallback="03 — Faoliyat"
+            as="p"
+            className="text-[10px] tracking-[0.5em] uppercase text-[#d4af37] mb-6"
+            section="sectors-hero"
+          />
           <h1
             className="text-5xl md:text-7xl font-light tracking-tight max-w-4xl leading-[1.05]"
             style={{ fontFamily: "'Instrument Serif', serif" }}
           >
-            Diversifikatsiyalashgan <span className="italic text-[#d4af37]">biznes ekotizimi</span>
+            <EditableText
+              contentKey="sectors.hero.title"
+              fallback="Diversifikatsiyalashgan biznes ekotizimi"
+              multiline
+              section="sectors-hero"
+            />
           </h1>
-          <p className="mt-8 max-w-2xl text-white/60 text-lg leading-relaxed">
-            NazirovSholding — bir nechta strategik sohalarda faoliyat yurituvchi xalqaro holding.
-            Har bir yo‘nalish kompaniyaning yagona qiymat zanjiri va global qamroviga integratsiyalashgan.
-          </p>
+          <EditableText
+            contentKey="sectors.hero.subtitle"
+            fallback="NazirovSholding — bir nechta strategik sohalarda faoliyat yurituvchi xalqaro holding. Har bir yo‘nalish kompaniyaning yagona qiymat zanjiri va global qamroviga integratsiyalashgan."
+            as="p"
+            multiline
+            className="mt-8 max-w-2xl text-white/60 text-lg leading-relaxed block"
+            section="sectors-hero"
+          />
+
         </div>
       </section>
 
