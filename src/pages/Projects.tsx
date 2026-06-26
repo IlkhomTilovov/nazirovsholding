@@ -62,8 +62,7 @@ export default function Projects() {
             contentKey="loyihalar.hero.title"
             fallback="Natijalar orqali isbotlangan salohiyat"
             section="loyihalar-hero"
-            className="text-5xl md:text-7xl font-light tracking-tight max-w-4xl leading-[1.05]"
-            style={{ fontFamily: "'Instrument Serif', serif" }}
+            className="text-5xl md:text-7xl font-light tracking-tight max-w-4xl leading-[1.05] font-serif"
           />
           <EditableText
             as="p"
