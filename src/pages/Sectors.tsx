@@ -1,6 +1,7 @@
 import { useSEO } from '@/hooks/useSEO';
 import { ArrowUpRight, Ship, Factory, Wheat, TrendingUp, Hammer, Globe2, Truck, Briefcase } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { useBrands } from '@/hooks/useBrands';
 
 const sectors = [
   { icon: Ship, num: '01', title: 'Eksport', desc: 'Xalqaro bozorlarga sifatli mahsulot yetkazib berish va savdo aloqalarini rivojlantirish.' },
