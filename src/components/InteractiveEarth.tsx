@@ -3,6 +3,7 @@ import { Canvas, useFrame, useLoader } from '@react-three/fiber';
 import { Html, OrbitControls } from '@react-three/drei';
 import { AnimatePresence, motion } from 'framer-motion';
 import * as THREE from 'three';
+import { EditableText } from '@/components/EditableText';
 import earthMap from '@/assets/earth/earth_atmos_2048.jpg';
 import earthSpecular from '@/assets/earth/earth_specular_2048.jpg';
 import earthClouds from '@/assets/earth/earth_clouds_1024.png';
