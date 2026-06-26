@@ -12,7 +12,7 @@ export function Footer() {
   const [email, setEmail] = useState('');
 
   const phone = settings?.contact_phone || '+998 90 123 45 67';
-  const emailAddr = settings?.contact_email || 'info@nazirovsholding.com';
+  const emailAddr = 'info@nazirovsholding.com';
   const address = getAddress(language) || 'Tashkent, Uzbekistan';
 
   const handleSubmit = (e: React.FormEvent) => {
