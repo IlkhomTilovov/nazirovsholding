@@ -1,5 +1,5 @@
-import { useEffect, useRef, useState } from 'react';
-import { motion, useInView, useScroll, useTransform } from 'framer-motion';
+import { useRef } from 'react';
+import { motion, useScroll, useTransform } from 'framer-motion';
 import { EditableText } from '@/components/EditableText';
 import { EditableImage } from '@/components/EditableImage';
 import cinematicPort from '@/assets/global-cinematic-port.jpg';
