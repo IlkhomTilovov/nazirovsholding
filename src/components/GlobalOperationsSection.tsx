@@ -7,42 +7,12 @@ import projectGermany from '@/assets/project-germany-textile.jpg';
 import projectKazakhstan from '@/assets/project-kazakhstan-agro.jpg';
 import projectUae from '@/assets/project-uae-industrial.jpg';
 
-// ─────────────────────────────────────────────────────────
-// Animated counter
-// ─────────────────────────────────────────────────────────
-function Counter({ to, suffix = '+', duration = 1.8, start }: { to: number; suffix?: string; duration?: number; start: boolean; }) {
-  const [val, setVal] = useState(0);
-  useEffect(() => {
-    if (!start) return;
-    let raf = 0; let t0: number | null = null;
-    const tick = (t: number) => {
-      if (t0 === null) t0 = t;
-      const p = Math.min((t - t0) / (duration * 1000), 1);
-      const eased = 1 - Math.pow(1 - p, 3);
-      setVal(Math.floor(eased * to));
-      if (p < 1) raf = requestAnimationFrame(tick); else setVal(to);
-    };
-    raf = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(raf);
-  }, [start, to, duration]);
-  return <span className="tabular-nums">{val}<span className="text-primary/70">{suffix}</span></span>;
-}
-
-
-// ─────────────────────────────────────────────────────────
-// Main section
-// ─────────────────────────────────────────────────────────
 export function GlobalOperationsSection() {
   const sectionRef = useRef<HTMLElement>(null);
   const { scrollYProgress } = useScroll({ target: sectionRef, offset: ['start end', 'end start'] });
   const portY = useTransform(scrollYProgress, [0, 1], ['-8%', '8%']);
   const portScale = useTransform(scrollYProgress, [0, 1], [1.1, 1.25]);
 
-  const statsRef = useRef<HTMLDivElement>(null);
-  const statsInView = useInView(statsRef, { once: true, amount: 0.4 });
-
-  const mapRef = useRef<HTMLDivElement>(null);
-  void mapRef;
 
   const fadeUp = {
     hidden: { opacity: 0, y: 40 },
