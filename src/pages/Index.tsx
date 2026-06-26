@@ -127,10 +127,10 @@ export default function Index() {
   ];
 
   const trustBadges = [
-    { key: 'trust_1', icon: Globe2, titleFallback: 'Xalqaro eksport', descFallback: "20+ mamlakatlarga ishonchli eksport faoliyati." },
-    { key: 'trust_2', icon: BadgeCheck, titleFallback: 'Sifat nazorati', descFallback: 'Mahsulotlar eksport standartlari asosida tekshiriladi.' },
-    { key: 'trust_3', icon: Ship, titleFallback: 'Logistika yechimlari', descFallback: 'FOB, CIF, FCA va DAP shartlari asosida global yetkazib berish.' },
-    { key: 'trust_4', icon: Handshake, titleFallback: 'Strategik hamkorlik', descFallback: "Uzoq muddatli B2B hamkorlik va xalqaro biznes aloqalari." },
+    { key: 'trust_1', icon: Globe2,     num: '01', metric: '20+', metricLabel: 'Mamlakat', titleFallback: 'Xalqaro eksport',     descFallback: "Yevropa, MDH va Yaqin Sharq bozorlariga ishonchli eksport faoliyati." },
+    { key: 'trust_2', icon: BadgeCheck, num: '02', metric: 'ISO', metricLabel: '9001:2015', titleFallback: 'Sifat nazorati',     descFallback: "Har bir partiya xalqaro eksport standartlari asosida ko'p bosqichli QC bilan tekshiriladi." },
+    { key: 'trust_3', icon: Ship,       num: '03', metric: '4',   metricLabel: 'Incoterms', titleFallback: 'Logistika yechimlari', descFallback: "FOB, CIF, FCA va DAP shartlari asosida global multimodal yetkazib berish zanjiri." },
+    { key: 'trust_4', icon: Handshake,  num: '04', metric: 'B2B', metricLabel: 'Partnership', titleFallback: 'Strategik hamkorlik', descFallback: "Uzoq muddatli xalqaro biznes ittifoqlari va institutsional hamkorlik tizimi." },
   ];
 
   const sectionServices = useInView();
