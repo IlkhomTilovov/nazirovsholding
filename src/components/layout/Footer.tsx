@@ -105,19 +105,17 @@ export function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-10 py-16">
           {/* Column 1 — Brand */}
           <div>
-            <EditableText
-              as="div"
-              contentKey="footer.brand.name"
-              fallback="NazirovSholding"
-              section="footer-brand"
-              className="font-serif text-2xl text-[#F6F2EA]"
-            />
-            <EditableText
-              contentKey="footer.brand.tagline"
-              fallback="Xalqaro Holding Guruhi"
-              section="footer-brand"
-              className="text-[10px] tracking-[0.4em] uppercase text-[#C9A469] mt-2 block"
-            />
+            <Link to="/" className="flex flex-col leading-none">
+              <span
+                className="font-serif text-[22px] tracking-[0.22em] text-[#F6F2EA] font-light"
+                style={{ fontFamily: "'Instrument Serif', serif" }}
+              >
+                NAZIROV<span className="text-[#C9A469] font-normal">SHOLDING</span>
+              </span>
+              <span className="text-[9px] tracking-[0.45em] text-[#F6F2EA]/40 uppercase mt-1">
+                International Holding Group
+              </span>
+            </Link>
             <EditableText
               as="p"
               multiline
