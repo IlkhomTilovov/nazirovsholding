@@ -94,7 +94,7 @@ export function Footer() {
                 type="submit"
                 className="group inline-flex items-center justify-center gap-3 px-7 py-3 bg-[#C9A469] text-[#0D0D0D] text-[11px] tracking-[0.3em] uppercase font-medium hover:bg-[#d4b274] hover:shadow-[0_0_30px_rgba(201,164,105,0.4)] transition-all duration-500"
               >
-                <EditableText contentKey="footer.cta.button" fallback="Start Partnership" section="footer-cta" />
+                <EditableText contentKey="footer.cta.button" fallback="Hamkorlikni boshlash" section="footer-cta" />
                 <ArrowUpRight className="w-4 h-4 group-hover:rotate-45 transition-transform" />
               </button>
             </div>
