@@ -258,41 +258,42 @@ export default function Index() {
               </Button>
             </div>
 
-            {/* Business feature cards */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-              {trustBadges.map((badge, i) => (
-                <div
-                  key={badge.key}
-                  className="group p-6 backdrop-blur-sm transition-all duration-500 hover:-translate-y-1.5 hover:border-[#C9A469]/60 hover:shadow-[0_18px_50px_-20px_rgba(201,164,105,0.45)] animate-fade-in"
-                  style={{
-                    background: 'rgba(255,255,255,0.04)',
-                    border: '1px solid rgba(201,164,106,0.18)',
-                    borderRadius: '18px',
-                    animationDelay: `${0.15 * (i + 1)}s`,
-                    animationFillMode: 'backwards',
-                  }}
-                >
-                  <div className="w-11 h-11 rounded-full border border-[#C9A469]/40 flex items-center justify-center mb-4 text-[#C9A469] transition-all duration-500 group-hover:border-[#C9A469] group-hover:shadow-[0_0_22px_rgba(201,164,105,0.55)]">
-                    <badge.icon className="w-5 h-5" strokeWidth={1.5} />
-                  </div>
-                  <EditableText
-                    contentKey={`${badge.key}_title`}
-                    fallback={badge.titleFallback}
-                    as="div"
-                    className="text-[#F6F2EA] text-[15px] font-medium tracking-wide mb-2"
-                    section="hero"
-                  />
-                  <EditableText
-                    contentKey={`${badge.key}_desc`}
-                    fallback={badge.descFallback}
-                    as="p"
-                    multiline
-                    className="text-[12.5px] leading-[1.65]"
-                    section="hero"
-                  />
+          </div>
+
+          {/* Business feature cards — full-width row */}
+          <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 [&_a]:pointer-events-auto [&_button]:pointer-events-auto [&_[data-editable]]:pointer-events-auto">
+            {trustBadges.map((badge, i) => (
+              <div
+                key={badge.key}
+                className="group p-8 backdrop-blur-sm transition-all duration-500 hover:-translate-y-1.5 hover:border-[#C9A469]/60 hover:shadow-[0_18px_50px_-20px_rgba(201,164,105,0.45)] animate-fade-in"
+                style={{
+                  background: 'rgba(255,255,255,0.04)',
+                  border: '1px solid rgba(201,164,106,0.18)',
+                  borderRadius: '18px',
+                  animationDelay: `${0.15 * (i + 1)}s`,
+                  animationFillMode: 'backwards',
+                }}
+              >
+                <div className="w-12 h-12 rounded-full border border-[#C9A469]/40 flex items-center justify-center mb-5 text-[#C9A469] transition-all duration-500 group-hover:border-[#C9A469] group-hover:shadow-[0_0_22px_rgba(201,164,105,0.55)]">
+                  <badge.icon className="w-5 h-5" strokeWidth={1.5} />
                 </div>
-              ))}
-            </div>
+                <EditableText
+                  contentKey={`${badge.key}_title`}
+                  fallback={badge.titleFallback}
+                  as="div"
+                  className="text-[#F6F2EA] text-[17px] font-medium tracking-wide mb-3"
+                  section="hero"
+                />
+                <EditableText
+                  contentKey={`${badge.key}_desc`}
+                  fallback={badge.descFallback}
+                  as="p"
+                  multiline
+                  className="text-[13.5px] leading-[1.7]"
+                  section="hero"
+                />
+              </div>
+            ))}
           </div>
         </div>
 
