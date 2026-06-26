@@ -89,21 +89,15 @@ export function GlobalOperationsSection() {
           >
             <div className="flex items-center gap-3 mb-8">
               <span className="text-[#c9a84c] font-serif italic text-lg">—  01</span>
-              <span className="text-white/40 text-[11px] tracking-[0.4em] uppercase">Corporate Message</span>
+              <EditableText contentKey="bozorlar.msg.eyebrow" fallback="Corporate Message" section="bozorlar-msg" className="text-white/40 text-[11px] tracking-[0.4em] uppercase" />
             </div>
-            <h3 className="font-serif text-4xl md:text-6xl lg:text-[5.5rem] leading-[1.02] text-white">
-              Connecting Uzbekistan <br />
-              <span className="italic text-[#c9a84c]">To Global Markets</span>
-            </h3>
+            <EditableText as="h3" multiline contentKey="bozorlar.msg.title" fallback="Connecting Uzbekistan To Global Markets" section="bozorlar-msg" className="font-serif text-4xl md:text-6xl lg:text-[5.5rem] leading-[1.02] text-white" />
           </motion.div>
           <motion.div
             variants={fadeUp} custom={1} initial="hidden" whileInView="show" viewport={{ once: true, amount: 0.3 }}
             className="lg:col-span-5 lg:pb-6"
           >
-            <p className="text-white/70 text-lg leading-[1.8]">
-              NazirovSholding creates strategic connections between manufacturers, suppliers, international buyers
-              and emerging markets through export, logistics and investment partnerships.
-            </p>
+            <EditableText as="p" multiline contentKey="bozorlar.msg.desc" fallback="NazirovSholding creates strategic connections between manufacturers, suppliers, international buyers and emerging markets through export, logistics and investment partnerships." section="bozorlar-msg" className="text-white/70 text-lg leading-[1.8]" />
             <div className="mt-10 h-px w-24 bg-[#c9a84c]/60" />
           </motion.div>
         </div>
