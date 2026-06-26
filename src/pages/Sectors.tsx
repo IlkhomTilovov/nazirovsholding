@@ -16,6 +16,7 @@ const sectors = [
 
 export default function Sectors() {
   useSEO({ title: "Faoliyat yo'nalishlari — NazirovSholding" });
+  const { brands, loading: brandsLoading } = useBrands(true);
 
   return (
     <div className="min-h-screen bg-[#0d0d0d] text-white">
