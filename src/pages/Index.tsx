@@ -127,10 +127,10 @@ export default function Index() {
   ];
 
   const trustBadges = [
-    { key: 'trust_1', icon: Globe2, titleFallback: 'Xalqaro eksport', descFallback: "20+ mamlakatlarga ishonchli eksport faoliyati." },
-    { key: 'trust_2', icon: BadgeCheck, titleFallback: 'Sifat nazorati', descFallback: 'Mahsulotlar eksport standartlari asosida tekshiriladi.' },
-    { key: 'trust_3', icon: Ship, titleFallback: 'Logistika yechimlari', descFallback: 'FOB, CIF, FCA va DAP shartlari asosida global yetkazib berish.' },
-    { key: 'trust_4', icon: Handshake, titleFallback: 'Strategik hamkorlik', descFallback: "Uzoq muddatli B2B hamkorlik va xalqaro biznes aloqalari." },
+    { key: 'trust_1', icon: Globe2,     num: '01', metric: '20+', metricLabel: 'Mamlakat', titleFallback: 'Xalqaro eksport',     descFallback: "Yevropa, MDH va Yaqin Sharq bozorlariga ishonchli eksport faoliyati." },
+    { key: 'trust_2', icon: BadgeCheck, num: '02', metric: 'ISO', metricLabel: '9001:2015', titleFallback: 'Sifat nazorati',     descFallback: "Har bir partiya xalqaro eksport standartlari asosida ko'p bosqichli QC bilan tekshiriladi." },
+    { key: 'trust_3', icon: Ship,       num: '03', metric: '4',   metricLabel: 'Incoterms', titleFallback: 'Logistika yechimlari', descFallback: "FOB, CIF, FCA va DAP shartlari asosida global multimodal yetkazib berish zanjiri." },
+    { key: 'trust_4', icon: Handshake,  num: '04', metric: 'B2B', metricLabel: 'Partnership', titleFallback: 'Strategik hamkorlik', descFallback: "Uzoq muddatli xalqaro biznes ittifoqlari va institutsional hamkorlik tizimi." },
   ];
 
   const sectionServices = useInView();
@@ -258,36 +258,52 @@ export default function Index() {
               </Button>
             </div>
 
-            {/* Business feature cards */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            {/* Business feature cards — Editorial Noir & Gold */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-px bg-[#C9A469]/15 border border-[#C9A469]/20 rounded-[2px] overflow-hidden">
               {trustBadges.map((badge, i) => (
                 <div
                   key={badge.key}
-                  className="group p-6 backdrop-blur-sm transition-all duration-500 hover:-translate-y-1.5 hover:border-[#C9A469]/60 hover:shadow-[0_18px_50px_-20px_rgba(201,164,105,0.45)] animate-fade-in"
+                  className="group relative bg-[#0D0D0D]/85 backdrop-blur-md p-7 lg:p-8 transition-all duration-500 hover:bg-[#141414] animate-fade-in overflow-hidden"
                   style={{
-                    background: 'rgba(255,255,255,0.04)',
-                    border: '1px solid rgba(201,164,106,0.18)',
-                    borderRadius: '18px',
-                    animationDelay: `${0.15 * (i + 1)}s`,
+                    animationDelay: `${0.12 * (i + 1)}s`,
                     animationFillMode: 'backwards',
                   }}
                 >
-                  <div className="w-11 h-11 rounded-full border border-[#C9A469]/40 flex items-center justify-center mb-4 text-[#C9A469] transition-all duration-500 group-hover:border-[#C9A469] group-hover:shadow-[0_0_22px_rgba(201,164,105,0.55)]">
-                    <badge.icon className="w-5 h-5" strokeWidth={1.5} />
+                  {/* Top hairline accent */}
+                  <span className="absolute top-0 left-0 h-px w-0 bg-[#C9A469] transition-all duration-700 group-hover:w-full" />
+
+                  {/* Index number */}
+                  <div className="flex items-center justify-between mb-7">
+                    <div className="w-10 h-10 flex items-center justify-center border border-[#C9A469]/35 text-[#C9A469] transition-all duration-500 group-hover:border-[#C9A469] group-hover:bg-[#C9A469]/5">
+                      <badge.icon className="w-[18px] h-[18px]" strokeWidth={1.4} />
+                    </div>
+                    <span className="font-serif text-[11px] tracking-[0.35em] text-[#C9A469]/50">{badge.num}</span>
                   </div>
+
+                  {/* Metric */}
+                  <div className="mb-5">
+                    <div className="font-serif text-3xl lg:text-[2rem] leading-none text-[#C9A469] mb-1.5">{badge.metric}</div>
+                    <div className="text-[10px] tracking-[0.3em] uppercase text-[#F6F2EA]/45">{badge.metricLabel}</div>
+                  </div>
+
+                  <div className="h-px w-8 bg-[#C9A469]/40 mb-5 transition-all duration-500 group-hover:w-14" />
+
+                  {/* Title */}
                   <EditableText
                     contentKey={`${badge.key}_title`}
                     fallback={badge.titleFallback}
                     as="div"
-                    className="text-[#F6F2EA] text-[15px] font-medium tracking-wide mb-2"
+                    className="block text-[#F6F2EA] text-[15px] font-medium tracking-wide mb-3 leading-tight"
                     section="hero"
                   />
+
+                  {/* Description */}
                   <EditableText
                     contentKey={`${badge.key}_desc`}
                     fallback={badge.descFallback}
                     as="p"
                     multiline
-                    className="text-[12.5px] leading-[1.65]"
+                    className="block text-[12px] leading-[1.7] text-[#F6F2EA]/55"
                     section="hero"
                   />
                 </div>
