@@ -111,7 +111,7 @@ export function GlobalOperationsSection() {
             className="flex items-center gap-3 mb-16"
           >
             <span className="text-[#c9a84c] font-serif italic text-lg">—  02</span>
-            <span className="text-white/40 text-[11px] tracking-[0.4em] uppercase">Performance Indicators</span>
+            <EditableText contentKey="bozorlar.stats.eyebrow" fallback="Performance Indicators" section="bozorlar-stats" className="text-white/40 text-[11px] tracking-[0.4em] uppercase" />
           </motion.div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-px bg-[#c9a84c]/10 border border-[#c9a84c]/10">
