@@ -56,14 +56,14 @@ export function Footer() {
           <div>
             <EditableText
               contentKey="footer.cta.eyebrow"
-              fallback="Partnership"
+              fallback="Hamkorlik"
               section="footer-cta"
               className="text-[10px] tracking-[0.5em] uppercase text-[#C9A469] mb-6 block"
             />
             <EditableText
               as="h3"
               contentKey="footer.cta.title"
-              fallback="Let's Build Global Partnerships Together"
+              fallback="Keling, global hamkorlikni birgalikda quramiz"
               section="footer-cta"
               className="font-serif text-3xl md:text-5xl leading-[1.1] text-[#F6F2EA] max-w-xl"
             />
@@ -71,7 +71,7 @@ export function Footer() {
               as="p"
               multiline
               contentKey="footer.cta.desc"
-              fallback="NazirovSholding exports premium products from Uzbekistan to international markets through trusted logistics and strategic partnerships."
+              fallback="NazirovSholding O'zbekistondan premium mahsulotlarni xalqaro bozorlarga ishonchli logistika va strategik hamkorliklar orqali eksport qiladi."
               section="footer-cta"
               className="mt-6 text-[15px] leading-relaxed text-[#F6F2EA]/70 max-w-lg"
             />
@@ -79,7 +79,7 @@ export function Footer() {
 
           <form onSubmit={handleSubmit} className="flex flex-col justify-center">
             <label className="text-[10px] tracking-[0.4em] uppercase text-[#F6F2EA]/50 mb-4">
-              Business Inquiry
+              Biznes so'rovi
             </label>
             <div className="flex flex-col sm:flex-row items-stretch gap-3 border-b border-[#C9A469]/30 pb-2">
               <input
