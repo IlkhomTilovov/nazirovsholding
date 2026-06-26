@@ -1,18 +1,8 @@
 import { useSEO } from '@/hooks/useSEO';
-import { ArrowUpRight, Ship, Factory, Wheat, TrendingUp, Hammer, Globe2, Truck, Briefcase } from 'lucide-react';
+import { ArrowUpRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useBrands } from '@/hooks/useBrands';
 
-const sectors = [
-  { icon: Ship, num: '01', title: 'Eksport', desc: 'Xalqaro bozorlarga sifatli mahsulot yetkazib berish va savdo aloqalarini rivojlantirish.' },
-  { icon: Globe2, num: '02', title: 'Xalqaro Savdo', desc: 'Yevropa, MDH va Yaqin Sharq mintaqalarida B2B savdo va distribyutsiya.' },
-  { icon: Truck, num: '03', title: 'Logistika', desc: 'DAP, FCA va CIF shartlari asosida xalqaro yuk tashish va omborxona xizmatlari.' },
-  { icon: Factory, num: '04', title: 'Ishlab Chiqarish', desc: 'Mahalliy va xalqaro brendlar uchun yuqori sifatli sanoat ishlab chiqarish.' },
-  { icon: Hammer, num: '05', title: "Qurilish", desc: 'Yirik infratuzilma loyihalari va sanoat ob’ektlarini bunyod etish.' },
-  { icon: Wheat, num: '06', title: 'Agrosanoat', desc: 'Qishloq xo‘jaligi mahsulotlarini yetishtirish, qayta ishlash va eksport qilish.' },
-  { icon: TrendingUp, num: '07', title: 'Investitsiya', desc: 'Strategik sektorlarga uzoq muddatli kapital qo‘yish va sheriklik dasturlari.' },
-  { icon: Briefcase, num: '08', title: 'Biznes Rivojlantirish', desc: 'Yangi bozorlarni o‘zlashtirish, strategik konsalting va korporativ rivojlanish.' },
-];
 
 export default function Sectors() {
   useSEO({ title: "Faoliyat yo'nalishlari — NazirovSholding" });
