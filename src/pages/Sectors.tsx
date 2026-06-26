@@ -2,6 +2,8 @@ import { useSEO } from '@/hooks/useSEO';
 import { ArrowUpRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useBrands } from '@/hooks/useBrands';
+import { EditableText } from '@/components/EditableText';
+
 
 
 export default function Sectors() {
