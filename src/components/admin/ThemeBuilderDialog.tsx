@@ -421,7 +421,7 @@ export const ThemeBuilderDialog = ({
                   <Input
                     value={formData.name}
                     onChange={(e) => apply({ name: e.target.value })}
-                    placeholder="Masalan: Mirmexa Premium"
+                    placeholder="Masalan: NazirovSholding Premium"
                     className="h-12 text-[15px] bg-transparent border-0 border-b border-border rounded-none focus-visible:ring-0 focus-visible:border-foreground px-0"
                   />
                 </div>
@@ -675,7 +675,7 @@ export const ThemeBuilderDialog = ({
                     className="font-bold tracking-tight text-[15px]"
                     style={{ color: `hsl(${formData.foregroundColor})` }}
                   >
-                    Mirmexa
+                    NazirovSholding
                   </span>
                   <div className="hidden sm:flex items-center gap-4 text-[11px] opacity-70">
                     <span>Bosh</span><span>Katalog</span><span>Aloqa</span>
@@ -813,7 +813,7 @@ export const ThemeBuilderDialog = ({
                   className="px-5 py-3 text-[10px] opacity-60 border-t"
                   style={{ borderColor: `hsl(${formData.secondaryColor})` }}
                 >
-                  © 2026 Mirmexa · Premium dizayn tizimi
+                  © 2026 NazirovSholding · Premium dizayn tizimi
                 </div>
               </div>
             </div>

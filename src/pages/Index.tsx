@@ -191,7 +191,7 @@ export default function Index() {
             <img
               key={src}
               src={src}
-              alt="MIR MEXA export"
+              alt="NazirovSholding global operations"
               className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-[1500ms] ${i === heroSlide ? 'opacity-100 scale-105' : 'opacity-0 scale-100'} transition-transform`}
               loading={i === 0 ? 'eager' : 'lazy'}
             />
@@ -205,7 +205,7 @@ export default function Index() {
             <div className="inline-block mb-6 px-4 py-1.5 border border-primary/40 rounded-sm">
               <EditableText
                 contentKey="hero_badge"
-                fallback="MIR MEXA · EXPORT"
+                fallback="NAZIROVSHOLDING · INTERNATIONAL HOLDING"
                 as="span"
                 className="text-primary text-xs font-medium tracking-[0.3em] uppercase"
                 section="hero"
@@ -230,7 +230,7 @@ export default function Index() {
             <p className="text-lg md:text-xl text-white/70 mb-10 max-w-xl leading-relaxed">
               <EditableText
                 contentKey="hero_subtitle"
-                fallback="MIR MEXA — eksport, ishlab chiqarish, logistika va xalqaro hamkorlikni birlashtirgan holding. 20+ bozor, 500+ hamkor, 15+ yillik tajriba."
+                fallback="NazirovSholding — eksport, ishlab chiqarish, logistika, investitsiya va strategik hamkorlikni birlashtirgan xalqaro biznes holdingi. 20+ bozor, 500+ hamkor, 15+ yillik tajriba."
                 as="span"
                 className="text-lg md:text-xl"
                 section="hero"
@@ -291,7 +291,7 @@ export default function Index() {
           <div className={`text-center mb-14 transition-all duration-700 ${sectionStats.isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
             <div className="flex items-center justify-center gap-3 mb-5">
               <span className="w-10 h-px bg-primary" />
-              <EditableText contentKey="stats_label" fallback="MIR MEXA RAQAMLARDA" as="span" className="text-primary text-xs tracking-[0.4em] uppercase font-semibold" section="stats" />
+              <EditableText contentKey="stats_label" fallback="NAZIROVSHOLDING RAQAMLARDA" as="span" className="text-primary text-xs tracking-[0.4em] uppercase font-semibold" section="stats" />
               <span className="w-10 h-px bg-primary" />
             </div>
             <h2 className="font-serif text-4xl md:text-5xl lg:text-6xl text-foreground leading-[1.05]">
@@ -323,7 +323,7 @@ export default function Index() {
               <EditableText contentKey="sectors_title_2" fallback="cheksiz imkoniyatlar" as="span" className="block text-primary italic" section="sectors" />
             </h2>
             <p className="text-muted-foreground text-base md:text-lg leading-relaxed">
-              <EditableText contentKey="sectors_intro" fallback="MIR MEXA holdingi to'rt yo'nalishni birlashtirgan: eksport, ishlab chiqarish, logistika va investitsiya. Bu — mijozlar uchun yagona darvoza orqali to'liq B2B yechim." as="span" section="sectors" />
+              <EditableText contentKey="sectors_intro" fallback="NazirovSholding International Holding Group to'rt asosiy yo'nalishni birlashtirgan: eksport, ishlab chiqarish, logistika va investitsiya. Bu — hamkorlar uchun yagona darvoza orqali to'liq B2B yechim." as="span" section="sectors" />
             </p>
           </div>
 
@@ -431,7 +431,7 @@ export default function Index() {
             <p className="text-muted-foreground text-base max-w-md leading-relaxed">
               <EditableText
                 contentKey="whyus_intro"
-                fallback="MIR MEXA — bu eksport sohasida sifat, ishonch va xalqaro standartlarga sodiqlikka asoslangan to'rt ustun."
+                fallback="NazirovSholding — xalqaro biznesda sifat, ishonch va global standartlarga sodiqlikka asoslangan to'rt ustun."
                 as="span"
                 section="whyus"
               />
@@ -885,7 +885,7 @@ export default function Index() {
                     <EditableText contentKey="chairman_role" fallback="RAIS / TA'SISCHI" as="span" section="chairman" />
                   </div>
                   <div className="font-serif text-2xl md:text-3xl text-white leading-tight">
-                    <EditableText contentKey="chairman_name" fallback="MIR MEXA Group" as="span" section="chairman" />
+                    <EditableText contentKey="chairman_name" fallback="NazirovSholding International Holding Group" as="span" section="chairman" />
                   </div>
                 </div>
               </div>
@@ -903,7 +903,7 @@ export default function Index() {
               </h2>
               <div className="space-y-4 text-muted-foreground text-base md:text-lg leading-relaxed mb-8">
                 <p>
-                  <EditableText contentKey="chairman_p1" fallback="MIR MEXA — bu 15 yildan ortiq tajriba va xalqaro hamkorlik asosida shakllangan biznes ekotizim. Biz O'zbekistonni global savdo xaritasida munosib o'rinda ko'rishni xohlaymiz." as="span" section="chairman" />
+                  <EditableText contentKey="chairman_p1" fallback="NazirovSholding — 15 yildan ortiq tajriba va xalqaro hamkorlik asosida shakllangan diversifikatsiyalashgan biznes ekotizim. Biz O'zbekistonni global savdo xaritasida munosib o'rinda ko'rishni o'z strategik vazifamiz deb bilamiz." as="span" section="chairman" />
                 </p>
                 <p>
                   <EditableText contentKey="chairman_p2" fallback="Har bir hamkor uchun shaffoflik, sifat va o'z vaqtida bajarish — bizning yagona standartimiz. Bu — bizning brendimizning poydevori." as="span" section="chairman" />
