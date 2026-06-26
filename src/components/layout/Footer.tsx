@@ -142,7 +142,7 @@ export function Footer() {
 
           {/* Column 2 — Navigation */}
           <div>
-            <h4 className="text-[10px] tracking-[0.4em] uppercase text-[#F6F2EA]/50 mb-6">Navigation</h4>
+            <h4 className="text-[10px] tracking-[0.4em] uppercase text-[#F6F2EA]/50 mb-6">Navigatsiya</h4>
             <ul className="space-y-3">
               {navLinks.map((l) => (
                 <li key={l.key}>
@@ -159,7 +159,7 @@ export function Footer() {
 
           {/* Column 3 — Sectors */}
           <div>
-            <h4 className="text-[10px] tracking-[0.4em] uppercase text-[#F6F2EA]/50 mb-6">Business Sectors</h4>
+            <h4 className="text-[10px] tracking-[0.4em] uppercase text-[#F6F2EA]/50 mb-6">Yo'nalishlar</h4>
             <ul className="space-y-3">
               {sectors.map((s, i) => (
                 <li key={s}>
@@ -176,10 +176,10 @@ export function Footer() {
 
           {/* Column 4 — Contact */}
           <div>
-            <h4 className="text-[10px] tracking-[0.4em] uppercase text-[#F6F2EA]/50 mb-6">Contact</h4>
+            <h4 className="text-[10px] tracking-[0.4em] uppercase text-[#F6F2EA]/50 mb-6">Aloqa</h4>
             <div className="space-y-5 text-sm text-[#F6F2EA]/80">
               <div>
-                <div className="text-[10px] tracking-[0.3em] uppercase text-[#F6F2EA]/40 mb-1">Head Office</div>
+                <div className="text-[10px] tracking-[0.3em] uppercase text-[#F6F2EA]/40 mb-1">Bosh ofis</div>
                 <EditableText contentKey="footer.contact.address" fallback={address} section="footer-contact" />
                 <a
                   href="https://maps.google.com/?q=Tashkent"
@@ -187,11 +187,11 @@ export function Footer() {
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-1 mt-2 text-[11px] text-[#C9A469] hover:text-[#F6F2EA] transition-colors"
                 >
-                  <MapPin className="w-3 h-3" /> View on Map
+                  <MapPin className="w-3 h-3" /> Xaritada ko'rish
                 </a>
               </div>
               <div>
-                <div className="text-[10px] tracking-[0.3em] uppercase text-[#F6F2EA]/40 mb-1">Phone</div>
+                <div className="text-[10px] tracking-[0.3em] uppercase text-[#F6F2EA]/40 mb-1">Telefon</div>
                 <a href={`tel:${phone}`} className="hover:text-[#C9A469] transition-colors">{phone}</a>
               </div>
               <div>
@@ -199,8 +199,8 @@ export function Footer() {
                 <a href={`mailto:${emailAddr}`} className="hover:text-[#C9A469] transition-colors break-all">{emailAddr}</a>
               </div>
               <div>
-                <div className="text-[10px] tracking-[0.3em] uppercase text-[#F6F2EA]/40 mb-1">Business Hours</div>
-                <EditableText contentKey="footer.contact.hours" fallback="Monday – Friday · 09:00 – 18:00" section="footer-contact" />
+                <div className="text-[10px] tracking-[0.3em] uppercase text-[#F6F2EA]/40 mb-1">Ish vaqti</div>
+                <EditableText contentKey="footer.contact.hours" fallback="Dushanba – Juma · 09:00 – 18:00" section="footer-contact" />
               </div>
             </div>
           </div>
@@ -208,14 +208,14 @@ export function Footer() {
 
         {/* Bottom Bar */}
         <div className="pt-8 border-t border-[#C9A469]/[0.12] flex flex-col lg:flex-row items-center justify-between gap-6 text-[11px] tracking-[0.15em] text-[#F6F2EA]/50">
-          <div>© 2026 NazirovSholding. All Rights Reserved.</div>
+          <div>© 2026 NazirovSholding. Barcha huquqlar himoyalangan.</div>
           <div className="flex items-center gap-8">
-            <Link to="/privacy" className="hover:text-[#C9A469] transition-colors">Privacy Policy</Link>
-            <Link to="/terms" className="hover:text-[#C9A469] transition-colors">Terms of Service</Link>
-            <Link to="/cookies" className="hover:text-[#C9A469] transition-colors">Cookies Policy</Link>
+            <Link to="/privacy" className="hover:text-[#C9A469] transition-colors">Maxfiylik siyosati</Link>
+            <Link to="/terms" className="hover:text-[#C9A469] transition-colors">Foydalanish shartlari</Link>
+            <Link to="/cookies" className="hover:text-[#C9A469] transition-colors">Cookies</Link>
           </div>
           <div className="uppercase tracking-[0.25em] text-[10px]">
-            Made with excellence in Uzbekistan
+            O'zbekistonda mukammallik bilan yaratilgan
           </div>
         </div>
       </div>
