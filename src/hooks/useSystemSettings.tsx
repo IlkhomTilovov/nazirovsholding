@@ -131,7 +131,7 @@ export function SystemSettingsProvider({ children }: { children: React.ReactNode
         .from('system_settings')
         .select('*')
         .limit(1)
-        .single();
+        .maybeSingle();
 
       if (error && error.code !== 'PGRST116') {
         console.error('Error fetching settings:', error);
