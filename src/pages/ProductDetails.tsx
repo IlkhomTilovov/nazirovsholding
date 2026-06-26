@@ -72,7 +72,7 @@ export default function ProductDetails() {
       image: imageUrls.length > 0 ? imageUrls : undefined,
       sku: product.id,
       url: window.location.href,
-      brand: { '@type': 'Brand', name: 'MIR MEXA' },
+      brand: { '@type': 'Brand', name: 'NazirovSholding' },
       offers: {
         '@type': 'Offer',
         price: product.price || 0,
