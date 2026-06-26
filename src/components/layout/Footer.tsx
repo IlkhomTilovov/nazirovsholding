@@ -114,7 +114,7 @@ export function Footer() {
             />
             <EditableText
               contentKey="footer.brand.tagline"
-              fallback="International Holding Group"
+              fallback="Xalqaro Holding Guruhi"
               section="footer-brand"
               className="text-[10px] tracking-[0.4em] uppercase text-[#C9A469] mt-2 block"
             />
@@ -122,7 +122,7 @@ export function Footer() {
               as="p"
               multiline
               contentKey="footer.brand.desc"
-              fallback="NazirovSholding is an international holding company specializing in export, manufacturing, logistics and strategic business partnerships."
+              fallback="NazirovSholding — eksport, ishlab chiqarish, logistika va strategik biznes hamkorliklariga ixtisoslashgan xalqaro holding kompaniyasi."
               section="footer-brand"
               className="mt-6 text-sm leading-relaxed text-[#F6F2EA]/70"
             />
