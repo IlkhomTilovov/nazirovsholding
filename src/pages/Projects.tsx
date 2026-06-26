@@ -111,8 +111,7 @@ export default function Projects() {
                   contentKey={`loyihalar.case.${p.id}.title`}
                   fallback={p.title}
                   section="loyihalar-cases"
-                  className="text-3xl md:text-4xl font-light leading-tight mb-6"
-                  style={{ fontFamily: "'Instrument Serif', serif" }}
+                  className="text-3xl md:text-4xl font-light leading-tight mb-6 font-serif"
                 />
                 <EditableText
                   as="p"
