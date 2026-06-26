@@ -41,35 +41,6 @@ export default function Sectors() {
         </div>
       </section>
 
-      {/* Sectors grid */}
-      <section className="py-24">
-        <div className="max-w-[1200px] mx-auto px-6 lg:px-10">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-px bg-white/5">
-            {sectors.map((s) => {
-              const Icon = s.icon;
-              return (
-                <div
-                  key={s.num}
-                  className="group relative bg-[#0d0d0d] p-8 hover:bg-[#141414] transition-colors duration-500"
-                >
-                  <div className="flex items-start justify-between mb-10">
-                    <Icon className="w-7 h-7 text-[#d4af37]" strokeWidth={1.2} />
-                    <span className="text-[10px] tracking-[0.3em] text-white/30">{s.num}</span>
-                  </div>
-                  <h3
-                    className="text-2xl font-light mb-3 group-hover:text-[#d4af37] transition-colors"
-                    style={{ fontFamily: "'Instrument Serif', serif" }}
-                  >
-                    {s.title}
-                  </h3>
-                  <p className="text-sm text-white/50 leading-relaxed">{s.desc}</p>
-                  <div className="mt-8 h-px bg-gradient-to-r from-[#d4af37]/0 via-[#d4af37]/40 to-[#d4af37]/0 scale-x-0 group-hover:scale-x-100 transition-transform duration-700 origin-left" />
-                </div>
-              );
-            })}
-          </div>
-        </div>
-      </section>
 
       {/* Brands */}
       <section className="py-24 border-t border-white/5 relative overflow-hidden">
