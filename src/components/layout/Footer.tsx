@@ -207,10 +207,16 @@ export function Footer() {
         {/* Bottom Bar */}
         <div className="pt-8 border-t border-[#C9A469]/[0.12] flex flex-col lg:flex-row items-center justify-between gap-6 text-[11px] tracking-[0.15em] text-[#F6F2EA]/50">
           <div>© 2026 NazirovSholding. Barcha huquqlar himoyalangan.</div>
-          <div className="flex items-center gap-8">
-            <Link to="/privacy" className="hover:text-[#C9A469] transition-colors">Maxfiylik siyosati</Link>
-            <Link to="/terms" className="hover:text-[#C9A469] transition-colors">Foydalanish shartlari</Link>
-            <Link to="/cookies" className="hover:text-[#C9A469] transition-colors">Cookies</Link>
+          <div className="flex items-center gap-2 text-[11px] tracking-[0.15em]">
+            <span className="text-[#F6F2EA]/50">Saytni ishlab chiqdi:</span>
+            <a
+              href="https://sellsoft.uz"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-[#C9A469] hover:text-[#F6F2EA] transition-colors uppercase tracking-[0.25em] font-medium"
+            >
+              SellSoft
+            </a>
           </div>
           <div className="uppercase tracking-[0.25em] text-[10px]">
             O'zbekistonda mukammallik bilan yaratilgan
