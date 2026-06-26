@@ -3,6 +3,7 @@ import { Canvas, useFrame, useLoader } from '@react-three/fiber';
 import { Html, OrbitControls } from '@react-three/drei';
 import { AnimatePresence, motion } from 'framer-motion';
 import * as THREE from 'three';
+import { EditableText } from '@/components/EditableText';
 import earthMap from '@/assets/earth/earth_atmos_2048.jpg';
 import earthSpecular from '@/assets/earth/earth_specular_2048.jpg';
 import earthClouds from '@/assets/earth/earth_clouds_1024.png';
@@ -351,14 +352,10 @@ export function InteractiveEarthSection() {
         >
           <div className="mb-5 flex items-center gap-3">
             <span className="h-px w-12 bg-[#c9a84c]" />
-            <span className="text-[11px] font-medium uppercase tracking-[0.45em] text-[#c9a84c]">Global Presence</span>
+            <EditableText contentKey="bozorlar.globe.eyebrow" fallback="Global Presence" section="bozorlar-globe" className="text-[11px] font-medium uppercase tracking-[0.45em] text-[#c9a84c]" />
           </div>
-          <h2 className="font-serif text-4xl leading-[1.02] text-white md:text-6xl lg:text-7xl">
-            Global hamkorlik va <span className="italic text-[#c9a84c]">xalqaro bozorlar</span>
-          </h2>
-          <p className="mt-6 max-w-2xl text-sm leading-relaxed text-white/68 md:text-base">
-            Haqiqiy Earth texture, davlat chegaralari va Oʻzbekistondan strategik bozorlarga yoʻnaltirilgan jonli savdo yoʻnalishlari.
-          </p>
+          <EditableText as="h2" contentKey="bozorlar.globe.title" fallback="Global hamkorlik va xalqaro bozorlar" section="bozorlar-globe" className="font-serif text-4xl leading-[1.02] text-white md:text-6xl lg:text-7xl" />
+          <EditableText as="p" multiline contentKey="bozorlar.globe.desc" fallback="Haqiqiy Earth texture, davlat chegaralari va Oʻzbekistondan strategik bozorlarga yoʻnaltirilgan jonli savdo yoʻnalishlari." section="bozorlar-globe" className="mt-6 max-w-2xl text-sm leading-relaxed text-white/68 md:text-base" />
         </motion.div>
 
         <div className="mt-9 grid flex-1 grid-cols-1 gap-6 lg:grid-cols-[minmax(0,1fr)_330px] lg:items-stretch">
@@ -398,21 +395,21 @@ export function InteractiveEarthSection() {
             className="flex flex-col gap-4"
           >
             <div className="border border-[#c9a84c]/20 bg-[#0d0d0d]/88 p-6 backdrop-blur">
-              <div className="mb-2 text-[10px] uppercase tracking-[0.4em] text-[#c9a84c]/70">Markets Network</div>
+              <EditableText contentKey="bozorlar.network.label" fallback="Markets Network" section="bozorlar-globe" className="mb-2 block text-[10px] uppercase tracking-[0.4em] text-[#c9a84c]/70" />
               <div className="flex items-end justify-between">
                 <div className="font-serif text-4xl text-white">{MARKETS.length}+</div>
-                <div className="text-xs text-white/50">Strategic Markets</div>
+                <EditableText contentKey="bozorlar.network.caption" fallback="Strategic Markets" section="bozorlar-globe" className="text-xs text-white/50" />
               </div>
               <div className="mt-4 h-px bg-[#c9a84c]/15" />
               <div className="mt-4 grid grid-cols-3 gap-3 text-center">
                 {[
-                  { k: '3', l: 'Continents' },
-                  { k: '15+', l: 'Years' },
-                  { k: '500+', l: 'Shipments' },
+                  { k: '3', l: 'Continents', key: 'bozorlar.network.continents' },
+                  { k: '15+', l: 'Years', key: 'bozorlar.network.years' },
+                  { k: '500+', l: 'Shipments', key: 'bozorlar.network.shipments' },
                 ].map((stat) => (
                   <div key={stat.l}>
                     <div className="font-serif text-xl text-[#c9a84c]">{stat.k}</div>
-                    <div className="mt-1 text-[9px] uppercase tracking-[0.3em] text-white/40">{stat.l}</div>
+                    <EditableText contentKey={stat.key} fallback={stat.l} section="bozorlar-globe" className="mt-1 block text-[9px] uppercase tracking-[0.3em] text-white/40" />
                   </div>
                 ))}
               </div>
