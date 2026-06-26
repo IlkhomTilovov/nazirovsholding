@@ -388,49 +388,10 @@ export default function Index() {
         </div>
       </section>
 
-      {/* GLOBAL PRESENCE */}
-      <section ref={sectionGlobal.ref} className="py-24 md:py-32 bg-secondary/40 relative overflow-hidden border-y border-primary/10">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_50%,hsl(var(--primary)/0.08),transparent_50%)] pointer-events-none" />
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_50%,hsl(var(--primary)/0.06),transparent_50%)] pointer-events-none" />
-        <div className="max-w-[1320px] mx-auto px-4 lg:px-8 relative">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-            <div className={`lg:col-span-5 transition-all duration-700 ${sectionGlobal.isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
-              <div className="flex items-center gap-3 mb-5">
-                <span className="w-10 h-px bg-primary" />
-                <EditableText contentKey="global_label" fallback="GLOBAL QAMROV" as="span" className="text-primary text-xs tracking-[0.4em] uppercase font-semibold" section="global" />
-              </div>
-              <h2 className="font-serif text-4xl md:text-5xl lg:text-6xl text-foreground leading-[1.05] mb-6">
-                <EditableText contentKey="global_title_1" fallback="3 qit'a." as="span" className="block" section="global" />
-                <EditableText contentKey="global_title_2" fallback="20+ davlat." as="span" className="block text-primary italic" section="global" />
-                <EditableText contentKey="global_title_3" fallback="Bitta hamkor." as="span" className="block" section="global" />
-              </h2>
-              <p className="text-muted-foreground text-base md:text-lg leading-relaxed mb-8">
-                <EditableText contentKey="global_intro" fallback="Yevropa Ittifoqi, MDH, Yaqin Sharq va Osiyo bozorlarida faol eksport va xalqaro hamkorlik. Har bir bozorda mahalliy hamkorlar va logistika tarmog'i." as="span" section="global" />
-              </p>
-              <div className="flex flex-wrap gap-4 text-sm">
-                <div className="flex items-center gap-2 text-muted-foreground"><Globe2 className="w-4 h-4 text-primary" /> 3 qit'a</div>
-                <div className="flex items-center gap-2 text-muted-foreground"><MapPin className="w-4 h-4 text-primary" /> 20+ bozor</div>
-                <div className="flex items-center gap-2 text-muted-foreground"><Handshake className="w-4 h-4 text-primary" /> 500+ hamkor</div>
-              </div>
-            </div>
+      {/* GLOBAL PRESENCE — Interactive Earth */}
+      <InteractiveEarthSection />
 
-            <div className={`lg:col-span-7 transition-all duration-700 ${sectionGlobal.isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'}`} style={{ transitionDelay: '200ms' }}>
-              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
-                {globalMarkets.map((m, i) => (
-                  <div
-                    key={m.key}
-                    className={`group flex items-center gap-3 px-4 py-3.5 border border-primary/15 bg-card/50 backdrop-blur-sm rounded-sm hover:border-primary/50 hover:bg-card transition-all duration-500 ${sectionGlobal.isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}`}
-                    style={{ transitionDelay: `${300 + i * 50}ms` }}
-                  >
-                    <span className="text-2xl leading-none">{m.flag}</span>
-                    <span className="text-foreground/90 text-sm font-medium tracking-wide">{m.name}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+
 
 
       {/* WHY US - Quality grid + Mission panel (Noir & Gold premium) */}
