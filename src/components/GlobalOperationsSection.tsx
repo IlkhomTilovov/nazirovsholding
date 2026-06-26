@@ -71,15 +71,10 @@ export function GlobalOperationsSection() {
           >
             <div className="flex items-center gap-3 mb-6">
               <span className="h-px w-12 bg-[#c9a84c]" />
-              <span className="text-[#c9a84c] text-[11px] tracking-[0.45em] uppercase font-medium">Global Operations</span>
+              <EditableText contentKey="bozorlar.hero.eyebrow" fallback="Global Operations" section="bozorlar-hero" className="text-[#c9a84c] text-[11px] tracking-[0.45em] uppercase font-medium" />
             </div>
-            <h2 className="font-serif text-4xl md:text-6xl lg:text-7xl leading-[1.05] text-white">
-              Biz natijalar orqali <span className="italic text-[#c9a84c]">gapiramiz</span>
-            </h2>
-            <p className="mt-7 text-base md:text-lg text-white/70 max-w-2xl leading-relaxed">
-              NazirovSholding xalqaro savdo, eksport, logistika va strategik hamkorliklar orqali global bozorlarda
-              faoliyat yuritadi. Bizning yondashuvimiz ishonch, natija va uzoq muddatli hamkorlikka asoslangan.
-            </p>
+            <EditableText as="h2" contentKey="bozorlar.hero.title" fallback="Biz natijalar orqali gapiramiz" section="bozorlar-hero" className="font-serif text-4xl md:text-6xl lg:text-7xl leading-[1.05] text-white" />
+            <EditableText as="p" multiline contentKey="bozorlar.hero.desc" fallback="NazirovSholding xalqaro savdo, eksport, logistika va strategik hamkorliklar orqali global bozorlarda faoliyat yuritadi. Bizning yondashuvimiz ishonch, natija va uzoq muddatli hamkorlikka asoslangan." section="bozorlar-hero" className="mt-7 text-base md:text-lg text-white/70 max-w-2xl leading-relaxed" />
           </motion.div>
         </div>
       </div>
