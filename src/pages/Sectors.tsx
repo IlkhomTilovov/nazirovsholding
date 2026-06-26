@@ -1,18 +1,8 @@
 import { useSEO } from '@/hooks/useSEO';
-import { ArrowUpRight, Ship, Factory, Wheat, TrendingUp, Hammer, Globe2, Truck, Briefcase } from 'lucide-react';
+import { ArrowUpRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useBrands } from '@/hooks/useBrands';
 
-const sectors = [
-  { icon: Ship, num: '01', title: 'Eksport', desc: 'Xalqaro bozorlarga sifatli mahsulot yetkazib berish va savdo aloqalarini rivojlantirish.' },
-  { icon: Globe2, num: '02', title: 'Xalqaro Savdo', desc: 'Yevropa, MDH va Yaqin Sharq mintaqalarida B2B savdo va distribyutsiya.' },
-  { icon: Truck, num: '03', title: 'Logistika', desc: 'DAP, FCA va CIF shartlari asosida xalqaro yuk tashish va omborxona xizmatlari.' },
-  { icon: Factory, num: '04', title: 'Ishlab Chiqarish', desc: 'Mahalliy va xalqaro brendlar uchun yuqori sifatli sanoat ishlab chiqarish.' },
-  { icon: Hammer, num: '05', title: "Qurilish", desc: 'Yirik infratuzilma loyihalari va sanoat ob’ektlarini bunyod etish.' },
-  { icon: Wheat, num: '06', title: 'Agrosanoat', desc: 'Qishloq xo‘jaligi mahsulotlarini yetishtirish, qayta ishlash va eksport qilish.' },
-  { icon: TrendingUp, num: '07', title: 'Investitsiya', desc: 'Strategik sektorlarga uzoq muddatli kapital qo‘yish va sheriklik dasturlari.' },
-  { icon: Briefcase, num: '08', title: 'Biznes Rivojlantirish', desc: 'Yangi bozorlarni o‘zlashtirish, strategik konsalting va korporativ rivojlanish.' },
-];
 
 export default function Sectors() {
   useSEO({ title: "Faoliyat yo'nalishlari — NazirovSholding" });
@@ -41,35 +31,6 @@ export default function Sectors() {
         </div>
       </section>
 
-      {/* Sectors grid */}
-      <section className="py-24">
-        <div className="max-w-[1200px] mx-auto px-6 lg:px-10">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-px bg-white/5">
-            {sectors.map((s) => {
-              const Icon = s.icon;
-              return (
-                <div
-                  key={s.num}
-                  className="group relative bg-[#0d0d0d] p-8 hover:bg-[#141414] transition-colors duration-500"
-                >
-                  <div className="flex items-start justify-between mb-10">
-                    <Icon className="w-7 h-7 text-[#d4af37]" strokeWidth={1.2} />
-                    <span className="text-[10px] tracking-[0.3em] text-white/30">{s.num}</span>
-                  </div>
-                  <h3
-                    className="text-2xl font-light mb-3 group-hover:text-[#d4af37] transition-colors"
-                    style={{ fontFamily: "'Instrument Serif', serif" }}
-                  >
-                    {s.title}
-                  </h3>
-                  <p className="text-sm text-white/50 leading-relaxed">{s.desc}</p>
-                  <div className="mt-8 h-px bg-gradient-to-r from-[#d4af37]/0 via-[#d4af37]/40 to-[#d4af37]/0 scale-x-0 group-hover:scale-x-100 transition-transform duration-700 origin-left" />
-                </div>
-              );
-            })}
-          </div>
-        </div>
-      </section>
 
       {/* Brands */}
       <section className="py-24 border-t border-white/5 relative overflow-hidden">
