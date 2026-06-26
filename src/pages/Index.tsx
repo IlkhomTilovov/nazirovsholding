@@ -142,7 +142,7 @@ export default function Index() {
   const sectionCta = useInView();
   const sectionStats = useInView(0.2);
   const sectionSectors = useInView();
-  const sectionGlobal = useInView();
+  
   const sectionStandards = useInView();
   const sectionChairman = useInView();
 
