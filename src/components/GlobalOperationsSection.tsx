@@ -116,10 +116,10 @@ export function GlobalOperationsSection() {
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-px bg-[#c9a84c]/10 border border-[#c9a84c]/10">
             {[
-              { n: 25,  s: '+', label: 'International Markets',  k: '01' },
-              { n: 500, s: '+', label: 'Successful Shipments',   k: '02' },
-              { n: 100, s: '+', label: 'Strategic Partners',     k: '03' },
-              { n: 15,  s: '+', label: 'Years Of Experience',    k: '04' },
+              { n: 25,  s: '+', labelKey: 'bozorlar.stat.markets',    fallback: 'International Markets', k: '01' },
+              { n: 500, s: '+', labelKey: 'bozorlar.stat.shipments',  fallback: 'Successful Shipments',  k: '02' },
+              { n: 100, s: '+', labelKey: 'bozorlar.stat.partners',   fallback: 'Strategic Partners',    k: '03' },
+              { n: 15,  s: '+', labelKey: 'bozorlar.stat.years',      fallback: 'Years Of Experience',   k: '04' },
             ].map((s, i) => (
               <motion.div
                 key={s.k}
@@ -132,7 +132,7 @@ export function GlobalOperationsSection() {
                   <Counter to={s.n} suffix={s.s} start={statsInView} />
                 </div>
                 <div className="h-px w-10 bg-[#c9a84c]/40 mb-4 group-hover:w-16 transition-all duration-500" />
-                <div className="text-[11px] tracking-[0.3em] uppercase text-white/60 font-medium">{s.label}</div>
+                <EditableText contentKey={s.labelKey} fallback={s.fallback} section="bozorlar-stats" className="text-[11px] tracking-[0.3em] uppercase text-white/60 font-medium" />
               </motion.div>
             ))}
           </div>
