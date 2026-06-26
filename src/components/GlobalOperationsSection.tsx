@@ -175,14 +175,16 @@ export function GlobalOperationsSection() {
                 className="group relative grid grid-cols-1 md:grid-cols-12 gap-0 border border-[#c9a84c]/15 bg-[#0f0f0f] overflow-hidden hover:border-[#c9a84c]/50 transition-all duration-700 hover:shadow-[0_0_60px_-20px_rgba(201,168,76,0.35)]"
               >
                 <div className="md:col-span-5 relative aspect-[16/10] md:aspect-auto overflow-hidden">
-                  <img
-                    src={p.img}
+                  <EditableImage
+                    contentKey={`bozorlar.case.${p.id}.image`}
+                    fallbackSrc={p.img}
                     alt={p.title}
-                    loading="lazy"
+                    section="bozorlar-cases"
+                    wrapperClassName="absolute inset-0 w-full h-full"
                     className="absolute inset-0 w-full h-full object-cover transition-transform duration-[1600ms] ease-out group-hover:scale-110"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-r from-[#0d0d0d]/60 via-transparent to-transparent md:bg-gradient-to-r md:from-transparent md:via-transparent md:to-[#0f0f0f]" />
-                  <div className="absolute top-5 left-5 bg-[#0d0d0d]/80 backdrop-blur-sm px-3 py-1.5 text-xs tracking-[0.3em] uppercase text-white/90 border border-[#c9a84c]/30 flex items-center gap-2">
+                  <div className="absolute inset-0 bg-gradient-to-r from-[#0d0d0d]/60 via-transparent to-transparent md:bg-gradient-to-r md:from-transparent md:via-transparent md:to-[#0f0f0f] pointer-events-none" />
+                  <div className="absolute top-5 left-5 z-10 bg-[#0d0d0d]/80 backdrop-blur-sm px-3 py-1.5 text-xs tracking-[0.3em] uppercase text-white/90 border border-[#c9a84c]/30 flex items-center gap-2">
                     <span className="text-base leading-none">{p.flag}</span>
                     <EditableText contentKey={`bozorlar.case.${p.id}.country`} fallback={p.country} section="bozorlar-cases" />
                   </div>
