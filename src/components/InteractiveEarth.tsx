@@ -352,14 +352,10 @@ export function InteractiveEarthSection() {
         >
           <div className="mb-5 flex items-center gap-3">
             <span className="h-px w-12 bg-[#c9a84c]" />
-            <span className="text-[11px] font-medium uppercase tracking-[0.45em] text-[#c9a84c]">Global Presence</span>
+            <EditableText contentKey="bozorlar.globe.eyebrow" fallback="Global Presence" section="bozorlar-globe" className="text-[11px] font-medium uppercase tracking-[0.45em] text-[#c9a84c]" />
           </div>
-          <h2 className="font-serif text-4xl leading-[1.02] text-white md:text-6xl lg:text-7xl">
-            Global hamkorlik va <span className="italic text-[#c9a84c]">xalqaro bozorlar</span>
-          </h2>
-          <p className="mt-6 max-w-2xl text-sm leading-relaxed text-white/68 md:text-base">
-            Haqiqiy Earth texture, davlat chegaralari va Oʻzbekistondan strategik bozorlarga yoʻnaltirilgan jonli savdo yoʻnalishlari.
-          </p>
+          <EditableText as="h2" contentKey="bozorlar.globe.title" fallback="Global hamkorlik va xalqaro bozorlar" section="bozorlar-globe" className="font-serif text-4xl leading-[1.02] text-white md:text-6xl lg:text-7xl" />
+          <EditableText as="p" multiline contentKey="bozorlar.globe.desc" fallback="Haqiqiy Earth texture, davlat chegaralari va Oʻzbekistondan strategik bozorlarga yoʻnaltirilgan jonli savdo yoʻnalishlari." section="bozorlar-globe" className="mt-6 max-w-2xl text-sm leading-relaxed text-white/68 md:text-base" />
         </motion.div>
 
         <div className="mt-9 grid flex-1 grid-cols-1 gap-6 lg:grid-cols-[minmax(0,1fr)_330px] lg:items-stretch">
