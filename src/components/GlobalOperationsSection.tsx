@@ -79,7 +79,7 @@ export function GlobalOperationsSection() {
       </div>
 
       {/* ───────── BLOCK 3 — BUSINESS STATISTICS ───────── */}
-      <div ref={statsRef} className="relative py-28 md:py-36 bg-[#0d0d0d]">
+      <div className="relative py-28 md:py-36 bg-[#0d0d0d]">
         <div className="max-w-[1280px] mx-auto px-6 lg:px-10">
           <motion.div
             variants={fadeUp} initial="hidden" whileInView="show" viewport={{ once: true, amount: 0.4 }}
