@@ -1,9 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { motion, useInView, useScroll, useTransform } from 'framer-motion';
-import { Link } from 'react-router-dom';
-import { ArrowRight, Calendar, FileDown, Handshake, MessageSquare } from 'lucide-react';
-import { Button } from '@/components/ui/button';
 import { EditableText } from '@/components/EditableText';
+import { EditableImage } from '@/components/EditableImage';
 import cinematicPort from '@/assets/global-cinematic-port.jpg';
 import projectGermany from '@/assets/project-germany-textile.jpg';
 import projectKazakhstan from '@/assets/project-kazakhstan-agro.jpg';
