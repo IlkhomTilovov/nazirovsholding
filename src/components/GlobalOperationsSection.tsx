@@ -54,7 +54,14 @@ export function GlobalOperationsSection() {
       {/* ───────── BLOCK 1 — CINEMATIC SHOWCASE ───────── */}
       <div className="relative h-[80vh] min-h-[560px] w-full overflow-hidden">
         <motion.div style={{ y: portY, scale: portScale }} className="absolute inset-0">
-          <img src={cinematicPort} alt="NazirovSholding global port operations" className="w-full h-full object-cover" loading="lazy" />
+          <EditableImage
+            contentKey="bozorlar.hero.image"
+            fallbackSrc={cinematicPort}
+            alt="NazirovSholding global port operations"
+            section="bozorlar-hero"
+            wrapperClassName="w-full h-full"
+            className="w-full h-full object-cover"
+          />
         </motion.div>
         <div className="absolute inset-0 bg-gradient-to-b from-[#0d0d0d]/90 via-[#0d0d0d]/40 to-[#0d0d0d]" />
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_30%,rgba(13,13,13,0.7)_100%)]" />
