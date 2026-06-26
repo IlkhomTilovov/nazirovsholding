@@ -151,17 +151,34 @@ export default function Sectors() {
       <section className="py-24 border-t border-white/5">
         <div className="max-w-[1200px] mx-auto px-6 lg:px-10 flex flex-col md:flex-row items-start md:items-end justify-between gap-8">
           <div>
-            <p className="text-[10px] tracking-[0.5em] uppercase text-[#d4af37] mb-4">Strategik Hamkorlik</p>
+            <EditableText
+              contentKey="sectors.cta.eyebrow"
+              fallback="Strategik Hamkorlik"
+              as="p"
+              className="text-[10px] tracking-[0.5em] uppercase text-[#d4af37] mb-4"
+              section="sectors-cta"
+            />
             <h2 className="text-4xl md:text-5xl font-light max-w-2xl leading-tight" style={{ fontFamily: "'Instrument Serif', serif" }}>
-              Bizning sohalardan birida hamkorlikni o‘rganamizmi?
+              <EditableText
+                contentKey="sectors.cta.title"
+                fallback="Bizning sohalardan birida hamkorlikni o‘rganamizmi?"
+                multiline
+                section="sectors-cta"
+              />
             </h2>
           </div>
           <Link
             to="/contact"
             className="group inline-flex items-center gap-3 bg-[#d4af37] hover:bg-[#c9a230] text-black px-8 py-4 text-xs font-semibold tracking-[0.3em] uppercase transition-colors"
           >
-            So'rov Yuborish <ArrowUpRight className="w-4 h-4 group-hover:rotate-45 transition-transform" />
+            <EditableText
+              contentKey="sectors.cta.button"
+              fallback="So'rov Yuborish"
+              section="sectors-cta"
+            />
+            <ArrowUpRight className="w-4 h-4 group-hover:rotate-45 transition-transform" />
           </Link>
+
         </div>
       </section>
     </div>
