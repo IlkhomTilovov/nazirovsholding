@@ -18,8 +18,10 @@ import {
   Settings2,
   MessageSquare,
   Award,
+  Handshake,
   Sliders,
   BarChart3,
+
   LucideIcon
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -40,6 +42,8 @@ const navItems: NavItem[] = [
   { title: 'Analytics', url: '/admin/analytics', icon: BarChart3, module: 'analytics' },
   { title: 'Buyurtmalar', url: '/admin/orders', icon: ShoppingCart, module: 'orders' },
   { title: 'Brendlar', url: '/admin/brands', icon: Award, module: 'brands' },
+  { title: 'Hamkorlar', url: '/admin/partners', icon: Handshake, module: 'brands' },
+
   { title: 'Toifalar', url: '/admin/categories', icon: FolderTree, module: 'categories' },
   { title: 'Mahsulotlar', url: '/admin/products', icon: Package, module: 'products' },
   { title: 'Atributlar', url: '/admin/attributes', icon: Sliders, module: 'attributes' },
