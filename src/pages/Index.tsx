@@ -10,6 +10,8 @@ import { EditableText } from '@/components/EditableText';
 import { EditableImage } from '@/components/EditableImage';
 import { BrandsSection } from '@/components/BrandsSection';
 import { InteractiveEarthSection } from '@/components/InteractiveEarth';
+import PartnersMarquee from '@/components/PartnersMarquee';
+
 
 import { useState, useEffect, useRef } from 'react';
 
@@ -327,54 +329,9 @@ export default function Index() {
         </div>
       </section>
 
-      {/* BUSINESS SECTORS */}
-      <section ref={sectionSectors.ref} className="py-24 md:py-32 bg-background relative overflow-hidden">
-        <div className="absolute -top-32 left-1/4 w-[600px] h-[600px] bg-primary/[0.04] rounded-full blur-[120px] pointer-events-none" />
-        <div className="max-w-[1320px] mx-auto px-4 lg:px-8 relative">
-          <div className={`mb-16 max-w-3xl transition-all duration-700 ${sectionSectors.isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
-            <div className="flex items-center gap-3 mb-5">
-              <span className="w-10 h-px bg-primary" />
-              <EditableText contentKey="sectors_label" fallback="BIZNES YO'NALISHLARIMIZ" as="span" className="text-primary text-xs tracking-[0.4em] uppercase font-semibold" section="sectors" />
-            </div>
-            <h2 className="font-serif text-4xl md:text-5xl lg:text-6xl text-foreground leading-[1.05] mb-6">
-              <EditableText contentKey="sectors_title_1" fallback="Bir ekotizim," as="span" className="block" section="sectors" />
-              <EditableText contentKey="sectors_title_2" fallback="cheksiz imkoniyatlar" as="span" className="block text-primary italic" section="sectors" />
-            </h2>
-            <p className="text-muted-foreground text-base md:text-lg leading-relaxed">
-              <EditableText contentKey="sectors_intro" fallback="NazirovSholding International Holding Group to'rt asosiy yo'nalishni birlashtirgan: eksport, ishlab chiqarish, logistika va investitsiya. Bu — hamkorlar uchun yagona darvoza orqali to'liq B2B yechim." as="span" section="sectors" />
-            </p>
-          </div>
+      {/* PARTNERS — Infinite logo marquee */}
+      <PartnersMarquee />
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {businessSectors.map((s, i) => {
-              const IconComp = iconMap[s.icon] || Building2;
-              return (
-                <article
-                  key={s.key}
-                  className={`group relative overflow-hidden rounded-sm border border-primary/15 bg-gradient-to-br from-card/60 to-background p-8 md:p-10 transition-all duration-500 hover:border-primary/50 hover:shadow-[0_0_60px_-20px_hsl(var(--primary)/0.45)] hover:-translate-y-1 ${sectionSectors.isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'}`}
-                  style={{ transitionDelay: `${i * 120}ms` }}
-                >
-                  <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-full blur-3xl group-hover:bg-primary/10 transition-colors duration-700" />
-                  <div className="relative flex items-start gap-5">
-                    <div className="w-14 h-14 flex-shrink-0 flex items-center justify-center border border-primary/40 bg-primary/5 rounded-sm group-hover:bg-primary/15 transition-colors duration-500">
-                      <IconComp className="w-6 h-6 text-primary" strokeWidth={1.5} />
-                    </div>
-                    <div className="flex-1">
-                      <h3 className="font-serif text-2xl md:text-3xl text-foreground mb-3 leading-tight">
-                        <EditableText contentKey={`${s.key}_title`} fallback={s.titleFallback} as="span" section="sectors" />
-                      </h3>
-                      <p className="text-muted-foreground text-sm md:text-base leading-relaxed">
-                        <EditableText contentKey={`${s.key}_desc`} fallback={s.descFallback} as="span" section="sectors" />
-                      </p>
-                    </div>
-                  </div>
-                  <div className="absolute bottom-0 left-0 h-px w-0 bg-gradient-to-r from-primary via-primary/60 to-transparent group-hover:w-full transition-all duration-700" />
-                </article>
-              );
-            })}
-          </div>
-        </div>
-      </section>
 
       {/* GLOBAL PRESENCE — Interactive Earth */}
       <InteractiveEarthSection />
