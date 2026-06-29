@@ -548,6 +548,39 @@ export type Database = {
           },
         ]
       }
+      partners: {
+        Row: {
+          created_at: string
+          id: string
+          is_active: boolean
+          logo: string
+          name: string
+          sort_order: number
+          updated_at: string
+          website: string | null
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          is_active?: boolean
+          logo: string
+          name: string
+          sort_order?: number
+          updated_at?: string
+          website?: string | null
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          is_active?: boolean
+          logo?: string
+          name?: string
+          sort_order?: number
+          updated_at?: string
+          website?: string | null
+        }
+        Relationships: []
+      }
       product_attribute_values: {
         Row: {
           attribute_id: string
