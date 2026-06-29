@@ -43,6 +43,8 @@ import Dashboard from "./pages/admin/Dashboard";
 import Orders from "./pages/admin/Orders";
 import Categories from "./pages/admin/Categories";
 import Brands from "./pages/admin/Brands";
+import Partners from "./pages/admin/Partners";
+
 import ProductsNew from "./pages/admin/ProductsNew";
 import Attributes from "./pages/admin/Attributes";
 import Customers from "./pages/admin/Customers";
@@ -100,6 +102,12 @@ const App = () => (
                               <Brands />
                             </ProtectedRoute>
                           } />
+                          <Route path="partners" element={
+                            <ProtectedRoute module="brands">
+                              <Partners />
+                            </ProtectedRoute>
+                          } />
+
                           <Route path="products" element={
                             <ProtectedRoute module="products">
                               <ProductsNew />
