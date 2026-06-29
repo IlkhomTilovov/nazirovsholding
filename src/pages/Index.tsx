@@ -185,8 +185,8 @@ export default function Index() {
               loading={i === 0 ? 'eager' : 'lazy'}
             />
           ))}
-          <div className="absolute inset-0 bg-gradient-to-r from-black/95 via-black/75 to-black/40 z-20 pointer-events-none" />
-          <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent z-20 pointer-events-none" />
+          <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/40 to-transparent z-20 pointer-events-none" />
+          <div className="absolute inset-0 bg-gradient-to-t from-background/80 via-transparent to-transparent z-20 pointer-events-none" />
         </div>
 
         <div className="container mx-auto px-4 lg:px-8 relative z-10 py-20 pointer-events-none">
