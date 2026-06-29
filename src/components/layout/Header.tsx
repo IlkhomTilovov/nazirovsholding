@@ -41,10 +41,10 @@ export function Header() {
   return (
     <>
       <header
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 bg-[#0a0a0a] ${
           scrolled
-            ? 'bg-[#0a0a0a] border-b border-[#d4af37]/15 py-3'
-            : 'bg-transparent py-5'
+            ? 'border-b border-[#d4af37]/15 py-3'
+            : 'border-b border-transparent py-5'
         }`}
       >
         <div className="max-w-[1440px] mx-auto px-5 lg:px-10">
