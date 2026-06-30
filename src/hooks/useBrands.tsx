@@ -119,37 +119,63 @@ export interface BrandCategory {
   name_uz: string;
   name_ru: string;
   slug: string;
+  division_id: string | null;
+}
+
+export interface BrandDivision {
+  id: string;
+  name_uz: string;
+  name_ru: string;
+  slug: string;
+  description_uz: string | null;
+  description_ru: string | null;
+  cover_image: string | null;
+  sort_order: number;
 }
 
 export function useBrandProducts(brandId: string | null | undefined, limit = 48) {
   const [products, setProducts] = useState<Product[]>([]);
   const [categories, setCategories] = useState<BrandCategory[]>([]);
+  const [divisions, setDivisions] = useState<BrandDivision[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     if (!brandId) {
       setProducts([]);
       setCategories([]);
+      setDivisions([]);
       setLoading(false);
       return;
     }
     (async () => {
       setLoading(true);
       try {
-        // 1) Find categories that include this brand
+        const { data: divs } = await supabase
+          .from('business_divisions')
+          .select('id, name_uz, name_ru, slug, description_uz, description_ru, cover_image, sort_order')
+          .eq('brand_id', brandId)
+          .eq('is_active', true)
+          .order('sort_order', { ascending: true });
+        setDivisions((divs || []) as BrandDivision[]);
+
         const { data: cats } = await supabase
           .from('categories')
-          .select('id, name_uz, name_ru, slug, brand_ids, sort_order, is_active')
+          .select('id, name_uz, name_ru, slug, brand_ids, division_id, sort_order, is_active')
           .eq('is_active', true)
           .contains('brand_ids', [brandId])
           .order('sort_order', { ascending: true });
 
         const catList = (cats || []) as any[];
         setCategories(
-          catList.map((c) => ({ id: c.id, name_uz: c.name_uz, name_ru: c.name_ru, slug: c.slug }))
+          catList.map((c) => ({
+            id: c.id,
+            name_uz: c.name_uz,
+            name_ru: c.name_ru,
+            slug: c.slug,
+            division_id: c.division_id ?? null,
+          }))
         );
 
-        // 2) Fetch products: either products with brand_id OR products in those categories
         const categoryIds = catList.map((c) => c.id);
 
         let query = supabase
@@ -176,5 +202,5 @@ export function useBrandProducts(brandId: string | null | undefined, limit = 48)
     })();
   }, [brandId, limit]);
 
-  return { products, categories, loading };
+  return { products, categories, divisions, loading };
 }
