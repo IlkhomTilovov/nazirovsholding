@@ -41,10 +41,10 @@ export function Header() {
   return (
     <>
       <header
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 bg-background ${
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 bg-card ${
           scrolled
-            ? 'border-b border-primary/15 py-3'
-            : 'border-b border-transparent py-5'
+            ? 'border-b border-border shadow-[0_2px_20px_-10px_hsl(var(--secondary)/0.15)] py-3'
+            : 'border-b border-border/60 py-5'
         }`}
       >
         <div className="max-w-[1440px] mx-auto px-5 lg:px-10">
@@ -53,15 +53,16 @@ export function Header() {
             <Link to="/" className="flex items-center group shrink-0">
               <div className="flex flex-col leading-none">
                 <span
-                  className="font-serif text-[20px] md:text-[22px] tracking-[0.22em] text-foreground font-light font-serif"
+                  className="font-serif text-[20px] md:text-[22px] tracking-[0.22em] text-secondary font-light"
                 >
                   NAZIROV<span className="text-primary font-normal">SHOLDING</span>
                 </span>
-                <span className="hidden md:block text-[9px] tracking-[0.45em] text-foreground/40 uppercase mt-0.5">
+                <span className="hidden md:block text-[9px] tracking-[0.45em] text-muted-foreground uppercase mt-0.5">
                   International Holding Group
                 </span>
               </div>
             </Link>
+
 
             {/* Desktop Nav */}
             <nav className="hidden xl:flex items-center gap-1">
@@ -75,11 +76,12 @@ export function Header() {
                   >
                     <span
                       className={`text-[11px] font-medium tracking-[0.22em] uppercase transition-colors duration-300 ${
-                        active ? 'text-primary' : 'text-foreground/70 group-hover:text-foreground'
+                        active ? 'text-primary' : 'text-secondary/80 group-hover:text-primary'
                       }`}
                     >
                       {link.label}
                     </span>
+
                     <span
                       className={`pointer-events-none absolute left-4 right-4 -bottom-0.5 h-px bg-gradient-to-r from-transparent via-[hsl(var(--primary))] to-transparent transition-all duration-500 ${
                         active ? 'opacity-100 scale-x-100' : 'opacity-0 scale-x-0 group-hover:opacity-100 group-hover:scale-x-100'
@@ -95,20 +97,19 @@ export function Header() {
               <div className="hidden md:flex items-center gap-2 text-[10px] tracking-[0.3em] uppercase">
                 <button
                   onClick={() => setLanguage('uz')}
-                  className={`transition-colors ${language === 'uz' ? 'text-primary' : 'text-foreground/40 hover:text-foreground/80'}`}
+                  className={`transition-colors ${language === 'uz' ? 'text-primary' : 'text-muted-foreground hover:text-secondary'}`}
                 >UZ</button>
-                <span className="text-foreground/20">/</span>
+                <span className="text-border">/</span>
                 <button
                   onClick={() => setLanguage('ru')}
-                  className={`transition-colors ${language === 'ru' ? 'text-primary' : 'text-foreground/40 hover:text-foreground/80'}`}
+                  className={`transition-colors ${language === 'ru' ? 'text-primary' : 'text-muted-foreground hover:text-secondary'}`}
                 >RU</button>
               </div>
 
               <Link
                 to="/contact"
-                className="hidden md:inline-flex items-center gap-2 group relative overflow-hidden border border-primary/50 hover:border-primary text-primary hover:text-primary-foreground transition-colors duration-500 px-5 py-2.5 text-[10px] font-semibold tracking-[0.25em] uppercase"
+                className="hidden md:inline-flex items-center gap-2 group relative overflow-hidden bg-primary hover:bg-[hsl(var(--primary)/0.92)] text-primary-foreground transition-all duration-300 px-5 py-2.5 text-[10px] font-semibold tracking-[0.25em] uppercase rounded-md shadow-[0_4px_16px_-6px_hsl(var(--primary)/0.5)] hover:shadow-[0_8px_24px_-6px_hsl(var(--primary)/0.6)]"
               >
-                <span className="absolute inset-0 bg-primary -translate-x-full group-hover:translate-x-0 transition-transform duration-500" />
                 <span className="relative">Hamkorlik Boshlash</span>
                 <ArrowUpRight className="relative w-3.5 h-3.5 transition-transform duration-500 group-hover:rotate-45" />
               </Link>
@@ -118,9 +119,10 @@ export function Header() {
                 className="xl:hidden flex flex-col items-end gap-1.5 p-2 group"
                 aria-label="Open menu"
               >
-                <span className="w-7 h-px bg-foreground transition-all group-hover:bg-primary" />
-                <span className="w-5 h-px bg-foreground transition-all group-hover:bg-primary group-hover:w-7" />
+                <span className="w-7 h-px bg-secondary transition-all group-hover:bg-primary" />
+                <span className="w-5 h-px bg-secondary transition-all group-hover:bg-primary group-hover:w-7" />
               </button>
+
             </div>
           </div>
         </div>
