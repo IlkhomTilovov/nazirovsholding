@@ -15,7 +15,8 @@ export default function BrandDetails() {
   const { language } = useLanguage();
   const { getPrimaryDomain } = useSystemSettings();
   const { brand, loading } = useBrand(slug);
-  const { products, categories, loading: productsLoading } = useBrandProducts(brand?.id, 48);
+  const { products, categories, divisions, loading: productsLoading } = useBrandProducts(brand?.id, 48);
+  const [activeDivisionId, setActiveDivisionId] = useState<string | 'all'>('all');
   const [activeCategoryId, setActiveCategoryId] = useState<string | 'all'>('all');
 
   const isUz = language === 'uz';
