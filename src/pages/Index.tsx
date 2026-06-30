@@ -264,7 +264,7 @@ export default function Index() {
                 className="group p-8 backdrop-blur-sm transition-all duration-500 hover:-translate-y-1.5 hover:border-primary/60 hover:shadow-[0_18px_50px_-20px_hsl(var(--primary) / 0.45)] animate-fade-in"
                 style={{
                   background: 'rgba(255,255,255,0.04)',
-                  border: '1px solid rgba(201,164,106,0.18)',
+                  border: '1px solid hsl(var(--primary) / 0.25)',
                   borderRadius: '18px',
                   animationDelay: `${0.15 * (i + 1)}s`,
                   animationFillMode: 'backwards',

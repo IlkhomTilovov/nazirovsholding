@@ -16,7 +16,7 @@ export default function Sectors() {
       <section className="relative pt-24 pb-20 border-b border-foreground/5">
         <div
           className="absolute inset-0 opacity-40 pointer-events-none"
-          style={{ backgroundImage: 'radial-gradient(circle at 30% 30%, rgba(212,175,55,0.12), transparent 60%)' }}
+          style={{ backgroundImage: 'radial-gradient(circle at 30% 30%, hsl(var(--primary) / 0.12), transparent 60%)' }}
         />
         <div className="relative max-w-[1200px] mx-auto px-6 lg:px-10">
           <EditableText
@@ -28,7 +28,7 @@ export default function Sectors() {
           />
           <h1
             className="text-5xl md:text-7xl font-light tracking-tight max-w-4xl leading-[1.05]"
-            style={{ fontFamily: "'Instrument Serif', serif" }}
+            className="font-serif" data-removed-inline="font"
           >
             <EditableText
               contentKey="sectors.hero.title"
@@ -54,7 +54,7 @@ export default function Sectors() {
       <section className="py-24 border-t border-foreground/5 relative overflow-hidden">
         <div
           className="absolute inset-0 opacity-30 pointer-events-none"
-          style={{ backgroundImage: 'radial-gradient(circle at 70% 50%, rgba(212,175,55,0.10), transparent 60%)' }}
+          style={{ backgroundImage: 'radial-gradient(circle at 70% 50%, hsl(var(--primary) / 0.10), transparent 60%)' }}
         />
         <div className="relative max-w-[1200px] mx-auto px-6 lg:px-10">
           <div className="flex flex-col md:flex-row md:items-end justify-between mb-14 gap-6">
@@ -68,7 +68,7 @@ export default function Sectors() {
               />
               <h2
                 className="text-4xl md:text-5xl font-light max-w-2xl leading-[1.1]"
-                style={{ fontFamily: "'Instrument Serif', serif" }}
+                className="font-serif" data-removed-inline="font"
               >
                 <EditableText
                   contentKey="sectors.brands.title"
@@ -120,7 +120,7 @@ export default function Sectors() {
                     ) : (
                       <div
                         className="text-3xl font-light text-foreground/80 group-hover:text-primary transition-colors text-center"
-                        style={{ fontFamily: "'Instrument Serif', serif" }}
+                        className="font-serif" data-removed-inline="font"
                       >
                         {b.name_uz}
                       </div>
@@ -158,7 +158,7 @@ export default function Sectors() {
               className="text-[10px] tracking-[0.5em] uppercase text-primary mb-4"
               section="sectors-cta"
             />
-            <h2 className="text-4xl md:text-5xl font-light max-w-2xl leading-tight" style={{ fontFamily: "'Instrument Serif', serif" }}>
+            <h2 className="text-4xl md:text-5xl font-light max-w-2xl leading-tight" className="font-serif" data-removed-inline="font">
               <EditableText
                 contentKey="sectors.cta.title"
                 fallback="Bizning sohalardan birida hamkorlikni o‘rganamizmi?"

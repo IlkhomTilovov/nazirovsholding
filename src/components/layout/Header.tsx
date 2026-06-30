@@ -54,7 +54,7 @@ export function Header() {
               <div className="flex flex-col leading-none">
                 <span
                   className="font-serif text-[20px] md:text-[22px] tracking-[0.22em] text-foreground font-light"
-                  style={{ fontFamily: "'Instrument Serif', serif" }}
+                  className="font-serif" data-removed-inline="font"
                 >
                   NAZIROV<span className="text-primary font-normal">SHOLDING</span>
                 </span>
@@ -141,7 +141,7 @@ export function Header() {
           className="absolute inset-0 opacity-30"
           style={{
             backgroundImage:
-              'radial-gradient(circle at 20% 20%, rgba(212,175,55,0.15), transparent 50%), radial-gradient(circle at 80% 80%, rgba(212,175,55,0.08), transparent 50%)',
+              'radial-gradient(circle at 20% 20%, hsl(var(--primary) / 0.15), transparent 50%), radial-gradient(circle at 80% 80%, hsl(var(--primary) / 0.08), transparent 50%)',
           }}
         />
 
@@ -150,7 +150,7 @@ export function Header() {
           <div className="flex items-center justify-between px-5 lg:px-10 py-5 border-b border-foreground/5">
             <span
               className="font-serif text-xl tracking-[0.22em] text-foreground"
-              style={{ fontFamily: "'Instrument Serif', serif" }}
+              className="font-serif" data-removed-inline="font"
             >
               NAZIROV<span className="text-primary">SHOLDING</span>
             </span>
@@ -194,7 +194,7 @@ export function Header() {
                             className={`text-3xl md:text-5xl font-light tracking-tight transition-colors duration-300 ${
                               active ? 'text-primary' : 'text-foreground group-hover:text-primary'
                             }`}
-                            style={{ fontFamily: "'Instrument Serif', serif" }}
+                            className="font-serif" data-removed-inline="font"
                           >
                             {link.label}
                           </span>
