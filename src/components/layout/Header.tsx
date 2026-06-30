@@ -41,9 +41,9 @@ export function Header() {
   return (
     <>
       <header
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 bg-[#0a0a0a] ${
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 bg-background ${
           scrolled
-            ? 'border-b border-[#d4af37]/15 py-3'
+            ? 'border-b border-primary/15 py-3'
             : 'border-b border-transparent py-5'
         }`}
       >
@@ -53,12 +53,12 @@ export function Header() {
             <Link to="/" className="flex items-center group shrink-0">
               <div className="flex flex-col leading-none">
                 <span
-                  className="font-serif text-[20px] md:text-[22px] tracking-[0.22em] text-white font-light"
+                  className="font-serif text-[20px] md:text-[22px] tracking-[0.22em] text-foreground font-light"
                   style={{ fontFamily: "'Instrument Serif', serif" }}
                 >
-                  NAZIROV<span className="text-[#d4af37] font-normal">SHOLDING</span>
+                  NAZIROV<span className="text-primary font-normal">SHOLDING</span>
                 </span>
-                <span className="hidden md:block text-[9px] tracking-[0.45em] text-white/40 uppercase mt-0.5">
+                <span className="hidden md:block text-[9px] tracking-[0.45em] text-foreground/40 uppercase mt-0.5">
                   International Holding Group
                 </span>
               </div>
@@ -76,13 +76,13 @@ export function Header() {
                   >
                     <span
                       className={`text-[11px] font-medium tracking-[0.22em] uppercase transition-colors duration-300 ${
-                        active ? 'text-[#d4af37]' : 'text-white/70 group-hover:text-white'
+                        active ? 'text-primary' : 'text-foreground/70 group-hover:text-foreground'
                       }`}
                     >
                       {link.label}
                     </span>
                     <span
-                      className={`pointer-events-none absolute left-4 right-4 -bottom-0.5 h-px bg-gradient-to-r from-transparent via-[#d4af37] to-transparent transition-all duration-500 ${
+                      className={`pointer-events-none absolute left-4 right-4 -bottom-0.5 h-px bg-gradient-to-r from-transparent via-[hsl(var(--primary))] to-transparent transition-all duration-500 ${
                         active ? 'opacity-100 scale-x-100' : 'opacity-0 scale-x-0 group-hover:opacity-100 group-hover:scale-x-100'
                       }`}
                     />
@@ -96,20 +96,20 @@ export function Header() {
               <div className="hidden md:flex items-center gap-2 text-[10px] tracking-[0.3em] uppercase">
                 <button
                   onClick={() => setLanguage('uz')}
-                  className={`transition-colors ${language === 'uz' ? 'text-[#d4af37]' : 'text-white/40 hover:text-white/80'}`}
+                  className={`transition-colors ${language === 'uz' ? 'text-primary' : 'text-foreground/40 hover:text-foreground/80'}`}
                 >UZ</button>
-                <span className="text-white/20">/</span>
+                <span className="text-foreground/20">/</span>
                 <button
                   onClick={() => setLanguage('ru')}
-                  className={`transition-colors ${language === 'ru' ? 'text-[#d4af37]' : 'text-white/40 hover:text-white/80'}`}
+                  className={`transition-colors ${language === 'ru' ? 'text-primary' : 'text-foreground/40 hover:text-foreground/80'}`}
                 >RU</button>
               </div>
 
               <Link
                 to="/contact"
-                className="hidden md:inline-flex items-center gap-2 group relative overflow-hidden border border-[#d4af37]/50 hover:border-[#d4af37] text-[#d4af37] hover:text-black transition-colors duration-500 px-5 py-2.5 text-[10px] font-semibold tracking-[0.25em] uppercase"
+                className="hidden md:inline-flex items-center gap-2 group relative overflow-hidden border border-primary/50 hover:border-primary text-primary hover:text-primary-foreground transition-colors duration-500 px-5 py-2.5 text-[10px] font-semibold tracking-[0.25em] uppercase"
               >
-                <span className="absolute inset-0 bg-[#d4af37] -translate-x-full group-hover:translate-x-0 transition-transform duration-500" />
+                <span className="absolute inset-0 bg-primary -translate-x-full group-hover:translate-x-0 transition-transform duration-500" />
                 <span className="relative">Hamkorlik Boshlash</span>
                 <ArrowUpRight className="relative w-3.5 h-3.5 transition-transform duration-500 group-hover:rotate-45" />
               </Link>
@@ -119,8 +119,8 @@ export function Header() {
                 className="xl:hidden flex flex-col items-end gap-1.5 p-2 group"
                 aria-label="Open menu"
               >
-                <span className="w-7 h-px bg-white transition-all group-hover:bg-[#d4af37]" />
-                <span className="w-5 h-px bg-white transition-all group-hover:bg-[#d4af37] group-hover:w-7" />
+                <span className="w-7 h-px bg-foreground transition-all group-hover:bg-primary" />
+                <span className="w-5 h-px bg-foreground transition-all group-hover:bg-primary group-hover:w-7" />
               </button>
             </div>
           </div>
@@ -136,7 +136,7 @@ export function Header() {
           isOpen ? 'opacity-100 visible' : 'opacity-0 invisible'
         }`}
       >
-        <div className="absolute inset-0 bg-[#0a0a0a]" />
+        <div className="absolute inset-0 bg-background" />
         <div
           className="absolute inset-0 opacity-30"
           style={{
@@ -147,16 +147,16 @@ export function Header() {
 
         <div className="relative h-full flex flex-col">
           {/* Top bar */}
-          <div className="flex items-center justify-between px-5 lg:px-10 py-5 border-b border-white/5">
+          <div className="flex items-center justify-between px-5 lg:px-10 py-5 border-b border-foreground/5">
             <span
-              className="font-serif text-xl tracking-[0.22em] text-white"
+              className="font-serif text-xl tracking-[0.22em] text-foreground"
               style={{ fontFamily: "'Instrument Serif', serif" }}
             >
-              NAZIROV<span className="text-[#d4af37]">SHOLDING</span>
+              NAZIROV<span className="text-primary">SHOLDING</span>
             </span>
             <button
               onClick={() => setIsOpen(false)}
-              className="p-2 text-white/70 hover:text-[#d4af37] transition-colors"
+              className="p-2 text-foreground/70 hover:text-primary transition-colors"
               aria-label="Close menu"
             >
               <X className="w-6 h-6" />
@@ -166,7 +166,7 @@ export function Header() {
           {/* Nav items */}
           <nav className="flex-1 overflow-y-auto px-5 lg:px-10 py-8">
             <div className="max-w-3xl mx-auto">
-              <p className="text-[10px] tracking-[0.5em] uppercase text-[#d4af37]/70 mb-8">
+              <p className="text-[10px] tracking-[0.5em] uppercase text-primary/70 mb-8">
                 Menyu — Navigation
               </p>
               <ul className="space-y-1">
@@ -175,7 +175,7 @@ export function Header() {
                   return (
                     <li
                       key={link.href}
-                      className="border-b border-white/5"
+                      className="border-b border-foreground/5"
                       style={{
                         transitionDelay: `${idx * 60}ms`,
                         opacity: isOpen ? 1 : 0,
@@ -189,17 +189,17 @@ export function Header() {
                         className="group flex items-center justify-between py-5 md:py-6"
                       >
                         <div className="flex items-baseline gap-5">
-                          <span className="text-[10px] tracking-[0.3em] text-[#d4af37]/60">{link.num}</span>
+                          <span className="text-[10px] tracking-[0.3em] text-primary/60">{link.num}</span>
                           <span
                             className={`text-3xl md:text-5xl font-light tracking-tight transition-colors duration-300 ${
-                              active ? 'text-[#d4af37]' : 'text-white group-hover:text-[#d4af37]'
+                              active ? 'text-primary' : 'text-foreground group-hover:text-primary'
                             }`}
                             style={{ fontFamily: "'Instrument Serif', serif" }}
                           >
                             {link.label}
                           </span>
                         </div>
-                        <ArrowUpRight className="w-5 h-5 text-white/30 group-hover:text-[#d4af37] group-hover:rotate-45 transition-all duration-500" />
+                        <ArrowUpRight className="w-5 h-5 text-foreground/30 group-hover:text-primary group-hover:rotate-45 transition-all duration-500" />
                       </Link>
                     </li>
                   );
@@ -211,7 +211,7 @@ export function Header() {
                 <Link
                   to="/contact"
                   onClick={() => setIsOpen(false)}
-                  className="inline-flex items-center gap-3 bg-[#d4af37] hover:bg-[#c9a230] text-black px-8 py-4 text-xs font-semibold tracking-[0.3em] uppercase transition-colors"
+                  className="inline-flex items-center gap-3 bg-primary hover:bg-[hsl(var(--primary)/0.85)] text-primary-foreground px-8 py-4 text-xs font-semibold tracking-[0.3em] uppercase transition-colors"
                 >
                   So'rov Yuborish
                   <ArrowUpRight className="w-4 h-4" />
@@ -219,27 +219,27 @@ export function Header() {
               </div>
 
               {/* Contact strip */}
-              <div className="mt-12 grid grid-cols-1 md:grid-cols-3 gap-6 pt-8 border-t border-white/5">
-                <a href={`tel:${contactPhone.replace(/\s/g, '')}`} className="flex items-center gap-3 text-white/60 hover:text-[#d4af37] transition-colors text-sm">
-                  <Phone className="w-4 h-4 text-[#d4af37]" /> {contactPhone}
+              <div className="mt-12 grid grid-cols-1 md:grid-cols-3 gap-6 pt-8 border-t border-foreground/5">
+                <a href={`tel:${contactPhone.replace(/\s/g, '')}`} className="flex items-center gap-3 text-foreground/60 hover:text-primary transition-colors text-sm">
+                  <Phone className="w-4 h-4 text-primary" /> {contactPhone}
                 </a>
-                <a href="mailto:info@nazirovsholding.uz" className="flex items-center gap-3 text-white/60 hover:text-[#d4af37] transition-colors text-sm">
-                  <Mail className="w-4 h-4 text-[#d4af37]" /> info@nazirovsholding.uz
+                <a href="mailto:info@nazirovsholding.uz" className="flex items-center gap-3 text-foreground/60 hover:text-primary transition-colors text-sm">
+                  <Mail className="w-4 h-4 text-primary" /> info@nazirovsholding.uz
                 </a>
-                <div className="flex items-center gap-3 text-white/60 text-sm">
-                  <MapPin className="w-4 h-4 text-[#d4af37]" /> Tashkent, Uzbekistan
+                <div className="flex items-center gap-3 text-foreground/60 text-sm">
+                  <MapPin className="w-4 h-4 text-primary" /> Tashkent, Uzbekistan
                 </div>
               </div>
 
               <div className="mt-8 flex items-center gap-3 text-[10px] tracking-[0.3em] uppercase">
                 <button
                   onClick={() => setLanguage('uz')}
-                  className={`transition-colors ${language === 'uz' ? 'text-[#d4af37]' : 'text-white/40'}`}
+                  className={`transition-colors ${language === 'uz' ? 'text-primary' : 'text-foreground/40'}`}
                 >UZ</button>
-                <span className="text-white/20">/</span>
+                <span className="text-foreground/20">/</span>
                 <button
                   onClick={() => setLanguage('ru')}
-                  className={`transition-colors ${language === 'ru' ? 'text-[#d4af37]' : 'text-white/40'}`}
+                  className={`transition-colors ${language === 'ru' ? 'text-primary' : 'text-foreground/40'}`}
                 >RU</button>
               </div>
             </div>

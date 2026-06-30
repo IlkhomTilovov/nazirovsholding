@@ -193,12 +193,12 @@ export default function Index() {
 
         <div className="container mx-auto px-4 lg:px-8 relative z-10 py-20 pointer-events-none">
           <div className="max-w-2xl [&_a]:pointer-events-auto [&_button]:pointer-events-auto [&_[data-editable]]:pointer-events-auto">
-            <div className="inline-flex items-center mb-7 px-4 py-2 border border-[#C9A469]/40 rounded-full bg-white/[0.02] backdrop-blur-sm animate-fade-in">
+            <div className="inline-flex items-center mb-7 px-4 py-2 border border-primary/40 rounded-full bg-background/[0.02] backdrop-blur-sm animate-fade-in">
               <EditableText
                 contentKey="hero_badge"
                 fallback="NAZIROVSHOLDING • INTERNATIONAL HOLDING GROUP"
                 as="span"
-                className="text-[#C9A469] text-[10.5px] md:text-xs font-medium tracking-[0.32em] uppercase"
+                className="text-primary text-[10.5px] md:text-xs font-medium tracking-[0.32em] uppercase"
                 section="hero"
               />
             </div>
@@ -207,21 +207,21 @@ export default function Index() {
                 contentKey="hero_title_line1"
                 fallback="Global biznes"
                 as="span"
-                className="block font-serif text-[#F6F2EA]"
+                className="block font-serif text-foreground"
                 section="hero"
               />
               <EditableText
                 contentKey="hero_title_line2"
                 fallback="O'zbekistondan"
                 as="span"
-                className="block font-serif text-[#F6F2EA]"
+                className="block font-serif text-foreground"
                 section="hero"
               />
               <EditableText
                 contentKey="hero_title_line3"
                 fallback="dunyoga"
                 as="span"
-                className="block font-serif text-[#C9A469] italic"
+                className="block font-serif text-primary italic"
                 section="hero"
               />
             </h1>
@@ -236,13 +236,13 @@ export default function Index() {
               />
             </p>
             <div className="flex flex-wrap gap-4 mb-14">
-              <Button asChild size="lg" className="group bg-[#C9A469] text-[#0D0D0D] hover:bg-[#d4b27d] rounded-sm px-8 tracking-[0.18em] text-xs uppercase h-14 font-semibold shadow-[0_0_0_rgba(201,164,105,0)] hover:shadow-[0_14px_40px_-12px_rgba(201,164,105,0.55)] hover:-translate-y-0.5 transition-all duration-300">
+              <Button asChild size="lg" className="group bg-primary text-background hover:bg-[hsl(var(--primary)/0.85)] rounded-sm px-8 tracking-[0.18em] text-xs uppercase h-14 font-semibold shadow-[0_0_0_hsl(var(--primary) / 0)] hover:shadow-[0_14px_40px_-12px_hsl(var(--primary) / 0.55)] hover:-translate-y-0.5 transition-all duration-300">
                 <Link to="/catalog">
                   <EditableText contentKey="hero_cta_primary" fallback={language === 'ru' ? 'Смотреть каталог' : "MAHSULOTLARNI KO'RISH"} as="span" section="hero" />
                   <ArrowRight className="w-4 h-4 ml-2 transition-transform duration-300 group-hover:translate-x-1" />
                 </Link>
               </Button>
-              <Button asChild variant="outline" size="lg" className="border border-[#C9A469]/55 bg-transparent text-[#F6F2EA] hover:bg-[#C9A469] hover:text-[#0D0D0D] hover:border-[#C9A469] rounded-sm px-8 tracking-[0.18em] text-xs uppercase h-14 font-semibold transition-all duration-300">
+              <Button asChild variant="outline" size="lg" className="border border-primary/55 bg-transparent text-foreground hover:bg-primary hover:text-background hover:border-primary rounded-sm px-8 tracking-[0.18em] text-xs uppercase h-14 font-semibold transition-all duration-300">
                 <Link to="/contact">
                   <EditableText contentKey="hero_cta_secondary" fallback={language === 'ru' ? 'Начать сотрудничество' : "HAMKORLIK BOSHLASH"} as="span" section="hero" />
                 </Link>
@@ -256,7 +256,7 @@ export default function Index() {
             {trustBadges.map((badge, i) => (
               <div
                 key={badge.key}
-                className="group p-8 backdrop-blur-sm transition-all duration-500 hover:-translate-y-1.5 hover:border-[#C9A469]/60 hover:shadow-[0_18px_50px_-20px_rgba(201,164,105,0.45)] animate-fade-in"
+                className="group p-8 backdrop-blur-sm transition-all duration-500 hover:-translate-y-1.5 hover:border-primary/60 hover:shadow-[0_18px_50px_-20px_hsl(var(--primary) / 0.45)] animate-fade-in"
                 style={{
                   background: 'rgba(255,255,255,0.04)',
                   border: '1px solid rgba(201,164,106,0.18)',
@@ -265,14 +265,14 @@ export default function Index() {
                   animationFillMode: 'backwards',
                 }}
               >
-                <div className="w-12 h-12 rounded-full border border-[#C9A469]/40 flex items-center justify-center mb-5 text-[#C9A469] transition-all duration-500 group-hover:border-[#C9A469] group-hover:shadow-[0_0_22px_rgba(201,164,105,0.55)]">
+                <div className="w-12 h-12 rounded-full border border-primary/40 flex items-center justify-center mb-5 text-primary transition-all duration-500 group-hover:border-primary group-hover:shadow-[0_0_22px_hsl(var(--primary) / 0.55)]">
                   <badge.icon className="w-5 h-5" strokeWidth={1.5} />
                 </div>
                 <EditableText
                   contentKey={`${badge.key}_title`}
                   fallback={badge.titleFallback}
                   as="div"
-                  className="text-[#F6F2EA] text-[17px] font-medium tracking-wide mb-3"
+                  className="text-foreground text-[17px] font-medium tracking-wide mb-3"
                   section="hero"
                 />
                 <EditableText
@@ -295,27 +295,27 @@ export default function Index() {
               key={i}
               onClick={() => setHeroSlide(i)}
               aria-label={`Slayd ${i + 1}`}
-              className={`h-1 transition-all duration-500 ${i === heroSlide ? 'w-12 bg-[#C9A469]' : 'w-6 bg-white/30 hover:bg-white/50'}`}
+              className={`h-1 transition-all duration-500 ${i === heroSlide ? 'w-12 bg-primary' : 'w-6 bg-foreground/30 hover:bg-foreground/50'}`}
             />
           ))}
         </div>
       </section>
 
       {/* BIZ HAQIMIZDA */}
-      <section className="relative py-24 md:py-32 bg-[#0d0d0d] text-white border-b border-white/5 overflow-hidden">
+      <section className="relative py-24 md:py-32 bg-background text-foreground border-b border-foreground/5 overflow-hidden">
         <div
           className="absolute inset-0 opacity-40 pointer-events-none"
-          style={{ backgroundImage: 'radial-gradient(circle at 80% 30%, rgba(201,164,105,0.14), transparent 60%)' }}
+          style={{ backgroundImage: 'radial-gradient(circle at 80% 30%, hsl(var(--primary) / 0.14), transparent 60%)' }}
         />
         <div className="relative max-w-[1320px] mx-auto px-4 lg:px-8 grid lg:grid-cols-2 gap-16 items-center">
           <div>
             <div className="flex items-center gap-3 mb-6">
-              <span className="w-10 h-px bg-[#C9A469]" />
+              <span className="w-10 h-px bg-primary" />
               <EditableText
                 contentKey="home_about_eyebrow"
                 fallback="BIZ HAQIMIZDA"
                 as="span"
-                className="text-[#C9A469] text-[11px] tracking-[0.4em] uppercase font-semibold"
+                className="text-primary text-[11px] tracking-[0.4em] uppercase font-semibold"
                 section="home-about"
               />
             </div>
@@ -324,14 +324,14 @@ export default function Index() {
                 contentKey="home_about_title_1"
                 fallback="O'zbekistondan"
                 as="span"
-                className="block text-[#F6F2EA]"
+                className="block text-foreground"
                 section="home-about"
               />
               <EditableText
                 contentKey="home_about_title_2"
                 fallback="global bozorlarga"
                 as="span"
-                className="block text-[#C9A469] italic"
+                className="block text-primary italic"
                 section="home-about"
               />
             </h2>
@@ -340,29 +340,29 @@ export default function Index() {
               fallback="NazirovSholding International Holding Group — eksport, ishlab chiqarish, logistika va strategik investitsiya yo'nalishlarida faoliyat yurituvchi diversifikatsiyalashgan xalqaro holding. O'n yildan ortiq tajriba, 25+ hamkor mamlakat va 8 strategik sohani yagona qiymat zanjirida birlashtiramiz."
               as="p"
               multiline
-              className="text-white/65 leading-[1.85] text-base md:text-lg mb-10 block max-w-xl"
+              className="text-foreground/65 leading-[1.85] text-base md:text-lg mb-10 block max-w-xl"
               section="home-about"
             />
 
-            <div className="grid grid-cols-3 gap-px bg-white/5 mb-10 max-w-xl">
+            <div className="grid grid-cols-3 gap-px bg-foreground/5 mb-10 max-w-xl">
               {[
                 { k: 'exp', v: '12+', l: 'Yillik tajriba' },
                 { k: 'cnt', v: '25', l: 'Hamkor davlat' },
                 { k: 'sec', v: '8', l: 'Yo\'nalish' },
               ].map((s) => (
-                <div key={s.k} className="bg-[#0d0d0d] p-6">
+                <div key={s.k} className="bg-background p-6">
                   <EditableText
                     contentKey={`home_about_stat_${s.k}_v`}
                     fallback={s.v}
                     as="div"
-                    className="font-serif text-3xl md:text-4xl text-[#C9A469] mb-2 block"
+                    className="font-serif text-3xl md:text-4xl text-primary mb-2 block"
                     section="home-about"
                   />
                   <EditableText
                     contentKey={`home_about_stat_${s.k}_l`}
                     fallback={s.l}
                     as="p"
-                    className="text-[10px] tracking-[0.25em] uppercase text-white/50"
+                    className="text-[10px] tracking-[0.25em] uppercase text-foreground/50"
                     section="home-about"
                   />
                 </div>
@@ -371,7 +371,7 @@ export default function Index() {
 
             <Link
               to="/about"
-              className="group inline-flex items-center gap-3 bg-[#C9A469] hover:bg-[#d4b27d] text-[#0D0D0D] px-8 h-14 text-xs font-semibold tracking-[0.22em] uppercase transition-all duration-300 hover:-translate-y-0.5"
+              className="group inline-flex items-center gap-3 bg-primary hover:bg-[hsl(var(--primary)/0.85)] text-background px-8 h-14 text-xs font-semibold tracking-[0.22em] uppercase transition-all duration-300 hover:-translate-y-0.5"
             >
               <EditableText
                 contentKey="home_about_cta"
@@ -384,20 +384,20 @@ export default function Index() {
           </div>
 
           <div className="relative">
-            <div className="absolute -inset-4 border border-[#C9A469]/20 rounded-sm pointer-events-none" />
+            <div className="absolute -inset-4 border border-primary/20 rounded-sm pointer-events-none" />
             <EditableImage
               contentKey="home_about_image"
               fallbackSrc={imgLeadership}
               alt="NazirovSholding"
               className="relative w-full h-[460px] md:h-[560px] object-cover rounded-sm"
             />
-            <div className="absolute bottom-6 left-6 right-6 bg-[#0d0d0d]/85 backdrop-blur-sm border border-[#C9A469]/25 p-6">
+            <div className="absolute bottom-6 left-6 right-6 bg-background/85 backdrop-blur-sm border border-primary/25 p-6">
               <EditableText
                 contentKey="home_about_quote"
                 fallback="“Biz O'zbekiston brendini global savdoda professional, ishonchli va uzoq muddatli sherik sifatida shakllantiramiz.”"
                 as="p"
                 multiline
-                className="font-serif italic text-[#F6F2EA] text-base md:text-lg leading-relaxed block"
+                className="font-serif italic text-foreground text-base md:text-lg leading-relaxed block"
                 section="home-about"
               />
             </div>
