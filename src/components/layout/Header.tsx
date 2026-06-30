@@ -53,8 +53,7 @@ export function Header() {
             <Link to="/" className="flex items-center group shrink-0">
               <div className="flex flex-col leading-none">
                 <span
-                  className="font-serif text-[20px] md:text-[22px] tracking-[0.22em] text-foreground font-light"
-                  className="font-serif" data-removed-inline="font"
+                  className="font-serif text-[20px] md:text-[22px] tracking-[0.22em] text-foreground font-light font-serif"
                 >
                   NAZIROV<span className="text-primary font-normal">SHOLDING</span>
                 </span>
@@ -149,8 +148,7 @@ export function Header() {
           {/* Top bar */}
           <div className="flex items-center justify-between px-5 lg:px-10 py-5 border-b border-foreground/5">
             <span
-              className="font-serif text-xl tracking-[0.22em] text-foreground"
-              className="font-serif" data-removed-inline="font"
+              className="font-serif text-xl tracking-[0.22em] text-foreground font-serif"
             >
               NAZIROV<span className="text-primary">SHOLDING</span>
             </span>
@@ -194,7 +192,7 @@ export function Header() {
                             className={`text-3xl md:text-5xl font-light tracking-tight transition-colors duration-300 ${
                               active ? 'text-primary' : 'text-foreground group-hover:text-primary'
                             }`}
-                            className="font-serif" data-removed-inline="font"
+                            className="font-serif"
                           >
                             {link.label}
                           </span>

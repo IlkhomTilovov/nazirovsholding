@@ -27,8 +27,7 @@ export default function Sectors() {
             section="sectors-hero"
           />
           <h1
-            className="text-5xl md:text-7xl font-light tracking-tight max-w-4xl leading-[1.05]"
-            className="font-serif" data-removed-inline="font"
+            className="text-5xl md:text-7xl font-light tracking-tight max-w-4xl leading-[1.05] font-serif"
           >
             <EditableText
               contentKey="sectors.hero.title"
@@ -67,8 +66,7 @@ export default function Sectors() {
                 section="sectors-brands"
               />
               <h2
-                className="text-4xl md:text-5xl font-light max-w-2xl leading-[1.1]"
-                className="font-serif" data-removed-inline="font"
+                className="text-4xl md:text-5xl font-light max-w-2xl leading-[1.1] font-serif"
               >
                 <EditableText
                   contentKey="sectors.brands.title"
@@ -119,8 +117,7 @@ export default function Sectors() {
                       />
                     ) : (
                       <div
-                        className="text-3xl font-light text-foreground/80 group-hover:text-primary transition-colors text-center"
-                        className="font-serif" data-removed-inline="font"
+                        className="text-3xl font-light text-foreground/80 group-hover:text-primary transition-colors text-center font-serif"
                       >
                         {b.name_uz}
                       </div>
@@ -158,7 +155,7 @@ export default function Sectors() {
               className="text-[10px] tracking-[0.5em] uppercase text-primary mb-4"
               section="sectors-cta"
             />
-            <h2 className="text-4xl md:text-5xl font-light max-w-2xl leading-tight" className="font-serif" data-removed-inline="font">
+            <h2 className="text-4xl md:text-5xl font-light max-w-2xl leading-tight font-serif">
               <EditableText
                 contentKey="sectors.cta.title"
                 fallback="Bizning sohalardan birida hamkorlikni o‘rganamizmi?"

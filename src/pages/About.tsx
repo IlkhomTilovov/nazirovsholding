@@ -69,8 +69,7 @@ export default function About() {
             section="about-hero"
           />
           <h1
-            className="text-5xl md:text-7xl font-light tracking-tight max-w-5xl leading-[1.02]"
-            className="font-serif" data-removed-inline="font"
+            className="text-5xl md:text-7xl font-light tracking-tight max-w-5xl leading-[1.02] font-serif"
           >
             <EditableText
               contentKey="about.hero.title"
@@ -127,7 +126,7 @@ export default function About() {
           <div className="grid md:grid-cols-2 gap-px bg-foreground/5">
             <div className="bg-background p-10 md:p-14">
               <Target className="w-7 h-7 text-primary mb-8" strokeWidth={1.2} />
-              <h2 className="text-3xl md:text-4xl font-light mb-6" className="font-serif" data-removed-inline="font">
+              <h2 className="text-3xl md:text-4xl font-light mb-6 font-serif">
                 <EditableText contentKey="about.mission.title" fallback="Missiya" section="about-mv" />
               </h2>
               <EditableText
@@ -141,7 +140,7 @@ export default function About() {
             </div>
             <div className="bg-background p-10 md:p-14">
               <Eye className="w-7 h-7 text-primary mb-8" strokeWidth={1.2} />
-              <h2 className="text-3xl md:text-4xl font-light mb-6" className="font-serif" data-removed-inline="font">
+              <h2 className="text-3xl md:text-4xl font-light mb-6 font-serif">
                 <EditableText contentKey="about.vision.title" fallback="Vizyon" section="about-mv" />
               </h2>
               <EditableText
@@ -170,8 +169,7 @@ export default function About() {
                 section="about-values"
               />
               <h2
-                className="text-4xl md:text-5xl font-light max-w-2xl leading-[1.1]"
-                className="font-serif" data-removed-inline="font"
+                className="text-4xl md:text-5xl font-light max-w-2xl leading-[1.1] font-serif"
               >
                 <EditableText
                   contentKey="about.values.title"
@@ -189,8 +187,7 @@ export default function About() {
                 <div key={v.id} className="group bg-background p-10 hover:bg-muted transition-colors duration-500">
                   <Icon className="w-7 h-7 text-primary mb-10" strokeWidth={1.2} />
                   <h3
-                    className="text-2xl font-light mb-3 group-hover:text-primary transition-colors"
-                    className="font-serif" data-removed-inline="font"
+                    className="text-2xl font-light mb-3 group-hover:text-primary transition-colors font-serif"
                   >
                     <EditableText
                       contentKey={`about.values.${v.id}.title`}
@@ -228,8 +225,7 @@ export default function About() {
             section="about-timeline"
           />
           <h2
-            className="text-4xl md:text-5xl font-light max-w-2xl leading-[1.1] mb-16"
-            className="font-serif" data-removed-inline="font"
+            className="text-4xl md:text-5xl font-light max-w-2xl leading-[1.1] mb-16 font-serif"
           >
             <EditableText
               contentKey="about.timeline.title"
@@ -245,8 +241,7 @@ export default function About() {
               {timeline.map((t) => (
                 <div key={t.id} className="grid grid-cols-[88px_1fr] md:grid-cols-[120px_1fr] gap-8 items-start">
                   <div
-                    className="text-2xl md:text-3xl text-primary font-light"
-                    className="font-serif" data-removed-inline="font"
+                    className="text-2xl md:text-3xl text-primary font-light font-serif"
                   >
                     <EditableText
                       contentKey={`about.timeline.${t.id}.year`}
@@ -257,8 +252,7 @@ export default function About() {
                   <div className="relative pl-8">
                     <div className="absolute left-0 top-3 w-2 h-2 rounded-full bg-primary -translate-x-1/2" />
                     <h3
-                      className="text-xl md:text-2xl font-light mb-2"
-                      className="font-serif" data-removed-inline="font"
+                      className="text-xl md:text-2xl font-light mb-2 font-serif"
                     >
                       <EditableText
                         contentKey={`about.timeline.${t.id}.title`}
@@ -294,8 +288,7 @@ export default function About() {
               section="about-cta"
             />
             <h2
-              className="text-4xl md:text-5xl font-light max-w-2xl leading-tight"
-              className="font-serif" data-removed-inline="font"
+              className="text-4xl md:text-5xl font-light max-w-2xl leading-tight font-serif"
             >
               <EditableText
                 contentKey="about.cta.title"
