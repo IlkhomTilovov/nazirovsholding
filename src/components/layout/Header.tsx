@@ -53,15 +53,16 @@ export function Header() {
             <Link to="/" className="flex items-center group shrink-0">
               <div className="flex flex-col leading-none">
                 <span
-                  className="font-serif text-[20px] md:text-[22px] tracking-[0.22em] text-secondary font-light"
+                  className="font-serif text-[20px] md:text-[22px] tracking-[0.22em] text-secondary font-normal"
                 >
-                  NAZIROV<span className="text-primary font-normal">SHOLDING</span>
+                  NAZIROV<span className="text-primary font-semibold">SHOLDING</span>
                 </span>
-                <span className="hidden md:block text-[9px] tracking-[0.45em] text-muted-foreground uppercase mt-0.5">
+                <span className="hidden md:block text-[9px] tracking-[0.45em] text-secondary/60 uppercase mt-1 font-medium">
                   International Holding Group
                 </span>
               </div>
             </Link>
+
 
 
             {/* Desktop Nav */}
@@ -75,10 +76,11 @@ export function Header() {
                     className="group relative px-4 py-2"
                   >
                     <span
-                      className={`text-[11px] font-medium tracking-[0.22em] uppercase transition-colors duration-300 ${
-                        active ? 'text-primary' : 'text-secondary/80 group-hover:text-primary'
+                      className={`text-[12px] font-semibold tracking-[0.18em] uppercase transition-colors duration-300 ${
+                        active ? 'text-primary' : 'text-secondary group-hover:text-primary'
                       }`}
                     >
+
                       {link.label}
                     </span>
 
@@ -97,13 +99,14 @@ export function Header() {
               <div className="hidden md:flex items-center gap-2 text-[10px] tracking-[0.3em] uppercase">
                 <button
                   onClick={() => setLanguage('uz')}
-                  className={`transition-colors ${language === 'uz' ? 'text-primary' : 'text-muted-foreground hover:text-secondary'}`}
+                  className={`font-semibold transition-colors ${language === 'uz' ? 'text-primary' : 'text-secondary/70 hover:text-secondary'}`}
                 >UZ</button>
-                <span className="text-border">/</span>
+                <span className="text-secondary/30">/</span>
                 <button
                   onClick={() => setLanguage('ru')}
-                  className={`transition-colors ${language === 'ru' ? 'text-primary' : 'text-muted-foreground hover:text-secondary'}`}
+                  className={`font-semibold transition-colors ${language === 'ru' ? 'text-primary' : 'text-secondary/70 hover:text-secondary'}`}
                 >RU</button>
+
               </div>
 
               <Link
