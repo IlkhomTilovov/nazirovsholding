@@ -285,31 +285,60 @@ const Themes = () => {
     const shadows = getShadowValues(formData.shadowLevel);
     const slug = generateSlug(formData.name);
 
+    // Helpers to derive proper surface/border/muted tones from bg/fg
+    const parseHsl = (v: string): [number, number, number] => {
+      const m = v.match(/(-?\d+(?:\.\d+)?)\s+(-?\d+(?:\.\d+)?)%\s+(-?\d+(?:\.\d+)?)%/);
+      if (!m) return [0, 0, 0];
+      return [parseFloat(m[1]), parseFloat(m[2]), parseFloat(m[3])];
+    };
+    const toHsl = (h: number, s: number, l: number) =>
+      `${Math.round(h)} ${Math.max(0, Math.min(100, Math.round(s)))}% ${Math.max(0, Math.min(100, Math.round(l)))}%`;
+    const shiftL = (v: string, delta: number) => {
+      const [h, s, l] = parseHsl(v);
+      return toHsl(h, s, l + delta);
+    };
+    const mixL = (v: string, target: number, amount: number) => {
+      const [h, s, l] = parseHsl(v);
+      return toHsl(h, s, l + (target - l) * amount);
+    };
+    const readableOn = (bg: string) => {
+      const [, , l] = parseHsl(bg);
+      return l > 55 ? '0 0% 8%' : '0 0% 98%';
+    };
+
+    const bg = formData.backgroundColor;
+    const fg = formData.foregroundColor;
+    const isDark = formData.isDark;
+    const surface = isDark ? shiftL(bg, 3) : shiftL(bg, -2);
+    const border = isDark ? shiftL(bg, 8) : shiftL(bg, -8);
+    const muted = isDark ? shiftL(bg, 5) : shiftL(bg, -4);
+    const mutedFg = mixL(fg, isDark ? 0 : 100, 0.35);
+
     const colorPalette: ThemeColors = {
-      background: formData.backgroundColor,
-      foreground: formData.foregroundColor,
-      card: formData.backgroundColor,
-      cardForeground: formData.foregroundColor,
-      popover: formData.backgroundColor,
-      popoverForeground: formData.foregroundColor,
+      background: bg,
+      foreground: fg,
+      card: surface,
+      cardForeground: fg,
+      popover: surface,
+      popoverForeground: fg,
       primary: formData.primaryColor,
-      primaryForeground: formData.isDark ? formData.foregroundColor : formData.backgroundColor,
-      secondary: formData.secondaryColor,
-      secondaryForeground: formData.foregroundColor,
-      muted: formData.secondaryColor,
-      mutedForeground: formData.foregroundColor.replace(/(\d+)%\)$/, (_, p) => `${Math.max(40, parseInt(p) - 20)}%)`),
+      primaryForeground: readableOn(formData.primaryColor),
+      secondary: muted,
+      secondaryForeground: fg,
+      muted,
+      mutedForeground: mutedFg,
       accent: formData.accentColor,
-      accentForeground: formData.backgroundColor,
+      accentForeground: readableOn(formData.accentColor),
       destructive: '0 84% 60%',
       destructiveForeground: '0 0% 100%',
-      border: formData.secondaryColor,
-      input: formData.secondaryColor,
+      border,
+      input: border,
       ring: formData.primaryColor,
-      warmCream: formData.backgroundColor,
-      warmBeige: formData.secondaryColor,
+      warmCream: bg,
+      warmBeige: muted,
       warmBrown: formData.primaryColor,
-      darkWood: formData.foregroundColor,
-      goldAccent: '45 93% 47%',
+      darkWood: fg,
+      goldAccent: formData.accentColor,
       sageGreen: '142 76% 36%',
     };
 
