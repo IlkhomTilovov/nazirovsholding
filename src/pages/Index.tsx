@@ -230,7 +230,7 @@ export default function Index() {
                 section="hero"
               />
             </h1>
-            <p className="mb-10 leading-[1.8]" className="text-foreground/80" style={{ maxWidth: '650px' }}>
+            <p className="mb-10 leading-[1.8] text-foreground/80" style={{ maxWidth: '650px' }}>
               <EditableText
                 contentKey="hero_subtitle"
                 fallback="NazirovSholding — O'zbekistondan xalqaro bozorlarga mahsulot eksport qiluvchi biznes guruhi. Biz oziq-ovqat, xomashyo va sanoat mahsulotlarini sifat nazorati, logistika va ishonchli hamkorlik asosida dunyo bozorlariga yetkazib beramiz."
