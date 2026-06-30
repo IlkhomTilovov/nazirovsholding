@@ -65,7 +65,7 @@ export function Footer() {
               contentKey="footer.cta.title"
               fallback="Keling, global hamkorlikni birgalikda quramiz"
               section="footer-cta"
-              className="font-serif text-3xl md:text-5xl leading-[1.1] text-foreground max-w-xl"
+              className="font-serif text-3xl md:text-5xl leading-[1.1] text-secondary-foreground max-w-xl"
             />
             <EditableText
               as="p"
@@ -88,7 +88,7 @@ export function Footer() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="your@company.com"
-                className="flex-1 bg-transparent outline-none text-foreground placeholder:text-secondary-foreground/30 py-3 text-base"
+                className="flex-1 bg-transparent outline-none text-secondary-foreground placeholder:text-secondary-foreground/30 py-3 text-base"
               />
               <button
                 type="submit"
