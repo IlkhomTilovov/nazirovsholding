@@ -301,6 +301,110 @@ export default function Index() {
         </div>
       </section>
 
+      {/* BIZ HAQIMIZDA */}
+      <section className="relative py-24 md:py-32 bg-[#0d0d0d] text-white border-b border-white/5 overflow-hidden">
+        <div
+          className="absolute inset-0 opacity-40 pointer-events-none"
+          style={{ backgroundImage: 'radial-gradient(circle at 80% 30%, rgba(201,164,105,0.14), transparent 60%)' }}
+        />
+        <div className="relative max-w-[1320px] mx-auto px-4 lg:px-8 grid lg:grid-cols-2 gap-16 items-center">
+          <div>
+            <div className="flex items-center gap-3 mb-6">
+              <span className="w-10 h-px bg-[#C9A469]" />
+              <EditableText
+                contentKey="home_about_eyebrow"
+                fallback="BIZ HAQIMIZDA"
+                as="span"
+                className="text-[#C9A469] text-[11px] tracking-[0.4em] uppercase font-semibold"
+                section="home-about"
+              />
+            </div>
+            <h2 className="font-serif text-4xl md:text-5xl lg:text-6xl leading-[1.05] mb-8">
+              <EditableText
+                contentKey="home_about_title_1"
+                fallback="O'zbekistondan"
+                as="span"
+                className="block text-[#F6F2EA]"
+                section="home-about"
+              />
+              <EditableText
+                contentKey="home_about_title_2"
+                fallback="global bozorlarga"
+                as="span"
+                className="block text-[#C9A469] italic"
+                section="home-about"
+              />
+            </h2>
+            <EditableText
+              contentKey="home_about_desc"
+              fallback="NazirovSholding International Holding Group — eksport, ishlab chiqarish, logistika va strategik investitsiya yo'nalishlarida faoliyat yurituvchi diversifikatsiyalashgan xalqaro holding. O'n yildan ortiq tajriba, 25+ hamkor mamlakat va 8 strategik sohani yagona qiymat zanjirida birlashtiramiz."
+              as="p"
+              multiline
+              className="text-white/65 leading-[1.85] text-base md:text-lg mb-10 block max-w-xl"
+              section="home-about"
+            />
+
+            <div className="grid grid-cols-3 gap-px bg-white/5 mb-10 max-w-xl">
+              {[
+                { k: 'exp', v: '12+', l: 'Yillik tajriba' },
+                { k: 'cnt', v: '25', l: 'Hamkor davlat' },
+                { k: 'sec', v: '8', l: 'Yo\'nalish' },
+              ].map((s) => (
+                <div key={s.k} className="bg-[#0d0d0d] p-6">
+                  <EditableText
+                    contentKey={`home_about_stat_${s.k}_v`}
+                    fallback={s.v}
+                    as="div"
+                    className="font-serif text-3xl md:text-4xl text-[#C9A469] mb-2 block"
+                    section="home-about"
+                  />
+                  <EditableText
+                    contentKey={`home_about_stat_${s.k}_l`}
+                    fallback={s.l}
+                    as="p"
+                    className="text-[10px] tracking-[0.25em] uppercase text-white/50"
+                    section="home-about"
+                  />
+                </div>
+              ))}
+            </div>
+
+            <Link
+              to="/about"
+              className="group inline-flex items-center gap-3 bg-[#C9A469] hover:bg-[#d4b27d] text-[#0D0D0D] px-8 h-14 text-xs font-semibold tracking-[0.22em] uppercase transition-all duration-300 hover:-translate-y-0.5"
+            >
+              <EditableText
+                contentKey="home_about_cta"
+                fallback="Batafsil ma'lumot"
+                as="span"
+                section="home-about"
+              />
+              <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+            </Link>
+          </div>
+
+          <div className="relative">
+            <div className="absolute -inset-4 border border-[#C9A469]/20 rounded-sm pointer-events-none" />
+            <EditableImage
+              contentKey="home_about_image"
+              fallbackSrc={imgLeadership}
+              alt="NazirovSholding"
+              className="relative w-full h-[460px] md:h-[560px] object-cover rounded-sm"
+            />
+            <div className="absolute bottom-6 left-6 right-6 bg-[#0d0d0d]/85 backdrop-blur-sm border border-[#C9A469]/25 p-6">
+              <EditableText
+                contentKey="home_about_quote"
+                fallback="“Biz O'zbekiston brendini global savdoda professional, ishonchli va uzoq muddatli sherik sifatida shakllantiramiz.”"
+                as="p"
+                multiline
+                className="font-serif italic text-[#F6F2EA] text-base md:text-lg leading-relaxed block"
+                section="home-about"
+              />
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* BRANDS - dynamic */}
       <BrandsSection />
 
