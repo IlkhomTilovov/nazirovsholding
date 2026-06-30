@@ -52,6 +52,7 @@ interface Category {
   is_indexed: boolean;
   is_followed: boolean;
   brand_ids: string[];
+  division_id?: string | null;
   products_count?: number;
 }
 
@@ -71,6 +72,7 @@ interface FormData {
   is_indexed: boolean;
   is_followed: boolean;
   brand_ids: string[];
+  division_id: string;
 }
 
 const initialFormData: FormData = {
@@ -89,6 +91,7 @@ const initialFormData: FormData = {
   is_indexed: true,
   is_followed: true,
   brand_ids: [],
+  division_id: '',
 };
 
 export default function Categories() {
@@ -253,6 +256,7 @@ export default function Categories() {
       is_indexed: category.is_indexed ?? true,
       is_followed: category.is_followed ?? true,
       brand_ids: category.brand_ids || [],
+      division_id: (category as any).division_id || '',
     });
     setSlugError('');
     setActiveTab('general');
@@ -314,6 +318,7 @@ export default function Categories() {
         is_indexed: formData.is_indexed,
         is_followed: formData.is_followed,
         brand_ids: formData.brand_ids,
+        division_id: formData.division_id || null,
       };
 
       if (selectedCategory) {
