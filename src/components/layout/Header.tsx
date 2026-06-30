@@ -76,11 +76,12 @@ export function Header() {
                   >
                     <span
                       className={`text-[11px] font-medium tracking-[0.22em] uppercase transition-colors duration-300 ${
-                        active ? 'text-primary' : 'text-foreground/70 group-hover:text-foreground'
+                        active ? 'text-primary' : 'text-secondary/80 group-hover:text-primary'
                       }`}
                     >
                       {link.label}
                     </span>
+
                     <span
                       className={`pointer-events-none absolute left-4 right-4 -bottom-0.5 h-px bg-gradient-to-r from-transparent via-[hsl(var(--primary))] to-transparent transition-all duration-500 ${
                         active ? 'opacity-100 scale-x-100' : 'opacity-0 scale-x-0 group-hover:opacity-100 group-hover:scale-x-100'
