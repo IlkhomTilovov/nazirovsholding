@@ -97,20 +97,19 @@ export function Header() {
               <div className="hidden md:flex items-center gap-2 text-[10px] tracking-[0.3em] uppercase">
                 <button
                   onClick={() => setLanguage('uz')}
-                  className={`transition-colors ${language === 'uz' ? 'text-primary' : 'text-foreground/40 hover:text-foreground/80'}`}
+                  className={`transition-colors ${language === 'uz' ? 'text-primary' : 'text-muted-foreground hover:text-secondary'}`}
                 >UZ</button>
-                <span className="text-foreground/20">/</span>
+                <span className="text-border">/</span>
                 <button
                   onClick={() => setLanguage('ru')}
-                  className={`transition-colors ${language === 'ru' ? 'text-primary' : 'text-foreground/40 hover:text-foreground/80'}`}
+                  className={`transition-colors ${language === 'ru' ? 'text-primary' : 'text-muted-foreground hover:text-secondary'}`}
                 >RU</button>
               </div>
 
               <Link
                 to="/contact"
-                className="hidden md:inline-flex items-center gap-2 group relative overflow-hidden border border-primary/50 hover:border-primary text-primary hover:text-primary-foreground transition-colors duration-500 px-5 py-2.5 text-[10px] font-semibold tracking-[0.25em] uppercase"
+                className="hidden md:inline-flex items-center gap-2 group relative overflow-hidden bg-primary hover:bg-[hsl(var(--primary)/0.92)] text-primary-foreground transition-all duration-300 px-5 py-2.5 text-[10px] font-semibold tracking-[0.25em] uppercase rounded-md shadow-[0_4px_16px_-6px_hsl(var(--primary)/0.5)] hover:shadow-[0_8px_24px_-6px_hsl(var(--primary)/0.6)]"
               >
-                <span className="absolute inset-0 bg-primary -translate-x-full group-hover:translate-x-0 transition-transform duration-500" />
                 <span className="relative">Hamkorlik Boshlash</span>
                 <ArrowUpRight className="relative w-3.5 h-3.5 transition-transform duration-500 group-hover:rotate-45" />
               </Link>
@@ -120,9 +119,10 @@ export function Header() {
                 className="xl:hidden flex flex-col items-end gap-1.5 p-2 group"
                 aria-label="Open menu"
               >
-                <span className="w-7 h-px bg-foreground transition-all group-hover:bg-primary" />
-                <span className="w-5 h-px bg-foreground transition-all group-hover:bg-primary group-hover:w-7" />
+                <span className="w-7 h-px bg-secondary transition-all group-hover:bg-primary" />
+                <span className="w-5 h-px bg-secondary transition-all group-hover:bg-primary group-hover:w-7" />
               </button>
+
             </div>
           </div>
         </div>
