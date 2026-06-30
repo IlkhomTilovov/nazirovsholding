@@ -76,10 +76,11 @@ export function Header() {
                     className="group relative px-4 py-2"
                   >
                     <span
-                      className={`text-[11px] font-medium tracking-[0.22em] uppercase transition-colors duration-300 ${
-                        active ? 'text-primary' : 'text-secondary/80 group-hover:text-primary'
+                      className={`text-[12px] font-semibold tracking-[0.18em] uppercase transition-colors duration-300 ${
+                        active ? 'text-primary' : 'text-secondary group-hover:text-primary'
                       }`}
                     >
+
                       {link.label}
                     </span>
 
