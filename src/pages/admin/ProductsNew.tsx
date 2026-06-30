@@ -956,11 +956,20 @@ export default function ProductsNew() {
                     <SelectValue placeholder="Toifani tanlang" />
                   </SelectTrigger>
                   <SelectContent>
-                    {categories.map((cat) => (
-                      <SelectItem key={cat.id} value={cat.id}>
-                        {language === 'uz' ? cat.name_uz : cat.name_ru}
-                      </SelectItem>
-                    ))}
+                    {categories
+                      .filter((cat: any) => {
+                        if (selectedDivisionId) return cat.division_id === selectedDivisionId;
+                        if (formData.brand_id) {
+                          const bids: string[] = (cat as any).brand_ids || [];
+                          return bids.length === 0 || bids.includes(formData.brand_id);
+                        }
+                        return true;
+                      })
+                      .map((cat) => (
+                        <SelectItem key={cat.id} value={cat.id}>
+                          {language === 'uz' ? cat.name_uz : cat.name_ru}
+                        </SelectItem>
+                      ))}
                   </SelectContent>
                 </Select>
               </div>
