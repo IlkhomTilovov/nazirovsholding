@@ -1,7 +1,8 @@
 import { useEffect, useState, useRef } from 'react';
+import { Link } from 'react-router-dom';
 import {
   Plus, Pencil, Trash2, Image as ImageIcon, Search, Globe,
-  AlertTriangle, Package, ExternalLink, X, Loader2, Upload, Award,
+  AlertTriangle, Package, ExternalLink, X, Loader2, Upload, Award, Settings2,
 } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { Button } from '@/components/ui/button';
@@ -355,6 +356,11 @@ export default function Brands() {
                     </TableCell>
                     <TableCell className="text-right">
                       <div className="flex items-center justify-end gap-2">
+                        <Button asChild variant="outline" size="sm" className="gap-1.5">
+                          <Link to={`/admin/brands/${b.id}`}>
+                            <Settings2 className="h-3.5 w-3.5" />Boshqarish
+                          </Link>
+                        </Button>
                         <a href={`/brand/${b.slug}`} target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary">
                           <ExternalLink className="h-4 w-4" />
                         </a>
