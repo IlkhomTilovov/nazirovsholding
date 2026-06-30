@@ -782,6 +782,29 @@ export default function Categories() {
                   Bu toifaga qaysi brendlar tegishli ekanligini belgilang
                 </p>
               </div>
+
+              {/* Division (Bo'lim) */}
+              <div className="space-y-2">
+                <Label>Bo'lim (Business Division)</Label>
+                <Select
+                  value={formData.division_id || '__none__'}
+                  onValueChange={(v) => setFormData((p) => ({ ...p, division_id: v === '__none__' ? '' : v }))}
+                  disabled={!primaryBrandId}
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder={primaryBrandId ? "Bo'limni tanlang" : "Avval brendni tanlang"} />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="__none__">— Yo'q —</SelectItem>
+                    {divisions.map((d) => (
+                      <SelectItem key={d.id} value={d.id}>{d.name_uz}</SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+                <p className="text-xs text-muted-foreground">
+                  Tanlangan brendning bo'limlaridan tanlanadi
+                </p>
+              </div>
             </TabsContent>
 
             {/* SEO Tab */}
