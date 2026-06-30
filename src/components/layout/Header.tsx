@@ -119,8 +119,8 @@ export function Header() {
                 className="xl:hidden flex flex-col items-end gap-1.5 p-2 group"
                 aria-label="Open menu"
               >
-                <span className="w-7 h-px bg-background transition-all group-hover:bg-primary" />
-                <span className="w-5 h-px bg-background transition-all group-hover:bg-primary group-hover:w-7" />
+                <span className="w-7 h-px bg-foreground transition-all group-hover:bg-primary" />
+                <span className="w-5 h-px bg-foreground transition-all group-hover:bg-primary group-hover:w-7" />
               </button>
             </div>
           </div>
