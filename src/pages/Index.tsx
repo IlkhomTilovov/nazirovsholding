@@ -376,7 +376,7 @@ export default function Index() {
 
             <Link
               to="/about"
-              className="group inline-flex items-center gap-3 bg-primary hover:bg-[hsl(var(--primary)/0.85)] text-background px-8 h-14 text-xs font-semibold tracking-[0.22em] uppercase transition-all duration-300 hover:-translate-y-0.5"
+              className="group inline-flex items-center gap-3 bg-primary hover:bg-[hsl(var(--primary)/0.85)] text-primary-foreground px-8 h-14 text-xs font-semibold tracking-[0.22em] uppercase transition-all duration-300 hover:-translate-y-0.5"
             >
               <EditableText
                 contentKey="home_about_cta"
