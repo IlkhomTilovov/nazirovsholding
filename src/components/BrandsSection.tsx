@@ -169,9 +169,9 @@ const BrandCard = memo(function BrandCard({ brand, count, language, index, isVis
     >
       {/* Banner / image */}
       <div className="relative aspect-[4/3] overflow-hidden bg-muted">
-        {brand.banner || brand.logo ? (
+        {brand.logo || brand.banner ? (
           <LazyImage
-            src={brand.banner || brand.logo}
+            src={brand.logo || brand.banner}
             alt={name}
             className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
             wrapperClassName="w-full h-full"
@@ -183,18 +183,6 @@ const BrandCard = memo(function BrandCard({ brand, count, language, index, isVis
         )}
         <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent pointer-events-none" />
 
-        {/* Logo */}
-        {brand.logo && (
-          <div className="absolute top-4 left-4 bg-background/95 backdrop-blur-sm rounded-sm p-2 shadow-sm">
-            <img
-              src={brand.logo}
-              alt={`${name} logo`}
-              className="h-8 w-auto object-contain"
-              loading="lazy"
-            />
-          </div>
-        )}
-
         {/* Count badge */}
         {count > 0 && (
           <div className="absolute top-4 right-4 bg-primary text-primary-foreground text-xs font-medium px-2.5 py-1 rounded-sm">
@@ -202,6 +190,7 @@ const BrandCard = memo(function BrandCard({ brand, count, language, index, isVis
           </div>
         )}
       </div>
+
 
       {/* Content */}
       <div className="p-5">
