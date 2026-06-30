@@ -32,6 +32,7 @@ import { Separator } from '@/components/ui/separator';
 import { useToast } from '@/hooks/use-toast';
 import { useLanguage } from '@/hooks/useLanguage';
 import { useBrands } from '@/hooks/useBrands';
+import { useDivisions } from '@/hooks/useDivisions';
 import { AddMediaModal, MediaItem } from '@/components/admin/AddMediaModal';
 import { MediaGrid } from '@/components/admin/MediaGrid';
 import { DynamicAttributesForm } from '@/components/admin/DynamicAttributesForm';
@@ -172,6 +173,8 @@ export default function ProductsNew() {
   const { toast } = useToast();
   const { language } = useLanguage();
   const { brands: brandList } = useBrands(false);
+  const { divisions: divisionList } = useDivisions(formData.brand_id || null, false);
+  const [selectedDivisionId, setSelectedDivisionId] = useState<string>('');
 
   // Dynamic attributes state
   const [attrValues, setAttrValues] = useState<Record<string, any>>({});
@@ -944,29 +947,13 @@ export default function ProductsNew() {
               </div>
 
               <div className="space-y-2">
-                <Label>Toifa</Label>
-                <Select 
-                  value={formData.category_id} 
-                  onValueChange={handleCategoryChange}
-                >
-                  <SelectTrigger>
-                    <SelectValue placeholder="Toifani tanlang" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {categories.map((cat) => (
-                      <SelectItem key={cat.id} value={cat.id}>
-                        {language === 'uz' ? cat.name_uz : cat.name_ru}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-
-              <div className="space-y-2">
                 <Label>Brend</Label>
                 <Select
                   value={formData.brand_id || '__none__'}
-                  onValueChange={(value) => setFormData({ ...formData, brand_id: value === '__none__' ? '' : value })}
+                  onValueChange={(value) => {
+                    setFormData({ ...formData, brand_id: value === '__none__' ? '' : value, category_id: '' });
+                    setSelectedDivisionId('');
+                  }}
                 >
                   <SelectTrigger>
                     <SelectValue placeholder="Brendni tanlang (ixtiyoriy)" />
@@ -981,6 +968,56 @@ export default function ProductsNew() {
                   </SelectContent>
                 </Select>
               </div>
+
+              <div className="space-y-2">
+                <Label>Bo'lim (Business Division)</Label>
+                <Select
+                  value={selectedDivisionId || '__none__'}
+                  onValueChange={(v) => { setSelectedDivisionId(v === '__none__' ? '' : v); setFormData((p) => ({ ...p, category_id: '' })); }}
+                  disabled={!formData.brand_id}
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder={formData.brand_id ? "Bo'limni tanlang" : "Avval brendni tanlang"} />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="__none__">— Barchasi —</SelectItem>
+                    {divisionList.map((d) => (
+                      <SelectItem key={d.id} value={d.id}>
+                        {language === 'uz' ? d.name_uz : d.name_ru}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+
+              <div className="space-y-2">
+                <Label>Toifa</Label>
+                <Select 
+                  value={formData.category_id} 
+                  onValueChange={handleCategoryChange}
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder="Toifani tanlang" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {categories
+                      .filter((cat: any) => {
+                        if (selectedDivisionId) return cat.division_id === selectedDivisionId;
+                        if (formData.brand_id) {
+                          const bids: string[] = (cat as any).brand_ids || [];
+                          return bids.length === 0 || bids.includes(formData.brand_id);
+                        }
+                        return true;
+                      })
+                      .map((cat) => (
+                        <SelectItem key={cat.id} value={cat.id}>
+                          {language === 'uz' ? cat.name_uz : cat.name_ru}
+                        </SelectItem>
+                      ))}
+                  </SelectContent>
+                </Select>
+              </div>
+
 
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-2">

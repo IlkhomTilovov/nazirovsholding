@@ -184,15 +184,131 @@ export type Database = {
       }
       brands: {
         Row: {
+          accent_color: string | null
           banner: string | null
+          canonical_url: string | null
+          cover_image: string | null
+          created_at: string
+          dark_logo: string | null
+          default_sort: string
+          description_ru: string | null
+          description_uz: string | null
+          gallery: Json
+          hero_banner: string | null
+          id: string
+          is_active: boolean
+          is_featured: boolean
+          is_followed: boolean
+          is_indexed: boolean
+          light_logo: string | null
+          logo: string | null
+          meta_description_ru: string | null
+          meta_description_uz: string | null
+          meta_keywords: string | null
+          meta_title_ru: string | null
+          meta_title_uz: string | null
+          name_ru: string
+          name_uz: string
+          og_image: string | null
+          primary_color: string | null
+          secondary_color: string | null
+          show_in_navigation: boolean
+          show_on_homepage: boolean
+          slug: string
+          sort_order: number
+          thumbnail: string | null
+          updated_at: string
+          website: string | null
+        }
+        Insert: {
+          accent_color?: string | null
+          banner?: string | null
+          canonical_url?: string | null
+          cover_image?: string | null
+          created_at?: string
+          dark_logo?: string | null
+          default_sort?: string
+          description_ru?: string | null
+          description_uz?: string | null
+          gallery?: Json
+          hero_banner?: string | null
+          id?: string
+          is_active?: boolean
+          is_featured?: boolean
+          is_followed?: boolean
+          is_indexed?: boolean
+          light_logo?: string | null
+          logo?: string | null
+          meta_description_ru?: string | null
+          meta_description_uz?: string | null
+          meta_keywords?: string | null
+          meta_title_ru?: string | null
+          meta_title_uz?: string | null
+          name_ru: string
+          name_uz: string
+          og_image?: string | null
+          primary_color?: string | null
+          secondary_color?: string | null
+          show_in_navigation?: boolean
+          show_on_homepage?: boolean
+          slug: string
+          sort_order?: number
+          thumbnail?: string | null
+          updated_at?: string
+          website?: string | null
+        }
+        Update: {
+          accent_color?: string | null
+          banner?: string | null
+          canonical_url?: string | null
+          cover_image?: string | null
+          created_at?: string
+          dark_logo?: string | null
+          default_sort?: string
+          description_ru?: string | null
+          description_uz?: string | null
+          gallery?: Json
+          hero_banner?: string | null
+          id?: string
+          is_active?: boolean
+          is_featured?: boolean
+          is_followed?: boolean
+          is_indexed?: boolean
+          light_logo?: string | null
+          logo?: string | null
+          meta_description_ru?: string | null
+          meta_description_uz?: string | null
+          meta_keywords?: string | null
+          meta_title_ru?: string | null
+          meta_title_uz?: string | null
+          name_ru?: string
+          name_uz?: string
+          og_image?: string | null
+          primary_color?: string | null
+          secondary_color?: string | null
+          show_in_navigation?: boolean
+          show_on_homepage?: boolean
+          slug?: string
+          sort_order?: number
+          thumbnail?: string | null
+          updated_at?: string
+          website?: string | null
+        }
+        Relationships: []
+      }
+      business_divisions: {
+        Row: {
+          banner: string | null
+          brand_id: string
+          cover_image: string | null
           created_at: string
           description_ru: string | null
           description_uz: string | null
+          gallery: Json
+          hero_image: string | null
+          icon: string | null
           id: string
           is_active: boolean
-          is_followed: boolean
-          is_indexed: boolean
-          logo: string | null
           meta_description_ru: string | null
           meta_description_uz: string | null
           meta_keywords: string | null
@@ -203,18 +319,19 @@ export type Database = {
           slug: string
           sort_order: number
           updated_at: string
-          website: string | null
         }
         Insert: {
           banner?: string | null
+          brand_id: string
+          cover_image?: string | null
           created_at?: string
           description_ru?: string | null
           description_uz?: string | null
+          gallery?: Json
+          hero_image?: string | null
+          icon?: string | null
           id?: string
           is_active?: boolean
-          is_followed?: boolean
-          is_indexed?: boolean
-          logo?: string | null
           meta_description_ru?: string | null
           meta_description_uz?: string | null
           meta_keywords?: string | null
@@ -225,18 +342,19 @@ export type Database = {
           slug: string
           sort_order?: number
           updated_at?: string
-          website?: string | null
         }
         Update: {
           banner?: string | null
+          brand_id?: string
+          cover_image?: string | null
           created_at?: string
           description_ru?: string | null
           description_uz?: string | null
+          gallery?: Json
+          hero_image?: string | null
+          icon?: string | null
           id?: string
           is_active?: boolean
-          is_followed?: boolean
-          is_indexed?: boolean
-          logo?: string | null
           meta_description_ru?: string | null
           meta_description_uz?: string | null
           meta_keywords?: string | null
@@ -247,14 +365,22 @@ export type Database = {
           slug?: string
           sort_order?: number
           updated_at?: string
-          website?: string | null
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "business_divisions_brand_id_fkey"
+            columns: ["brand_id"]
+            isOneToOne: false
+            referencedRelation: "brands"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       categories: {
         Row: {
           brand_ids: string[]
           created_at: string
+          division_id: string | null
           icon: string | null
           id: string
           image: string | null
@@ -275,6 +401,7 @@ export type Database = {
         Insert: {
           brand_ids?: string[]
           created_at?: string
+          division_id?: string | null
           icon?: string | null
           id?: string
           image?: string | null
@@ -295,6 +422,7 @@ export type Database = {
         Update: {
           brand_ids?: string[]
           created_at?: string
+          division_id?: string | null
           icon?: string | null
           id?: string
           image?: string | null
@@ -312,7 +440,15 @@ export type Database = {
           sort_order?: number | null
           updated_at?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "categories_division_id_fkey"
+            columns: ["division_id"]
+            isOneToOne: false
+            referencedRelation: "business_divisions"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       checkout_field_options: {
         Row: {

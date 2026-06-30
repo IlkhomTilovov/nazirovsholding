@@ -28,6 +28,8 @@ import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Separator } from '@/components/ui/separator';
 import { useToast } from '@/hooks/use-toast';
+import { useDivisions } from '@/hooks/useDivisions';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useBrands } from '@/hooks/useBrands';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
@@ -52,6 +54,7 @@ interface Category {
   is_indexed: boolean;
   is_followed: boolean;
   brand_ids: string[];
+  division_id?: string | null;
   products_count?: number;
 }
 
@@ -71,6 +74,7 @@ interface FormData {
   is_indexed: boolean;
   is_followed: boolean;
   brand_ids: string[];
+  division_id: string;
 }
 
 const initialFormData: FormData = {
@@ -89,6 +93,7 @@ const initialFormData: FormData = {
   is_indexed: true,
   is_followed: true,
   brand_ids: [],
+  division_id: '',
 };
 
 export default function Categories() {
@@ -106,6 +111,9 @@ export default function Categories() {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const { toast } = useToast();
   const { brands } = useBrands(false);
+  const primaryBrandId = formData.brand_ids[0] || null;
+  const { divisions } = useDivisions(primaryBrandId, false);
+
 
   const handleImageUpload = async (file: File) => {
     if (!file) return;
@@ -253,6 +261,7 @@ export default function Categories() {
       is_indexed: category.is_indexed ?? true,
       is_followed: category.is_followed ?? true,
       brand_ids: category.brand_ids || [],
+      division_id: (category as any).division_id || '',
     });
     setSlugError('');
     setActiveTab('general');
@@ -314,6 +323,7 @@ export default function Categories() {
         is_indexed: formData.is_indexed,
         is_followed: formData.is_followed,
         brand_ids: formData.brand_ids,
+        division_id: formData.division_id || null,
       };
 
       if (selectedCategory) {
@@ -770,6 +780,29 @@ export default function Categories() {
                 </Popover>
                 <p className="text-xs text-muted-foreground">
                   Bu toifaga qaysi brendlar tegishli ekanligini belgilang
+                </p>
+              </div>
+
+              {/* Division (Bo'lim) */}
+              <div className="space-y-2">
+                <Label>Bo'lim (Business Division)</Label>
+                <Select
+                  value={formData.division_id || '__none__'}
+                  onValueChange={(v) => setFormData((p) => ({ ...p, division_id: v === '__none__' ? '' : v }))}
+                  disabled={!primaryBrandId}
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder={primaryBrandId ? "Bo'limni tanlang" : "Avval brendni tanlang"} />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="__none__">— Yo'q —</SelectItem>
+                    {divisions.map((d) => (
+                      <SelectItem key={d.id} value={d.id}>{d.name_uz}</SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+                <p className="text-xs text-muted-foreground">
+                  Tanlangan brendning bo'limlaridan tanlanadi
                 </p>
               </div>
             </TabsContent>
