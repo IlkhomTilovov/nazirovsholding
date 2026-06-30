@@ -104,14 +104,14 @@ export const BrandsSection = memo(function BrandsSection() {
               <button
                 onClick={scrollPrev}
                 aria-label="Previous"
-                className="absolute left-4 md:left-8 top-1/2 -translate-y-1/2 z-20 w-12 h-12 md:w-14 md:h-14 rounded-full bg-black/40 hover:bg-primary border border-white/20 text-white flex items-center justify-center transition-all backdrop-blur-sm"
+                className="absolute left-4 md:left-8 top-1/2 -translate-y-1/2 z-20 w-12 h-12 md:w-14 md:h-14 rounded-full bg-background/40 hover:bg-primary border border-foreground/20 text-foreground flex items-center justify-center transition-all backdrop-blur-sm"
               >
                 <ChevronLeft className="w-6 h-6" />
               </button>
               <button
                 onClick={scrollNext}
                 aria-label="Next"
-                className="absolute right-4 md:right-8 top-1/2 -translate-y-1/2 z-20 w-12 h-12 md:w-14 md:h-14 rounded-full bg-black/40 hover:bg-primary border border-white/20 text-white flex items-center justify-center transition-all backdrop-blur-sm"
+                className="absolute right-4 md:right-8 top-1/2 -translate-y-1/2 z-20 w-12 h-12 md:w-14 md:h-14 rounded-full bg-background/40 hover:bg-primary border border-foreground/20 text-foreground flex items-center justify-center transition-all backdrop-blur-sm"
               >
                 <ChevronRight className="w-6 h-6" />
               </button>
@@ -124,7 +124,7 @@ export const BrandsSection = memo(function BrandsSection() {
                     onClick={() => scrollTo(i)}
                     aria-label={`Slide ${i + 1}`}
                     className={`h-[3px] transition-all duration-500 ${
-                      i === selectedIndex ? 'w-10 bg-primary' : 'w-5 bg-white/40 hover:bg-white/70'
+                      i === selectedIndex ? 'w-10 bg-primary' : 'w-5 bg-foreground/40 hover:bg-foreground/70'
                     }`}
                   />
                 ))}
@@ -151,7 +151,7 @@ const BrandSlide = memo(function BrandSlide({
 
   return (
     <div className="relative shrink-0 grow-0 basis-full">
-      <div className="relative w-full h-[70vh] md:h-[85vh] overflow-hidden bg-black">
+      <div className="relative w-full h-[70vh] md:h-[85vh] overflow-hidden bg-background">
         {image ? (
           <LazyImage
             src={image}
@@ -170,7 +170,7 @@ const BrandSlide = memo(function BrandSlide({
 
         {/* Content */}
         <div className="relative z-10 h-full container mx-auto px-6 lg:px-12 flex items-center">
-          <div className="max-w-xl text-white">
+          <div className="max-w-xl text-foreground">
             <div className="flex items-center gap-3 mb-5">
               <span className="w-10 h-px bg-primary" />
               <span className="text-primary text-xs tracking-[0.4em] uppercase font-semibold">
@@ -181,7 +181,7 @@ const BrandSlide = memo(function BrandSlide({
               {name}
             </h3>
             {description && (
-              <p className="text-white/80 text-base md:text-lg leading-relaxed mb-8 max-w-md">
+              <p className="text-foreground/80 text-base md:text-lg leading-relaxed mb-8 max-w-md">
                 {description}
               </p>
             )}

@@ -11,9 +11,9 @@ export default function Sectors() {
   const { brands, loading: brandsLoading } = useBrands(true);
 
   return (
-    <div className="min-h-screen bg-[#0d0d0d] text-white">
+    <div className="min-h-screen bg-background text-foreground">
       {/* Hero */}
-      <section className="relative pt-24 pb-20 border-b border-white/5">
+      <section className="relative pt-24 pb-20 border-b border-foreground/5">
         <div
           className="absolute inset-0 opacity-40 pointer-events-none"
           style={{ backgroundImage: 'radial-gradient(circle at 30% 30%, rgba(212,175,55,0.12), transparent 60%)' }}
@@ -23,7 +23,7 @@ export default function Sectors() {
             contentKey="sectors.hero.eyebrow"
             fallback="03 — Faoliyat"
             as="p"
-            className="text-[10px] tracking-[0.5em] uppercase text-[#d4af37] mb-6"
+            className="text-[10px] tracking-[0.5em] uppercase text-primary mb-6"
             section="sectors-hero"
           />
           <h1
@@ -42,7 +42,7 @@ export default function Sectors() {
             fallback="NazirovSholding — bir nechta strategik sohalarda faoliyat yurituvchi xalqaro holding. Har bir yo‘nalish kompaniyaning yagona qiymat zanjiri va global qamroviga integratsiyalashgan."
             as="p"
             multiline
-            className="mt-8 max-w-2xl text-white/60 text-lg leading-relaxed block"
+            className="mt-8 max-w-2xl text-foreground/60 text-lg leading-relaxed block"
             section="sectors-hero"
           />
 
@@ -51,7 +51,7 @@ export default function Sectors() {
 
 
       {/* Brands */}
-      <section className="py-24 border-t border-white/5 relative overflow-hidden">
+      <section className="py-24 border-t border-foreground/5 relative overflow-hidden">
         <div
           className="absolute inset-0 opacity-30 pointer-events-none"
           style={{ backgroundImage: 'radial-gradient(circle at 70% 50%, rgba(212,175,55,0.10), transparent 60%)' }}
@@ -63,7 +63,7 @@ export default function Sectors() {
                 contentKey="sectors.brands.eyebrow"
                 fallback="— 04 Bizning Brendlar"
                 as="p"
-                className="text-[10px] tracking-[0.5em] uppercase text-[#d4af37] mb-4"
+                className="text-[10px] tracking-[0.5em] uppercase text-primary mb-4"
                 section="sectors-brands"
               />
               <h2
@@ -83,31 +83,31 @@ export default function Sectors() {
               fallback="Har bir brend o'z sohasida yetakchi mavqega ega bo'lib, NazirovSholding global eksport infratuzilmasi orqali xalqaro bozorlarga chiqariladi."
               as="p"
               multiline
-              className="text-white/50 text-sm max-w-md leading-relaxed block"
+              className="text-foreground/50 text-sm max-w-md leading-relaxed block"
               section="sectors-brands"
             />
 
           </div>
 
           {brandsLoading ? (
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-px bg-white/5">
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-px bg-foreground/5">
               {Array.from({ length: 5 }).map((_, i) => (
-                <div key={i} className="bg-[#0d0d0d] aspect-[4/5] animate-pulse" />
+                <div key={i} className="bg-background aspect-[4/5] animate-pulse" />
               ))}
             </div>
           ) : brands.length === 0 ? null : (
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-px bg-white/5">
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-px bg-foreground/5">
               {brands.map((b, i) => (
                 <Link
                   key={b.id}
                   to={`/brand/${b.slug}`}
-                  className="group relative bg-[#0d0d0d] hover:bg-[#141414] transition-colors duration-500 p-6 flex flex-col justify-between aspect-[4/5]"
+                  className="group relative bg-background hover:bg-[#141414] transition-colors duration-500 p-6 flex flex-col justify-between aspect-[4/5]"
                 >
                   <div className="flex items-start justify-between">
-                    <span className="text-[10px] tracking-[0.3em] text-white/30">
+                    <span className="text-[10px] tracking-[0.3em] text-foreground/30">
                       {String(i + 1).padStart(2, '0')}
                     </span>
-                    <ArrowUpRight className="w-4 h-4 text-white/20 group-hover:text-[#d4af37] group-hover:rotate-0 -rotate-12 transition-all duration-500" />
+                    <ArrowUpRight className="w-4 h-4 text-foreground/20 group-hover:text-primary group-hover:rotate-0 -rotate-12 transition-all duration-500" />
                   </div>
 
                   <div className="flex-1 flex items-center justify-center py-6">
@@ -119,7 +119,7 @@ export default function Sectors() {
                       />
                     ) : (
                       <div
-                        className="text-3xl font-light text-white/80 group-hover:text-[#d4af37] transition-colors text-center"
+                        className="text-3xl font-light text-foreground/80 group-hover:text-primary transition-colors text-center"
                         style={{ fontFamily: "'Instrument Serif', serif" }}
                       >
                         {b.name_uz}
@@ -128,14 +128,14 @@ export default function Sectors() {
                   </div>
 
                   <div>
-                    <div className="h-px bg-gradient-to-r from-[#d4af37]/0 via-[#d4af37]/40 to-[#d4af37]/0 scale-x-0 group-hover:scale-x-100 transition-transform duration-700 origin-left mb-4" />
+                    <div className="h-px bg-gradient-to-r from-[hsl(var(--primary))]/0 via-[hsl(var(--primary))]/40 to-[hsl(var(--primary))]/0 scale-x-0 group-hover:scale-x-100 transition-transform duration-700 origin-left mb-4" />
                     {b.logo ? (
-                      <h4 className="text-sm font-light tracking-wide text-white/70 group-hover:text-white transition-colors">
+                      <h4 className="text-sm font-light tracking-wide text-foreground/70 group-hover:text-foreground transition-colors">
                         {b.name_uz}
                       </h4>
                     ) : null}
                     {b.description_uz && (
-                      <p className="text-[11px] text-white/40 mt-1 line-clamp-2 leading-relaxed">
+                      <p className="text-[11px] text-foreground/40 mt-1 line-clamp-2 leading-relaxed">
                         {b.description_uz}
                       </p>
                     )}
@@ -148,14 +148,14 @@ export default function Sectors() {
       </section>
 
       {/* CTA */}
-      <section className="py-24 border-t border-white/5">
+      <section className="py-24 border-t border-foreground/5">
         <div className="max-w-[1200px] mx-auto px-6 lg:px-10 flex flex-col md:flex-row items-start md:items-end justify-between gap-8">
           <div>
             <EditableText
               contentKey="sectors.cta.eyebrow"
               fallback="Strategik Hamkorlik"
               as="p"
-              className="text-[10px] tracking-[0.5em] uppercase text-[#d4af37] mb-4"
+              className="text-[10px] tracking-[0.5em] uppercase text-primary mb-4"
               section="sectors-cta"
             />
             <h2 className="text-4xl md:text-5xl font-light max-w-2xl leading-tight" style={{ fontFamily: "'Instrument Serif', serif" }}>
@@ -169,7 +169,7 @@ export default function Sectors() {
           </div>
           <Link
             to="/contact"
-            className="group inline-flex items-center gap-3 bg-[#d4af37] hover:bg-[#c9a230] text-black px-8 py-4 text-xs font-semibold tracking-[0.3em] uppercase transition-colors"
+            className="group inline-flex items-center gap-3 bg-primary hover:bg-[hsl(var(--primary)/0.85)] text-primary-foreground px-8 py-4 text-xs font-semibold tracking-[0.3em] uppercase transition-colors"
           >
             <EditableText
               contentKey="sectors.cta.button"
