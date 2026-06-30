@@ -99,13 +99,14 @@ export function Header() {
               <div className="hidden md:flex items-center gap-2 text-[10px] tracking-[0.3em] uppercase">
                 <button
                   onClick={() => setLanguage('uz')}
-                  className={`transition-colors ${language === 'uz' ? 'text-primary' : 'text-muted-foreground hover:text-secondary'}`}
+                  className={`font-semibold transition-colors ${language === 'uz' ? 'text-primary' : 'text-secondary/70 hover:text-secondary'}`}
                 >UZ</button>
-                <span className="text-border">/</span>
+                <span className="text-secondary/30">/</span>
                 <button
                   onClick={() => setLanguage('ru')}
-                  className={`transition-colors ${language === 'ru' ? 'text-primary' : 'text-muted-foreground hover:text-secondary'}`}
+                  className={`font-semibold transition-colors ${language === 'ru' ? 'text-primary' : 'text-secondary/70 hover:text-secondary'}`}
                 >RU</button>
+
               </div>
 
               <Link
