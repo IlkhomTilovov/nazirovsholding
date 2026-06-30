@@ -53,15 +53,16 @@ export function Header() {
             <Link to="/" className="flex items-center group shrink-0">
               <div className="flex flex-col leading-none">
                 <span
-                  className="font-serif text-[20px] md:text-[22px] tracking-[0.22em] text-secondary font-light"
+                  className="font-serif text-[20px] md:text-[22px] tracking-[0.22em] text-secondary font-normal"
                 >
-                  NAZIROV<span className="text-primary font-normal">SHOLDING</span>
+                  NAZIROV<span className="text-primary font-semibold">SHOLDING</span>
                 </span>
-                <span className="hidden md:block text-[9px] tracking-[0.45em] text-muted-foreground uppercase mt-0.5">
+                <span className="hidden md:block text-[9px] tracking-[0.45em] text-secondary/60 uppercase mt-1 font-medium">
                   International Holding Group
                 </span>
               </div>
             </Link>
+
 
 
             {/* Desktop Nav */}
