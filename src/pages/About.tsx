@@ -186,7 +186,7 @@ export default function About() {
             {values.map((v) => {
               const Icon = v.icon;
               return (
-                <div key={v.id} className="group bg-background p-10 hover:bg-[#141414] transition-colors duration-500">
+                <div key={v.id} className="group bg-background p-10 hover:bg-muted transition-colors duration-500">
                   <Icon className="w-7 h-7 text-primary mb-10" strokeWidth={1.2} />
                   <h3
                     className="text-2xl font-light mb-3 group-hover:text-primary transition-colors"

@@ -33,7 +33,7 @@ export function GlobalOperationsSection() {
             className="w-full h-full object-cover"
           />
         </motion.div>
-        <div className="absolute inset-0 bg-gradient-to-b from-[hsl(var(--background))]/90 via-[hsl(var(--background))]/40 to-[hsl(var(--background))]" />
+        <div className="absolute inset-0 bg-gradient-to-b from-background/90 via-background/40 to-background" />
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_30%,rgba(13,13,13,0.7)_100%)]" />
 
         <div className="relative h-full max-w-[1280px] mx-auto px-6 lg:px-10 flex flex-col justify-end pb-16 md:pb-24">
@@ -56,7 +56,7 @@ export function GlobalOperationsSection() {
 
       {/* ───────── BLOCK 2 — CORPORATE MESSAGE ───────── */}
       <div className="relative py-28 md:py-40 border-y border-primary/15 bg-background">
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(201,168,76,0.06),transparent_60%)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,hsl(var(--primary) / 0.06),transparent_60%)]" />
         <div className="relative max-w-[1280px] mx-auto px-6 lg:px-10 grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20 items-end">
           <motion.div
             variants={fadeUp} initial="hidden" whileInView="show" viewport={{ once: true, amount: 0.3 }}
@@ -108,7 +108,7 @@ export function GlobalOperationsSection() {
                   contentKey={s.valueKey}
                   fallback={s.valueFallback}
                   section="bozorlar-stats"
-                  className="font-serif text-6xl md:text-7xl text-primary leading-none mb-6 group-hover:[text-shadow:0_0_30px_rgba(201,168,76,0.4)] transition-all duration-500"
+                  className="font-serif text-6xl md:text-7xl text-primary leading-none mb-6 group-hover:[text-shadow:0_0_30px_hsl(var(--primary) / 0.4)] transition-all duration-500"
                 />
                 <div className="h-px w-10 bg-primary/40 mb-4 group-hover:w-16 transition-all duration-500" />
                 <EditableText contentKey={s.labelKey} fallback={s.fallback} section="bozorlar-stats" className="text-[11px] tracking-[0.3em] uppercase text-foreground/60 font-medium" />
@@ -142,7 +142,7 @@ export function GlobalOperationsSection() {
               <motion.article
                 key={p.id}
                 variants={fadeUp} custom={i} initial="hidden" whileInView="show" viewport={{ once: true, amount: 0.2 }}
-                className="group relative grid grid-cols-1 md:grid-cols-12 gap-0 border border-primary/15 bg-[#0f0f0f] overflow-hidden hover:border-primary/50 transition-all duration-700 hover:shadow-[0_0_60px_-20px_rgba(201,168,76,0.35)]"
+                className="group relative grid grid-cols-1 md:grid-cols-12 gap-0 border border-primary/15 bg-card overflow-hidden hover:border-primary/50 transition-all duration-700 hover:shadow-[0_0_60px_-20px_hsl(var(--primary) / 0.35)]"
               >
                 <div className="md:col-span-5 relative aspect-[16/10] md:aspect-auto overflow-hidden">
                   <EditableImage
@@ -153,7 +153,7 @@ export function GlobalOperationsSection() {
                     wrapperClassName="absolute inset-0 w-full h-full"
                     className="absolute inset-0 w-full h-full object-cover transition-transform duration-[1600ms] ease-out group-hover:scale-110"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-r from-[hsl(var(--background))]/60 via-transparent to-transparent md:bg-gradient-to-r md:from-transparent md:via-transparent md:to-[#0f0f0f] pointer-events-none" />
+                  <div className="absolute inset-0 bg-gradient-to-r from-background/60 via-transparent to-transparent md:bg-gradient-to-r md:from-transparent md:via-transparent md:to-card pointer-events-none" />
                   <div className="absolute top-5 left-5 z-10 bg-background/80 backdrop-blur-sm px-3 py-1.5 text-xs tracking-[0.3em] uppercase text-foreground/90 border border-primary/30 flex items-center gap-2">
                     <span className="text-base leading-none">{p.flag}</span>
                     <EditableText contentKey={`bozorlar.case.${p.id}.country`} fallback={p.country} section="bozorlar-cases" />

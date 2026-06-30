@@ -101,7 +101,7 @@ export default function Sectors() {
                 <Link
                   key={b.id}
                   to={`/brand/${b.slug}`}
-                  className="group relative bg-background hover:bg-[#141414] transition-colors duration-500 p-6 flex flex-col justify-between aspect-[4/5]"
+                  className="group relative bg-background hover:bg-muted transition-colors duration-500 p-6 flex flex-col justify-between aspect-[4/5]"
                 >
                   <div className="flex items-start justify-between">
                     <span className="text-[10px] tracking-[0.3em] text-foreground/30">
