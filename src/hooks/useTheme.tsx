@@ -2,8 +2,9 @@ import React, { createContext, useContext, useEffect, useState, useCallback } fr
 import { supabase } from '@/integrations/supabase/client';
 import { Theme } from '@/lib/themes';
 
-const THEME_CACHE_KEY = 'furniture-active-theme';
-const THEME_READY_KEY = 'furniture-theme-ready';
+const THEME_CACHE_KEY = 'nazirov-active-theme-v2';
+const THEME_READY_KEY = 'nazirov-theme-ready-v2';
+
 
 const DEFAULT_THEME: Theme = {
   name: 'Corporate Executive Light',
