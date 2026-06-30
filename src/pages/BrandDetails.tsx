@@ -147,41 +147,89 @@ export default function BrandDetails() {
       <div className="container mx-auto px-4 py-8">
 
 
-        {categories.length > 0 && (
-          <div className="mb-6 flex flex-wrap gap-2">
-            <button
-              type="button"
-              onClick={() => setActiveCategoryId('all')}
-              className={`px-4 py-2 rounded-sm text-sm tracking-wider uppercase transition-colors border ${
-                activeCategoryId === 'all'
-                  ? 'bg-primary text-primary-foreground border-primary'
-                  : 'bg-background text-foreground border-border hover:border-primary'
-              }`}
-            >
-              {isUz ? 'Barchasi' : 'Все'}
-            </button>
-            {categories.map((cat) => (
+        {divisions.length > 0 && (
+          <div className="mb-8">
+            <div className="text-[11px] uppercase tracking-[0.25em] text-muted-foreground mb-3">
+              {isUz ? 'Bo\'limlar' : 'Подразделения'}
+            </div>
+            <div className="flex flex-wrap gap-2">
               <button
-                key={cat.id}
                 type="button"
-                onClick={() => setActiveCategoryId(cat.id)}
+                onClick={() => { setActiveDivisionId('all'); setActiveCategoryId('all'); }}
                 className={`px-4 py-2 rounded-sm text-sm tracking-wider uppercase transition-colors border ${
-                  activeCategoryId === cat.id
+                  activeDivisionId === 'all'
                     ? 'bg-primary text-primary-foreground border-primary'
                     : 'bg-background text-foreground border-border hover:border-primary'
                 }`}
               >
-                {isUz ? cat.name_uz : cat.name_ru}
+                {isUz ? 'Barchasi' : 'Все'}
               </button>
-            ))}
+              {divisions.map((d) => (
+                <button
+                  key={d.id}
+                  type="button"
+                  onClick={() => { setActiveDivisionId(d.id); setActiveCategoryId('all'); }}
+                  className={`px-4 py-2 rounded-sm text-sm tracking-wider uppercase transition-colors border ${
+                    activeDivisionId === d.id
+                      ? 'bg-primary text-primary-foreground border-primary'
+                      : 'bg-background text-foreground border-border hover:border-primary'
+                  }`}
+                >
+                  {isUz ? d.name_uz : d.name_ru}
+                </button>
+              ))}
+            </div>
           </div>
         )}
 
         {(() => {
-          const filtered =
-            activeCategoryId === 'all'
-              ? products
-              : products.filter((p) => p.category_id === activeCategoryId);
+          const visibleCategories =
+            activeDivisionId === 'all'
+              ? categories
+              : categories.filter((c) => c.division_id === activeDivisionId);
+          return visibleCategories.length > 0 ? (
+            <div className="mb-6 flex flex-wrap gap-2">
+              <button
+                type="button"
+                onClick={() => setActiveCategoryId('all')}
+                className={`px-4 py-2 rounded-sm text-sm tracking-wider uppercase transition-colors border ${
+                  activeCategoryId === 'all'
+                    ? 'bg-primary text-primary-foreground border-primary'
+                    : 'bg-background text-foreground border-border hover:border-primary'
+                }`}
+              >
+                {isUz ? 'Barchasi' : 'Все'}
+              </button>
+              {visibleCategories.map((cat) => (
+                <button
+                  key={cat.id}
+                  type="button"
+                  onClick={() => setActiveCategoryId(cat.id)}
+                  className={`px-4 py-2 rounded-sm text-sm tracking-wider uppercase transition-colors border ${
+                    activeCategoryId === cat.id
+                      ? 'bg-primary text-primary-foreground border-primary'
+                      : 'bg-background text-foreground border-border hover:border-primary'
+                  }`}
+                >
+                  {isUz ? cat.name_uz : cat.name_ru}
+                </button>
+              ))}
+            </div>
+          ) : null;
+        })()}
+
+        {(() => {
+          const divisionCategoryIds = new Set(
+            (activeDivisionId === 'all'
+              ? categories
+              : categories.filter((c) => c.division_id === activeDivisionId)
+            ).map((c) => c.id)
+          );
+          const filtered = products.filter((p) => {
+            if (activeCategoryId !== 'all') return p.category_id === activeCategoryId;
+            if (activeDivisionId === 'all') return true;
+            return p.category_id ? divisionCategoryIds.has(p.category_id) : false;
+          });
           return (
             <>
               <div className="flex items-center justify-between mb-6">
