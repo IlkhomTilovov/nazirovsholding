@@ -1,210 +1,200 @@
-import { useEffect, useRef, useState, memo } from 'react';
+import { useEffect, useRef, useState, memo, useCallback } from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowRight, Award } from 'lucide-react';
+import { ArrowRight, ChevronLeft, ChevronRight } from 'lucide-react';
 import useEmblaCarousel from 'embla-carousel-react';
 import { useBrands } from '@/hooks/useBrands';
 import { useLanguage } from '@/hooks/useLanguage';
 import { EditableText } from '@/components/EditableText';
 import { LazyImage } from '@/components/LazyImage';
-import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
-import { supabase } from '@/integrations/supabase/client';
-
-function useInView(threshold = 0.15) {
-  const ref = useRef<HTMLDivElement>(null);
-  const [isVisible, setIsVisible] = useState(false);
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    const obs = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true);
-          obs.disconnect();
-        }
-      },
-      { threshold }
-    );
-    obs.observe(el);
-    return () => obs.disconnect();
-  }, [threshold]);
-  return { ref, isVisible };
-}
 
 export const BrandsSection = memo(function BrandsSection() {
   const { language } = useLanguage();
   const { brands, loading } = useBrands(true);
-  const { ref, isVisible } = useInView();
-  const [productCounts, setProductCounts] = useState<Record<string, number>>({});
-  const [emblaRef] = useEmblaCarousel({ loop: false, align: 'start', dragFree: true });
+  const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true, align: 'start' });
+  const [selectedIndex, setSelectedIndex] = useState(0);
+  const autoplayRef = useRef<number | null>(null);
+
+  const scrollPrev = useCallback(() => emblaApi?.scrollPrev(), [emblaApi]);
+  const scrollNext = useCallback(() => emblaApi?.scrollNext(), [emblaApi]);
+  const scrollTo = useCallback((i: number) => emblaApi?.scrollTo(i), [emblaApi]);
 
   useEffect(() => {
-    if (brands.length === 0) return;
-    (async () => {
-      const { data } = await supabase
-        .from('products')
-        .select('brand_id')
-        .eq('is_active', true)
-        .in('brand_id', brands.map((b) => b.id));
-      if (!data) return;
-      const counts: Record<string, number> = {};
-      data.forEach((p: any) => {
-        if (p.brand_id) counts[p.brand_id] = (counts[p.brand_id] || 0) + 1;
-      });
-      setProductCounts(counts);
-    })();
-  }, [brands]);
+    if (!emblaApi) return;
+    const onSelect = () => setSelectedIndex(emblaApi.selectedScrollSnap());
+    emblaApi.on('select', onSelect);
+    onSelect();
+    return () => {
+      emblaApi.off('select', onSelect);
+    };
+  }, [emblaApi]);
+
+  // Autoplay
+  useEffect(() => {
+    if (!emblaApi) return;
+    const start = () => {
+      stop();
+      autoplayRef.current = window.setInterval(() => emblaApi.scrollNext(), 5500);
+    };
+    const stop = () => {
+      if (autoplayRef.current) {
+        clearInterval(autoplayRef.current);
+        autoplayRef.current = null;
+      }
+    };
+    start();
+    return stop;
+  }, [emblaApi]);
 
   if (!loading && brands.length === 0) return null;
 
   return (
-    <section
-      ref={ref}
-      className="py-20 md:py-28 bg-background"
-      aria-labelledby="brands-section-title"
-    >
-      <div className="container mx-auto px-4 lg:px-8">
-        <div
-          className={`text-center mb-16 transition-all duration-700 ${
-            isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
-          }`}
+    <section className="relative bg-background" aria-labelledby="brands-section-title">
+      {/* Heading */}
+      <div className="container mx-auto px-4 lg:px-8 pt-20 md:pt-28 pb-10 md:pb-14 text-center">
+        <EditableText
+          contentKey="brands_label"
+          fallback={language === 'ru' ? 'Бренды' : 'Brendlar'}
+          as="span"
+          className="text-primary text-xs tracking-[0.4em] uppercase font-semibold"
+          section="brands"
+        />
+        <h2
+          id="brands-section-title"
+          className="font-serif text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mt-4"
         >
           <EditableText
-            contentKey="brands_label"
-            fallback={language === 'ru' ? 'Бренды' : 'Brendlar'}
+            contentKey="brands_title"
+            fallback={language === 'ru' ? 'Наши бренды' : 'Bizning brendlarimiz'}
             as="span"
-            className="text-primary text-xs tracking-[0.3em] uppercase font-medium"
+            className="font-serif"
             section="brands"
           />
-          <h2
-            id="brands-section-title"
-            className="font-serif text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mt-4"
-          >
-            <EditableText
-              contentKey="brands_title"
-              fallback={language === 'ru' ? 'Наши бренды' : 'Bizning brendlarimiz'}
-              as="span"
-              className="font-serif text-3xl md:text-4xl lg:text-5xl font-bold"
-              section="brands"
-            />
-          </h2>
-          <p className="text-muted-foreground text-sm md:text-base mt-4 max-w-2xl mx-auto">
-            <EditableText
-              contentKey="brands_subtitle"
-              fallback={
-                language === 'ru'
-                  ? 'Премиальные бренды, которым мы доверяем'
-                  : "Biz ishonadigan premium brendlar"
-              }
-              as="span"
-              section="brands"
-            />
-          </p>
-        </div>
-
-        {loading ? (
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-            {Array.from({ length: 4 }).map((_, i) => (
-              <Skeleton key={i} className="aspect-[4/5] rounded-sm" />
-            ))}
-          </div>
-        ) : (
-          <>
-            {/* Mobile single column */}
-            <div className="md:hidden grid grid-cols-1 gap-6">
-              {brands.map((brand, i) => (
-                <BrandCard
-                  key={brand.id}
-                  brand={brand}
-                  count={productCounts[brand.id] || 0}
-                  language={language}
-                  index={i}
-                  isVisible={isVisible}
-                />
-              ))}
-            </div>
-
-            {/* Desktop grid */}
-            <div className="hidden md:grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-              {brands.map((brand, i) => (
-                <BrandCard
-                  key={brand.id}
-                  brand={brand}
-                  count={productCounts[brand.id] || 0}
-                  language={language}
-                  index={i}
-                  isVisible={isVisible}
-                />
-              ))}
-            </div>
-          </>
-        )}
+        </h2>
+        <p className="text-muted-foreground text-sm md:text-base mt-4 max-w-2xl mx-auto">
+          <EditableText
+            contentKey="brands_subtitle"
+            fallback={
+              language === 'ru'
+                ? 'Премиальные бренды, которым мы доверяем'
+                : 'Biz ishonadigan premium brendlar'
+            }
+            as="span"
+            section="brands"
+          />
+        </p>
       </div>
+
+      {/* Fullscreen carousel */}
+      {loading ? (
+        <Skeleton className="w-full h-[80vh]" />
+      ) : (
+        <div className="relative">
+          <div className="overflow-hidden" ref={emblaRef}>
+            <div className="flex">
+              {brands.map((brand) => (
+                <BrandSlide key={brand.id} brand={brand} language={language} />
+              ))}
+            </div>
+          </div>
+
+          {/* Controls */}
+          {brands.length > 1 && (
+            <>
+              <button
+                onClick={scrollPrev}
+                aria-label="Previous"
+                className="absolute left-4 md:left-8 top-1/2 -translate-y-1/2 z-20 w-12 h-12 md:w-14 md:h-14 rounded-full bg-black/40 hover:bg-primary border border-white/20 text-white flex items-center justify-center transition-all backdrop-blur-sm"
+              >
+                <ChevronLeft className="w-6 h-6" />
+              </button>
+              <button
+                onClick={scrollNext}
+                aria-label="Next"
+                className="absolute right-4 md:right-8 top-1/2 -translate-y-1/2 z-20 w-12 h-12 md:w-14 md:h-14 rounded-full bg-black/40 hover:bg-primary border border-white/20 text-white flex items-center justify-center transition-all backdrop-blur-sm"
+              >
+                <ChevronRight className="w-6 h-6" />
+              </button>
+
+              {/* Dots */}
+              <div className="absolute bottom-6 md:bottom-10 left-1/2 -translate-x-1/2 z-20 flex items-center gap-2">
+                {brands.map((_, i) => (
+                  <button
+                    key={i}
+                    onClick={() => scrollTo(i)}
+                    aria-label={`Slide ${i + 1}`}
+                    className={`h-[3px] transition-all duration-500 ${
+                      i === selectedIndex ? 'w-10 bg-primary' : 'w-5 bg-white/40 hover:bg-white/70'
+                    }`}
+                  />
+                ))}
+              </div>
+            </>
+          )}
+        </div>
+      )}
     </section>
   );
 });
 
-interface BrandCardProps {
+const BrandSlide = memo(function BrandSlide({
+  brand,
+  language,
+}: {
   brand: any;
-  count: number;
   language: 'uz' | 'ru';
-  index: number;
-  isVisible: boolean;
-}
-
-const BrandCard = memo(function BrandCard({ brand, count, language, index, isVisible }: BrandCardProps) {
+}) {
   const name = language === 'uz' ? brand.name_uz : brand.name_ru;
   const description = language === 'uz' ? brand.description_uz : brand.description_ru;
   const ctaLabel = language === 'ru' ? 'Подробнее' : "Ko'rish";
-  const productsLabel = language === 'ru' ? 'товаров' : 'mahsulot';
+  const image = brand.banner || brand.logo;
 
   return (
-    <Link
-      to={`/brand/${brand.slug}`}
-      className={`group relative block rounded-sm overflow-hidden bg-card border border-border hover:border-primary/40 transition-all duration-700 hover:-translate-y-1 hover:shadow-xl ${
-        isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'
-      }`}
-      style={{ transitionDelay: `${index * 100}ms` }}
-      aria-label={name}
-    >
-      {/* Banner / image */}
-      <div className="relative aspect-[4/3] overflow-hidden bg-muted">
-        {brand.logo || brand.banner ? (
+    <div className="relative shrink-0 grow-0 basis-full">
+      <div className="relative w-full h-[70vh] md:h-[85vh] overflow-hidden bg-black">
+        {image ? (
           <LazyImage
-            src={brand.logo || brand.banner}
+            src={image}
             alt={name}
-            className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-            wrapperClassName="w-full h-full"
+            priority
+            className="w-full h-full object-cover"
+            wrapperClassName="absolute inset-0 w-full h-full"
           />
         ) : (
-          <div className="w-full h-full flex items-center justify-center bg-secondary">
-            <Award className="w-12 h-12 text-muted-foreground" />
+          <div className="absolute inset-0 bg-secondary" />
+        )}
+
+        {/* Cinematic overlay */}
+        <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/30 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" />
+
+        {/* Content */}
+        <div className="relative z-10 h-full container mx-auto px-6 lg:px-12 flex items-center">
+          <div className="max-w-xl text-white">
+            <div className="flex items-center gap-3 mb-5">
+              <span className="w-10 h-px bg-primary" />
+              <span className="text-primary text-xs tracking-[0.4em] uppercase font-semibold">
+                Brend
+              </span>
+            </div>
+            <h3 className="font-serif text-4xl md:text-6xl lg:text-7xl font-bold leading-[1.05] mb-5">
+              {name}
+            </h3>
+            {description && (
+              <p className="text-white/80 text-base md:text-lg leading-relaxed mb-8 max-w-md">
+                {description}
+              </p>
+            )}
+            <Link
+              to={`/brand/${brand.slug}`}
+              className="inline-flex items-center gap-3 px-7 py-3.5 bg-primary text-primary-foreground text-xs tracking-[0.3em] uppercase font-semibold hover:bg-primary/90 transition-all group"
+            >
+              <span>{ctaLabel}</span>
+              <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+            </Link>
           </div>
-        )}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent pointer-events-none" />
-
-        {/* Count badge */}
-        {count > 0 && (
-          <div className="absolute top-4 right-4 bg-primary text-primary-foreground text-xs font-medium px-2.5 py-1 rounded-sm">
-            {count} {productsLabel}
-          </div>
-        )}
-      </div>
-
-
-      {/* Content */}
-      <div className="p-5">
-        <h3 className="font-serif text-lg font-semibold text-foreground mb-1 line-clamp-1">
-          {name}
-        </h3>
-        {description && (
-          <p className="text-muted-foreground text-sm line-clamp-2 mb-4">{description}</p>
-        )}
-        <div className="flex items-center gap-2 text-primary text-xs tracking-wider uppercase font-medium group-hover:gap-3 transition-all">
-          <span>{ctaLabel}</span>
-          <ArrowRight className="w-4 h-4" />
         </div>
       </div>
-    </Link>
+    </div>
   );
 });
