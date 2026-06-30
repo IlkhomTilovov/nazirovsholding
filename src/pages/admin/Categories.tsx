@@ -111,6 +111,9 @@ export default function Categories() {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const { toast } = useToast();
   const { brands } = useBrands(false);
+  const primaryBrandId = formData.brand_ids[0] || null;
+  const { divisions } = useDivisions(primaryBrandId, false);
+
 
   const handleImageUpload = async (file: File) => {
     if (!file) return;
