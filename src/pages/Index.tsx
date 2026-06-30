@@ -230,7 +230,7 @@ export default function Index() {
                 section="hero"
               />
             </h1>
-            <p className="mb-10 leading-[1.8]" style={{ maxWidth: '650px', color: 'rgba(246,242,234,0.82)' }}>
+            <p className="mb-10 leading-[1.8] text-foreground/80" style={{ maxWidth: '650px' }}>
               <EditableText
                 contentKey="hero_subtitle"
                 fallback="NazirovSholding — O'zbekistondan xalqaro bozorlarga mahsulot eksport qiluvchi biznes guruhi. Biz oziq-ovqat, xomashyo va sanoat mahsulotlarini sifat nazorati, logistika va ishonchli hamkorlik asosida dunyo bozorlariga yetkazib beramiz."
@@ -241,13 +241,13 @@ export default function Index() {
               />
             </p>
             <div className="flex flex-wrap gap-4 mb-14">
-              <Button asChild size="lg" className="group bg-primary text-background hover:bg-[hsl(var(--primary)/0.85)] rounded-sm px-8 tracking-[0.18em] text-xs uppercase h-14 font-semibold shadow-[0_0_0_hsl(var(--primary) / 0)] hover:shadow-[0_14px_40px_-12px_hsl(var(--primary) / 0.55)] hover:-translate-y-0.5 transition-all duration-300">
+              <Button asChild size="lg" className="group bg-primary text-primary-foreground hover:bg-[hsl(var(--primary)/0.85)] rounded-sm px-8 tracking-[0.18em] text-xs uppercase h-14 font-semibold shadow-[0_0_0_hsl(var(--primary) / 0)] hover:shadow-[0_14px_40px_-12px_hsl(var(--primary) / 0.55)] hover:-translate-y-0.5 transition-all duration-300">
                 <Link to="/catalog">
                   <EditableText contentKey="hero_cta_primary" fallback={language === 'ru' ? 'Смотреть каталог' : "MAHSULOTLARNI KO'RISH"} as="span" section="hero" />
                   <ArrowRight className="w-4 h-4 ml-2 transition-transform duration-300 group-hover:translate-x-1" />
                 </Link>
               </Button>
-              <Button asChild variant="outline" size="lg" className="border border-primary/55 bg-transparent text-foreground hover:bg-primary hover:text-background hover:border-primary rounded-sm px-8 tracking-[0.18em] text-xs uppercase h-14 font-semibold transition-all duration-300">
+              <Button asChild variant="outline" size="lg" className="border border-primary/55 bg-transparent text-foreground hover:bg-primary hover:text-primary-foreground hover:border-primary rounded-sm px-8 tracking-[0.18em] text-xs uppercase h-14 font-semibold transition-all duration-300">
                 <Link to="/contact">
                   <EditableText contentKey="hero_cta_secondary" fallback={language === 'ru' ? 'Начать сотрудничество' : "HAMKORLIK BOSHLASH"} as="span" section="hero" />
                 </Link>
@@ -263,8 +263,8 @@ export default function Index() {
                 key={badge.key}
                 className="group p-8 backdrop-blur-sm transition-all duration-500 hover:-translate-y-1.5 hover:border-primary/60 hover:shadow-[0_18px_50px_-20px_hsl(var(--primary) / 0.45)] animate-fade-in"
                 style={{
-                  background: 'rgba(255,255,255,0.04)',
-                  border: '1px solid rgba(201,164,106,0.18)',
+                  background: 'hsl(var(--foreground) / 0.04)',
+                  border: '1px solid hsl(var(--primary) / 0.25)',
                   borderRadius: '18px',
                   animationDelay: `${0.15 * (i + 1)}s`,
                   animationFillMode: 'backwards',
@@ -376,7 +376,7 @@ export default function Index() {
 
             <Link
               to="/about"
-              className="group inline-flex items-center gap-3 bg-primary hover:bg-[hsl(var(--primary)/0.85)] text-background px-8 h-14 text-xs font-semibold tracking-[0.22em] uppercase transition-all duration-300 hover:-translate-y-0.5"
+              className="group inline-flex items-center gap-3 bg-primary hover:bg-[hsl(var(--primary)/0.85)] text-primary-foreground px-8 h-14 text-xs font-semibold tracking-[0.22em] uppercase transition-all duration-300 hover:-translate-y-0.5"
             >
               <EditableText
                 contentKey="home_about_cta"

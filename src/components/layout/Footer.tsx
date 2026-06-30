@@ -107,8 +107,7 @@ export function Footer() {
           <div>
             <Link to="/" className="flex flex-col leading-none">
               <span
-                className="font-serif text-[22px] tracking-[0.22em] text-foreground font-light"
-                style={{ fontFamily: "'Instrument Serif', serif" }}
+                className="font-serif text-[22px] tracking-[0.22em] text-foreground font-light font-serif"
               >
                 NAZIROV<span className="text-primary font-normal">SHOLDING</span>
               </span>
