@@ -41,10 +41,10 @@ export function Header() {
   return (
     <>
       <header
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 bg-background ${
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 bg-card ${
           scrolled
-            ? 'border-b border-primary/15 py-3'
-            : 'border-b border-transparent py-5'
+            ? 'border-b border-border shadow-[0_2px_20px_-10px_hsl(var(--secondary)/0.15)] py-3'
+            : 'border-b border-border/60 py-5'
         }`}
       >
         <div className="max-w-[1440px] mx-auto px-5 lg:px-10">
@@ -53,15 +53,16 @@ export function Header() {
             <Link to="/" className="flex items-center group shrink-0">
               <div className="flex flex-col leading-none">
                 <span
-                  className="font-serif text-[20px] md:text-[22px] tracking-[0.22em] text-foreground font-light font-serif"
+                  className="font-serif text-[20px] md:text-[22px] tracking-[0.22em] text-secondary font-light"
                 >
                   NAZIROV<span className="text-primary font-normal">SHOLDING</span>
                 </span>
-                <span className="hidden md:block text-[9px] tracking-[0.45em] text-foreground/40 uppercase mt-0.5">
+                <span className="hidden md:block text-[9px] tracking-[0.45em] text-muted-foreground uppercase mt-0.5">
                   International Holding Group
                 </span>
               </div>
             </Link>
+
 
             {/* Desktop Nav */}
             <nav className="hidden xl:flex items-center gap-1">
