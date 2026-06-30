@@ -244,7 +244,15 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
   const setActiveTheme = async (themeId: string) => {
     try {
       const themeToActivate = themes.find(t => t.id === themeId);
-      
+
+      // Deactivate all other themes first so only one stays active
+      const { error: deactivateError } = await supabase
+        .from('themes')
+        .update({ is_active: false })
+        .neq('id', themeId);
+
+      if (deactivateError) throw deactivateError;
+
       const { error } = await supabase
         .from('themes')
         .update({ is_active: true })
