@@ -179,16 +179,21 @@ export default function Index() {
       <section className="relative flex items-center overflow-hidden" style={{ minHeight: 'calc(100vh - 80px)' }}>
         <div className="absolute inset-0 z-0 bg-background">
           {heroSlides.map((src, i) => (
-            <img
-              key={src}
-              src={src}
-              alt="NazirovSholding global operations"
-              className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-[1500ms] ${i === heroSlide ? 'opacity-100 scale-105' : 'opacity-0 scale-100'} transition-transform`}
-              loading={i === 0 ? 'eager' : 'lazy'}
-            />
+            <div
+              key={i}
+              className={`absolute inset-0 transition-opacity duration-[1500ms] ${i === heroSlide ? 'opacity-100 scale-105 z-10' : 'opacity-0 scale-100 z-0'} transition-transform`}
+            >
+              <EditableImage
+                contentKey={`hero_slide_${i + 1}`}
+                fallbackSrc={src}
+                alt={`NazirovSholding hero ${i + 1}`}
+                section="hero"
+                wrapperClassName="absolute inset-0 w-full h-full"
+                className="w-full h-full object-cover"
+              />
+            </div>
           ))}
           <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/40 to-transparent z-20 pointer-events-none" />
-          
         </div>
 
         <div className="container mx-auto px-4 lg:px-8 relative z-10 py-20 pointer-events-none">
