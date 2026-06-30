@@ -189,10 +189,10 @@ export function Header() {
                         <div className="flex items-baseline gap-5">
                           <span className="text-[10px] tracking-[0.3em] text-primary/60">{link.num}</span>
                           <span
-                            className={`text-3xl md:text-5xl font-light tracking-tight transition-colors duration-300 ${
+                            className={`font-serif text-3xl md:text-5xl font-light tracking-tight transition-colors duration-300 ${
                               active ? 'text-primary' : 'text-foreground group-hover:text-primary'
                             }`}
-                            className="font-serif"
+
                           >
                             {link.label}
                           </span>
