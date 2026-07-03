@@ -54,6 +54,31 @@ async function compressAndResize(
   return new File([compressed], newName, { type: compressed.type });
 }
 
+// Formats that should never be re-encoded as WebP: vector/icon formats lose
+// their properties, and already-WebP/animated files gain nothing.
+const SKIP_WEBP_CONVERSION_TYPES = [
+  'image/svg+xml',
+  'image/webp',
+  'image/gif',
+  'image/x-icon',
+  'image/vnd.microsoft.icon',
+];
+
+/**
+ * Convert an uploaded image file to WebP before it goes to storage.
+ * SVG/ICO/GIF/already-WebP files are returned unchanged; conversion
+ * failures fall back to the original file rather than blocking the upload.
+ */
+export async function toWebP(file: File, quality: number = 0.85): Promise<File> {
+  if (SKIP_WEBP_CONVERSION_TYPES.includes(file.type)) return file;
+  try {
+    return await convertToWebP(file, quality);
+  } catch (e) {
+    console.warn('WebP conversion failed, uploading original file instead', e);
+    return file;
+  }
+}
+
 /**
  * Convert a file to WebP using canvas
  */

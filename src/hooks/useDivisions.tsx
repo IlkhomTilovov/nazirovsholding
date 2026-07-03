@@ -14,6 +14,8 @@ export interface BusinessDivision {
   banner: string | null;
   hero_image: string | null;
   gallery: string[];
+  benefits_uz: string[];
+  benefits_ru: string[];
   meta_title_uz: string | null;
   meta_title_ru: string | null;
   meta_description_uz: string | null;
@@ -41,6 +43,8 @@ export function useDivisions(brandId?: string | null, activeOnly = false) {
       setDivisions(((data || []) as any[]).map((d) => ({
         ...d,
         gallery: Array.isArray(d.gallery) ? d.gallery : [],
+        benefits_uz: Array.isArray(d.benefits_uz) ? d.benefits_uz : [],
+        benefits_ru: Array.isArray(d.benefits_ru) ? d.benefits_ru : [],
       })) as BusinessDivision[]);
     } catch (err) {
       setError(err instanceof Error ? err : new Error('Failed'));

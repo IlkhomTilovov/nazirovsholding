@@ -151,7 +151,7 @@ const BrandSlide = memo(function BrandSlide({
 
   return (
     <div className="relative shrink-0 grow-0 basis-full">
-      <div className="relative w-full h-[70vh] md:h-[85vh] overflow-hidden bg-background">
+      <div className="relative w-full h-[100vh] overflow-hidden bg-background">
         {image ? (
           <LazyImage
             src={image}
@@ -170,18 +170,18 @@ const BrandSlide = memo(function BrandSlide({
 
         {/* Content */}
         <div className="relative z-10 h-full container mx-auto px-6 lg:px-12 flex items-center">
-          <div className="max-w-xl text-foreground">
+          <div className="max-w-xl text-white">
             <div className="flex items-center gap-3 mb-5">
-              <span className="w-10 h-px bg-primary" />
-              <span className="text-primary text-xs tracking-[0.4em] uppercase font-semibold">
+              <span className="w-10 h-px bg-accent" />
+              <span className="text-accent text-xs tracking-[0.4em] uppercase font-semibold">
                 Brend
               </span>
             </div>
-            <h3 className="font-serif text-4xl md:text-6xl lg:text-7xl font-bold leading-[1.05] mb-5">
+            <h3 className="font-serif text-4xl md:text-6xl lg:text-7xl font-bold leading-[1.05] mb-5 drop-shadow-[0_2px_12px_rgba(0,0,0,0.35)]">
               {name}
             </h3>
             {description && (
-              <p className="text-foreground/80 text-base md:text-lg leading-relaxed mb-8 max-w-md">
+              <p className="text-white/85 text-base md:text-lg leading-relaxed mb-8 max-w-md drop-shadow-[0_1px_6px_rgba(0,0,0,0.35)]">
                 {description}
               </p>
             )}

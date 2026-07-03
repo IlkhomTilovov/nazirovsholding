@@ -136,7 +136,11 @@ const Themes = () => {
     foregroundColor: '222 47% 11%',
     fontFamily: "'Inter', system-ui, sans-serif",
     borderRadius: '0.5rem',
+    buttonRadius: '0.5rem',
+    cardRadius: '0.5rem',
     shadowLevel: 'medium',
+    sectionSpacing: '4rem',
+    cardPadding: '1.5rem',
   });
 
   const filteredThemes = useMemo(() => {
@@ -187,7 +191,11 @@ const Themes = () => {
       foregroundColor: theme.colorPalette.foreground,
       fontFamily: theme.typography.fontSans,
       borderRadius: theme.componentStyles.borderRadius,
+      buttonRadius: theme.componentStyles.buttonRadius,
+      cardRadius: theme.componentStyles.cardRadius,
       shadowLevel: 'medium',
+      sectionSpacing: theme.layoutSettings.sectionSpacing,
+      cardPadding: theme.layoutSettings.cardPadding,
     });
     setShowBuilder(true);
   };
@@ -218,7 +226,11 @@ const Themes = () => {
       foregroundColor: theme.colorPalette.foreground,
       fontFamily: theme.typography.fontSans,
       borderRadius: theme.componentStyles.borderRadius,
+      buttonRadius: theme.componentStyles.buttonRadius,
+      cardRadius: theme.componentStyles.cardRadius,
       shadowLevel: 'medium',
+      sectionSpacing: theme.layoutSettings.sectionSpacing,
+      cardPadding: theme.layoutSettings.cardPadding,
     });
     setShowBuilder(true);
   };
@@ -236,7 +248,11 @@ const Themes = () => {
       foregroundColor: '222 47% 11%',
       fontFamily: "'Inter', system-ui, sans-serif",
       borderRadius: '0.5rem',
+      buttonRadius: '0.5rem',
+      cardRadius: '0.5rem',
       shadowLevel: 'medium',
+      sectionSpacing: '4rem',
+      cardPadding: '1.5rem',
     });
     setShowBuilder(true);
   };
@@ -350,8 +366,8 @@ const Themes = () => {
 
     const componentStyles: ThemeComponentStyles = {
       borderRadius: formData.borderRadius,
-      buttonRadius: formData.borderRadius,
-      cardRadius: formData.borderRadius,
+      buttonRadius: formData.buttonRadius,
+      cardRadius: formData.cardRadius,
       shadowSm: shadows.sm,
       shadowMd: shadows.md,
       shadowLg: shadows.lg,
@@ -359,8 +375,8 @@ const Themes = () => {
 
     const layoutSettings: ThemeLayoutSettings = {
       containerMaxWidth: '1280px',
-      sectionSpacing: '4rem',
-      cardPadding: '1.5rem',
+      sectionSpacing: formData.sectionSpacing,
+      cardPadding: formData.cardPadding,
     };
 
     try {

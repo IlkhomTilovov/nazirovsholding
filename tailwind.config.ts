@@ -78,6 +78,21 @@ export default {
         lg: "var(--radius)",
         md: "calc(var(--radius) - 2px)",
         sm: "calc(var(--radius) - 4px)",
+        btn: "var(--button-radius)",
+        card: "var(--card-radius)",
+      },
+      boxShadow: {
+        sm: "var(--shadow-sm)",
+        DEFAULT: "var(--shadow-md)",
+        md: "var(--shadow-md)",
+        lg: "var(--shadow-lg)",
+      },
+      spacing: {
+        card: "var(--card-padding)",
+        section: "var(--section-spacing)",
+      },
+      maxWidth: {
+        container: "var(--container-max-width)",
       },
       keyframes: {
         "accordion-down": {

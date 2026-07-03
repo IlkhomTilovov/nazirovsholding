@@ -129,13 +129,6 @@ export default function Index() {
     { key: 'testimonial_3', nameFallback: 'Bobur Toshmatov', textFallback: "TV zona va shkaf buyurtma qildim. Professional yondashuv va sifatli ish.", roleFallback: 'Mijoz' },
   ];
 
-  const trustBadges = [
-    { key: 'trust_1', icon: Globe2, titleFallback: 'Xalqaro eksport', descFallback: "20+ mamlakatlarga ishonchli eksport faoliyati." },
-    { key: 'trust_2', icon: BadgeCheck, titleFallback: 'Sifat nazorati', descFallback: 'Mahsulotlar eksport standartlari asosida tekshiriladi.' },
-    { key: 'trust_3', icon: Ship, titleFallback: 'Logistika yechimlari', descFallback: 'FOB, CIF, FCA va DAP shartlari asosida global yetkazib berish.' },
-    { key: 'trust_4', icon: Handshake, titleFallback: 'Strategik hamkorlik', descFallback: "Uzoq muddatli B2B hamkorlik va xalqaro biznes aloqalari." },
-  ];
-
   const sectionServices = useInView();
   const sectionWhyUs = useInView();
   const sectionProcess = useInView();
@@ -193,44 +186,45 @@ export default function Index() {
               />
             </div>
           ))}
-          <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/40 to-transparent z-20 pointer-events-none" />
+          <div className="absolute inset-0 bg-gradient-to-r from-black/85 via-black/60 to-black/20 z-20 pointer-events-none" />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent z-20 pointer-events-none" />
         </div>
 
         <div className="container mx-auto px-4 lg:px-8 relative z-10 py-20 pointer-events-none">
           <div className="max-w-2xl [&_a]:pointer-events-auto [&_button]:pointer-events-auto [&_[data-editable]]:pointer-events-auto">
-            <div className="inline-flex items-center mb-7 px-4 py-2 border border-primary/40 rounded-full bg-background/[0.02] backdrop-blur-sm animate-fade-in">
+            <div className="inline-flex items-center mb-7 px-4 py-2 border border-primary/50 rounded-full bg-white/10 backdrop-blur-sm animate-fade-in">
               <EditableText
                 contentKey="hero_badge"
                 fallback="NAZIROVSHOLDING • INTERNATIONAL HOLDING GROUP"
                 as="span"
-                className="text-primary text-[10.5px] md:text-xs font-medium tracking-[0.32em] uppercase"
+                className="text-white text-[10.5px] md:text-xs font-medium tracking-[0.32em] uppercase"
                 section="hero"
               />
             </div>
-            <h1 className="font-serif text-5xl sm:text-6xl md:text-7xl lg:text-[5rem] font-normal leading-[1.04] mb-7 animate-fade-in">
+            <h1 className="font-serif text-5xl sm:text-6xl md:text-7xl lg:text-[5rem] font-normal leading-[1.04] mb-7 animate-fade-in drop-shadow-[0_2px_12px_rgba(0,0,0,0.35)]">
               <EditableText
                 contentKey="hero_title_line1"
                 fallback="Global biznes"
                 as="span"
-                className="block font-serif text-foreground"
+                className="block font-serif text-white"
                 section="hero"
               />
               <EditableText
                 contentKey="hero_title_line2"
                 fallback="O'zbekistondan"
                 as="span"
-                className="block font-serif text-foreground"
+                className="block font-serif text-white"
                 section="hero"
               />
               <EditableText
                 contentKey="hero_title_line3"
                 fallback="dunyoga"
                 as="span"
-                className="block font-serif text-primary italic"
+                className="block font-serif text-accent italic"
                 section="hero"
               />
             </h1>
-            <p className="mb-10 leading-[1.8] text-foreground/80" style={{ maxWidth: '650px' }}>
+            <p className="mb-10 leading-[1.8] text-white/85 drop-shadow-[0_1px_6px_rgba(0,0,0,0.35)]" style={{ maxWidth: '650px' }}>
               <EditableText
                 contentKey="hero_subtitle"
                 fallback="NazirovSholding — O'zbekistondan xalqaro bozorlarga mahsulot eksport qiluvchi biznes guruhi. Biz oziq-ovqat, xomashyo va sanoat mahsulotlarini sifat nazorati, logistika va ishonchli hamkorlik asosida dunyo bozorlariga yetkazib beramiz."
@@ -247,49 +241,13 @@ export default function Index() {
                   <ArrowRight className="w-4 h-4 ml-2 transition-transform duration-300 group-hover:translate-x-1" />
                 </Link>
               </Button>
-              <Button asChild variant="outline" size="lg" className="border border-primary/55 bg-transparent text-foreground hover:bg-primary hover:text-primary-foreground hover:border-primary rounded-sm px-8 tracking-[0.18em] text-xs uppercase h-14 font-semibold transition-all duration-300">
+              <Button asChild variant="outline" size="lg" className="border border-white/50 bg-transparent text-white hover:bg-primary hover:text-primary-foreground hover:border-primary rounded-sm px-8 tracking-[0.18em] text-xs uppercase h-14 font-semibold transition-all duration-300">
                 <Link to="/contact">
                   <EditableText contentKey="hero_cta_secondary" fallback={language === 'ru' ? 'Начать сотрудничество' : "HAMKORLIK BOSHLASH"} as="span" section="hero" />
                 </Link>
               </Button>
             </div>
 
-          </div>
-
-          {/* Business feature cards — full-width row */}
-          <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 [&_a]:pointer-events-auto [&_button]:pointer-events-auto [&_[data-editable]]:pointer-events-auto">
-            {trustBadges.map((badge, i) => (
-              <div
-                key={badge.key}
-                className="group p-8 backdrop-blur-sm transition-all duration-500 hover:-translate-y-1.5 hover:border-primary/60 hover:shadow-[0_18px_50px_-20px_hsl(var(--primary) / 0.45)] animate-fade-in"
-                style={{
-                  background: 'hsl(var(--foreground) / 0.04)',
-                  border: '1px solid hsl(var(--primary) / 0.25)',
-                  borderRadius: '18px',
-                  animationDelay: `${0.15 * (i + 1)}s`,
-                  animationFillMode: 'backwards',
-                }}
-              >
-                <div className="w-12 h-12 rounded-full border border-primary/40 flex items-center justify-center mb-5 text-primary transition-all duration-500 group-hover:border-primary group-hover:shadow-[0_0_22px_hsl(var(--primary) / 0.55)]">
-                  <badge.icon className="w-5 h-5" strokeWidth={1.5} />
-                </div>
-                <EditableText
-                  contentKey={`${badge.key}_title`}
-                  fallback={badge.titleFallback}
-                  as="div"
-                  className="text-foreground text-[17px] font-medium tracking-wide mb-3"
-                  section="hero"
-                />
-                <EditableText
-                  contentKey={`${badge.key}_desc`}
-                  fallback={badge.descFallback}
-                  as="p"
-                  multiline
-                  className="text-[13.5px] leading-[1.7]"
-                  section="hero"
-                />
-              </div>
-            ))}
           </div>
         </div>
 
@@ -492,7 +450,7 @@ export default function Index() {
                 return (
                   <article
                     key={item.key}
-                    className={`group relative flex flex-col overflow-hidden rounded-sm border border-primary/10 bg-gradient-to-b from-card/80 to-card/40 backdrop-blur-sm transition-all duration-500 hover:border-primary/50 hover:shadow-[0_0_50px_-15px_hsl(var(--primary)/0.4)] hover:-translate-y-1 ${sectionWhyUs.isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'}`}
+                    className={`group relative flex flex-col overflow-hidden rounded-sm border border-primary/10 bg-gradient-to-b from-card/80 to-card/40 transition-all duration-500 hover:border-primary/50 hover:shadow-[0_0_50px_-15px_hsl(var(--primary)/0.4)] hover:-translate-y-1 ${sectionWhyUs.isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'}`}
                     style={{ transitionDelay: `${i * 120}ms` }}
                   >
                     {/* Image */}
@@ -503,13 +461,12 @@ export default function Index() {
                         className="w-full h-full object-cover transition-transform duration-[1200ms] ease-out group-hover:scale-110"
                         loading="lazy"
                       />
-                      <div className="absolute inset-0 bg-gradient-to-t from-card via-card/30 to-transparent" />
                       {/* Number badge */}
                       <span className="absolute top-4 left-4 font-serif text-3xl text-primary/80 font-normal tracking-wider">
                         {item.num}
                       </span>
                       {/* Icon badge */}
-                      <div className="absolute bottom-4 right-4 w-11 h-11 flex items-center justify-center border border-primary/40 bg-background/70 backdrop-blur-md rounded-sm">
+                      <div className="absolute bottom-4 right-4 w-11 h-11 flex items-center justify-center border border-primary/40 bg-background/90 rounded-sm">
                         <IconComp className="w-4 h-4 text-primary" strokeWidth={1.5} />
                       </div>
                     </div>

@@ -20,7 +20,11 @@ export interface ThemeFormData {
   foregroundColor: string;
   fontFamily: string;
   borderRadius: string;
+  buttonRadius: string;
+  cardRadius: string;
   shadowLevel: string;
+  sectionSpacing: string;
+  cardPadding: string;
 }
 
 interface ThemeBuilderDialogProps {
@@ -233,6 +237,12 @@ const SHADOW_PRESETS = [
   { value: 'heavy', label: 'Heavy' },
 ];
 
+const SPACING_PRESETS = [
+  { value: 'compact', label: 'Ixcham', sectionSpacing: '2.5rem', cardPadding: '1rem' },
+  { value: 'comfortable', label: "Qulay", sectionSpacing: '4rem', cardPadding: '1.5rem' },
+  { value: 'spacious', label: 'Keng', sectionSpacing: '6rem', cardPadding: '2.25rem' },
+];
+
 // ---------- Color utilities ----------
 const hslToHex = (hsl: string): string => {
   try {
@@ -323,6 +333,42 @@ const ColorCard = ({ label, description, value, onChange }: ColorCardProps) => {
   );
 };
 
+// ---------- Radius picker ----------
+interface RadiusPickerProps {
+  label: string;
+  value: string;
+  onChange: (v: string) => void;
+}
+const RadiusPicker = ({ label, value, onChange }: RadiusPickerProps) => (
+  <div className="rounded-2xl bg-white ring-1 ring-border/60 p-5 space-y-3">
+    <div className="flex items-center justify-between">
+      <p className="text-sm font-medium">{label}</p>
+      <span className="text-[11px] font-mono text-muted-foreground">{value}</span>
+    </div>
+    <div className="grid grid-cols-3 sm:grid-cols-6 gap-2">
+      {RADIUS_PRESETS.map((r) => {
+        const isActive = value === r.value;
+        return (
+          <button
+            key={r.value}
+            type="button"
+            onClick={() => onChange(r.value)}
+            className={cn(
+              'flex flex-col items-center gap-2 p-3 rounded-xl ring-1 transition-all',
+              isActive
+                ? 'ring-2 ring-foreground bg-foreground/[0.03]'
+                : 'ring-border/60 hover:ring-foreground/30',
+            )}
+          >
+            <div className="h-9 w-9 bg-foreground/80" style={{ borderRadius: `${r.visual}px` }} />
+            <span className="text-[10px] font-medium text-muted-foreground">{r.label}</span>
+          </button>
+        );
+      })}
+    </div>
+  </div>
+);
+
 // ---------- Section header ----------
 const Section = ({
   step, title, subtitle, icon, children,
@@ -375,6 +421,8 @@ export const ThemeBuilderDialog = ({
       foregroundColor: p.foreground,
       fontFamily: p.font,
       borderRadius: p.radius,
+      buttonRadius: p.radius,
+      cardRadius: p.radius,
     });
   };
 
@@ -620,45 +668,26 @@ export const ThemeBuilderDialog = ({
             <Section
               step="05 · Shape"
               title="Komponent uslublari"
-              subtitle="Burchak va soya darajasini tanlang"
+              subtitle="Har bir komponent turi uchun burchak va soya darajasini alohida tanlang"
               icon={<Layers className="h-4 w-4" />}
             >
               <div className="space-y-4">
-                {/* Radius */}
-                <div className="rounded-2xl bg-white ring-1 ring-border/60 p-5 space-y-3">
-                  <div className="flex items-center justify-between">
-                    <p className="text-sm font-medium">Burchak radiusi</p>
-                    <span className="text-[11px] font-mono text-muted-foreground">
-                      {formData.borderRadius}
-                    </span>
-                  </div>
-                  <div className="grid grid-cols-3 sm:grid-cols-6 gap-2">
-                    {RADIUS_PRESETS.map((r) => {
-                      const isActive = formData.borderRadius === r.value;
-                      return (
-                        <button
-                          key={r.value}
-                          type="button"
-                          onClick={() => apply({ borderRadius: r.value })}
-                          className={cn(
-                            'flex flex-col items-center gap-2 p-3 rounded-xl ring-1 transition-all',
-                            isActive
-                              ? 'ring-2 ring-foreground bg-foreground/[0.03]'
-                              : 'ring-border/60 hover:ring-foreground/30',
-                          )}
-                        >
-                          <div
-                            className="h-9 w-9 bg-foreground/80"
-                            style={{ borderRadius: `${r.visual}px` }}
-                          />
-                          <span className="text-[10px] font-medium text-muted-foreground">
-                            {r.label}
-                          </span>
-                        </button>
-                      );
-                    })}
-                  </div>
-                </div>
+                {/* Radius — per component */}
+                <RadiusPicker
+                  label="Karta burchagi"
+                  value={formData.cardRadius}
+                  onChange={(v) => apply({ cardRadius: v })}
+                />
+                <RadiusPicker
+                  label="Tugma burchagi"
+                  value={formData.buttonRadius}
+                  onChange={(v) => apply({ buttonRadius: v })}
+                />
+                <RadiusPicker
+                  label="Asosiy burchak (input, badge)"
+                  value={formData.borderRadius}
+                  onChange={(v) => apply({ borderRadius: v })}
+                />
 
                 {/* Shadow */}
                 <div className="rounded-2xl bg-white ring-1 ring-border/60 p-5 space-y-3">
@@ -694,6 +723,43 @@ export const ThemeBuilderDialog = ({
                       );
                     })}
                   </div>
+                </div>
+              </div>
+            </Section>
+
+            {/* Section 6 — Spacing */}
+            <Section
+              step="06 · Space"
+              title="Bo'shliq zichligi"
+              subtitle="Bo'limlar va kartalar orasidagi bo'shliq darajasini tanlang"
+              icon={<Layers className="h-4 w-4" />}
+            >
+              <div className="rounded-2xl bg-white ring-1 ring-border/60 p-5">
+                <div className="grid grid-cols-3 gap-2">
+                  {SPACING_PRESETS.map((s) => {
+                    const isActive =
+                      formData.sectionSpacing === s.sectionSpacing &&
+                      formData.cardPadding === s.cardPadding;
+                    return (
+                      <button
+                        key={s.value}
+                        type="button"
+                        onClick={() => apply({ sectionSpacing: s.sectionSpacing, cardPadding: s.cardPadding })}
+                        className={cn(
+                          'flex flex-col items-center gap-2 p-4 rounded-xl ring-1 transition-all',
+                          isActive
+                            ? 'ring-2 ring-foreground bg-foreground/[0.03]'
+                            : 'ring-border/60 hover:ring-foreground/30',
+                        )}
+                      >
+                        <div className="flex flex-col gap-1 items-center justify-center h-9">
+                          <div className="w-9 bg-foreground/15 rounded" style={{ height: '4px' }} />
+                          <div className="w-9 bg-foreground/80 rounded" style={{ height: '4px', marginTop: s.value === 'compact' ? 2 : s.value === 'comfortable' ? 5 : 9 }} />
+                        </div>
+                        <span className="text-[10px] font-medium text-muted-foreground">{s.label}</span>
+                      </button>
+                    );
+                  })}
                 </div>
               </div>
             </Section>
@@ -763,7 +829,7 @@ export const ThemeBuilderDialog = ({
                     style={{
                       backgroundColor: `hsl(${formData.primaryColor})`,
                       color: `hsl(${formData.backgroundColor})`,
-                      borderRadius: formData.borderRadius,
+                      borderRadius: formData.buttonRadius,
                     }}
                   >
                     Bog'lanish
@@ -788,7 +854,7 @@ export const ThemeBuilderDialog = ({
                       style={{
                         backgroundColor: `hsl(${formData.primaryColor})`,
                         color: `hsl(${formData.backgroundColor})`,
-                        borderRadius: formData.borderRadius,
+                        borderRadius: formData.buttonRadius,
                       }}
                     >
                       Katalogni ko'rish
@@ -799,7 +865,7 @@ export const ThemeBuilderDialog = ({
                         backgroundColor: 'transparent',
                         color: `hsl(${formData.foregroundColor})`,
                         border: `1px solid hsl(${formData.foregroundColor} / 0.2)`,
-                        borderRadius: formData.borderRadius,
+                        borderRadius: formData.buttonRadius,
                       }}
                     >
                       Batafsil
@@ -815,7 +881,7 @@ export const ThemeBuilderDialog = ({
                       className="overflow-hidden"
                       style={{
                         backgroundColor: `hsl(${formData.secondaryColor})`,
-                        borderRadius: formData.borderRadius,
+                        borderRadius: formData.cardRadius,
                       }}
                     >
                       <div
@@ -863,7 +929,7 @@ export const ThemeBuilderDialog = ({
                       style={{
                         backgroundColor: `hsl(${formData.accentColor})`,
                         color: `hsl(${formData.backgroundColor})`,
-                        borderRadius: formData.borderRadius,
+                        borderRadius: formData.buttonRadius,
                       }}
                     >
                       Yuborish

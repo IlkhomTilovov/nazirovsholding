@@ -25,7 +25,10 @@ const EARTH_RADIUS = 1.38;
 function hslVar(name: string, fallback: string) {
   if (typeof window === 'undefined') return fallback;
   const raw = getComputedStyle(document.documentElement).getPropertyValue(name).trim();
-  return raw ? `hsl(${raw})` : fallback;
+  // Tailwind/shadcn store HSL as space-separated ("H S% L%"), but THREE.Color.setStyle
+  // only parses the comma-separated form ("H, S%, L%") — convert or the color silently
+  // falls back to white.
+  return raw ? `hsl(${raw.split(/\s+/).join(', ')})` : fallback;
 }
 
 function useThemeColors() {
@@ -131,7 +134,7 @@ function flattenCountryBorders(features: GeoJsonFeature[]) {
   return new Float32Array(vertices);
 }
 
-function EarthSphere({ primary }: { primary: string }) {
+function EarthSphere() {
   const [map, specularMap, cloudMap] = useLoader(THREE.TextureLoader, [earthMap, earthSpecular, earthClouds]);
   const cloudsRef = useRef<THREE.Mesh>(null);
 
@@ -167,7 +170,7 @@ function EarthSphere({ primary }: { primary: string }) {
       </mesh>
       <mesh>
         <sphereGeometry args={[EARTH_RADIUS + 0.07, 96, 96]} />
-        <meshBasicMaterial color={primary} transparent opacity={0.09} side={THREE.BackSide} blending={THREE.AdditiveBlending} />
+        <meshBasicMaterial color="#bcdcff" transparent opacity={0.09} side={THREE.BackSide} blending={THREE.AdditiveBlending} />
       </mesh>
     </>
   );
@@ -277,7 +280,7 @@ function EarthNetwork({ highlightedCode, setHighlighted, setSelected, primary, a
 }) {
   return (
     <group rotation={[0.04, 3.5, 0.03]}>
-      <EarthSphere primary={primary} />
+      <EarthSphere />
       <CountryBorders primary={primary} />
       {MARKETS.map((market) => (
         <TradeRoute key={market.code} market={market} active={highlightedCode === market.code} primary={primary} accent={accent} />
@@ -327,8 +330,8 @@ function Scene({ highlightedCode, setHighlighted, setSelected, primary, accent }
   return (
     <>
       <ambientLight intensity={0.28} />
-      <directionalLight position={[4, 2.4, 4.8]} intensity={2.6} color={accent} />
-      <directionalLight position={[-3.8, -1.4, -4]} intensity={0.55} color={primary} />
+      <directionalLight position={[4, 2.4, 4.8]} intensity={2.6} color="#fff6e5" />
+      <directionalLight position={[-3.8, -1.4, -4]} intensity={0.55} color="#3a4a63" />
       <hemisphereLight args={['#2a210f', '#020202', 0.32]} />
 
       <Suspense fallback={null}>

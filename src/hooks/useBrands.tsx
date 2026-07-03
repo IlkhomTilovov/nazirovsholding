@@ -130,6 +130,8 @@ export interface BrandDivision {
   description_uz: string | null;
   description_ru: string | null;
   cover_image: string | null;
+  benefits_uz: string[];
+  benefits_ru: string[];
   sort_order: number;
 }
 
@@ -150,13 +152,18 @@ export function useBrandProducts(brandId: string | null | undefined, limit = 48)
     (async () => {
       setLoading(true);
       try {
-        const { data: divs } = await supabase
+        const { data: divs, error: divsError } = await supabase
           .from('business_divisions')
-          .select('id, name_uz, name_ru, slug, description_uz, description_ru, cover_image, sort_order')
+          .select('id, name_uz, name_ru, slug, description_uz, description_ru, cover_image, benefits_uz, benefits_ru, sort_order')
           .eq('brand_id', brandId)
           .eq('is_active', true)
           .order('sort_order', { ascending: true });
-        setDivisions((divs || []) as BrandDivision[]);
+        if (divsError) console.error('Failed to load business divisions:', divsError.message);
+        setDivisions(((divs || []) as any[]).map((d) => ({
+          ...d,
+          benefits_uz: Array.isArray(d.benefits_uz) ? d.benefits_uz : [],
+          benefits_ru: Array.isArray(d.benefits_ru) ? d.benefits_ru : [],
+        })) as BrandDivision[]);
 
         const { data: cats } = await supabase
           .from('categories')

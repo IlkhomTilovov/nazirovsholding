@@ -5,6 +5,7 @@ import {
   AlertTriangle, Package, ExternalLink, X, Loader2, Upload, Award, Settings2,
 } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
+import { toWebP } from '@/lib/imageOptimizer';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -109,9 +110,10 @@ export default function Brands() {
       toast({ variant: 'destructive', title: 'Xatolik', description: 'Rasm hajmi 10MB dan oshmasligi kerak' });
       return null;
     }
-    const ext = file.name.split('.').pop();
+    const webpFile = await toWebP(file);
+    const ext = webpFile.name.split('.').pop();
     const path = `${folder}/brand-${Date.now()}.${ext}`;
-    const { error } = await supabase.storage.from('brand-images').upload(path, file, { upsert: true });
+    const { error } = await supabase.storage.from('brand-images').upload(path, webpFile, { upsert: true });
     if (error) {
       toast({ variant: 'destructive', title: 'Xatolik', description: error.message });
       return null;

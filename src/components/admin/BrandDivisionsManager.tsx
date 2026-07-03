@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { Plus, Pencil, Trash2, Loader2, Upload, X, Image as ImageIcon, GripVertical } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
+import { toWebP } from '@/lib/imageOptimizer';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -31,6 +32,8 @@ interface DivFormData {
   slug: string;
   description_uz: string;
   description_ru: string;
+  benefits_uz: string;
+  benefits_ru: string;
   icon: string;
   cover_image: string;
   banner: string;
@@ -47,6 +50,7 @@ interface DivFormData {
 const empty: DivFormData = {
   name_uz: '', name_ru: '', slug: '',
   description_uz: '', description_ru: '',
+  benefits_uz: '', benefits_ru: '',
   icon: '', cover_image: '', banner: '', hero_image: '',
   meta_title_uz: '', meta_title_ru: '',
   meta_description_uz: '', meta_description_ru: '', meta_keywords: '',
@@ -76,6 +80,7 @@ export function BrandDivisionsManager({ brandId }: Props) {
     setForm({
       name_uz: d.name_uz, name_ru: d.name_ru, slug: d.slug,
       description_uz: d.description_uz || '', description_ru: d.description_ru || '',
+      benefits_uz: (d.benefits_uz || []).join('\n'), benefits_ru: (d.benefits_ru || []).join('\n'),
       icon: d.icon || '', cover_image: d.cover_image || '',
       banner: d.banner || '', hero_image: d.hero_image || '',
       meta_title_uz: d.meta_title_uz || '', meta_title_ru: d.meta_title_ru || '',
@@ -94,9 +99,10 @@ export function BrandDivisionsManager({ brandId }: Props) {
     }
     setUploadField(field as string);
     try {
-      const ext = file.name.split('.').pop();
+      const webpFile = await toWebP(file);
+      const ext = webpFile.name.split('.').pop();
       const path = `divisions/${brandId}/${field}-${Date.now()}.${ext}`;
-      const { error } = await supabase.storage.from('brand-images').upload(path, file, { upsert: true });
+      const { error } = await supabase.storage.from('brand-images').upload(path, webpFile, { upsert: true });
       if (error) throw error;
       const { data: { publicUrl } } = supabase.storage.from('brand-images').getPublicUrl(path);
       setForm((p) => ({ ...p, [field]: publicUrl }));
@@ -122,6 +128,8 @@ export function BrandDivisionsManager({ brandId }: Props) {
         slug,
         description_uz: form.description_uz || null,
         description_ru: form.description_ru || null,
+        benefits_uz: form.benefits_uz.split('\n').map((s) => s.trim()).filter(Boolean),
+        benefits_ru: form.benefits_ru.split('\n').map((s) => s.trim()).filter(Boolean),
         icon: form.icon || null,
         cover_image: form.cover_image || null,
         banner: form.banner || null,
@@ -301,6 +309,16 @@ export function BrandDivisionsManager({ brandId }: Props) {
                 <div className="space-y-2">
                   <Label>Qisqa tavsif (RU)</Label>
                   <Textarea rows={3} value={form.description_ru} onChange={(e) => setForm((p) => ({ ...p, description_ru: e.target.value }))} />
+                </div>
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label>Nima olasiz (UZ) — har bir qator alohida band</Label>
+                  <Textarea rows={4} value={form.benefits_uz} onChange={(e) => setForm((p) => ({ ...p, benefits_uz: e.target.value }))} placeholder={'Tez va aniq diagnostika\nTajribali mutaxassislar bilan konsultatsiya'} />
+                </div>
+                <div className="space-y-2">
+                  <Label>Nima olasiz (RU) — каждая строка отдельный пункт</Label>
+                  <Textarea rows={4} value={form.benefits_ru} onChange={(e) => setForm((p) => ({ ...p, benefits_ru: e.target.value }))} placeholder={'Быстрая и точная диагностика\nКонсультация опытных специалистов'} />
                 </div>
               </div>
               <div className="grid grid-cols-2 gap-4">

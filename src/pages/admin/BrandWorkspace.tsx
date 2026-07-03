@@ -3,9 +3,10 @@ import { useParams, Link, useNavigate } from 'react-router-dom';
 import {
   ChevronRight, ArrowLeft, Loader2, Upload, X, Image as ImageIcon,
   Settings as SettingsIcon, Globe, Layers, FileImage, BarChart3, Sliders, Award,
-  Package, FolderTree, CheckCircle2, FileEdit,
+  Package, FolderTree, CheckCircle2, FileEdit, Briefcase,
 } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
+import { toWebP } from '@/lib/imageOptimizer';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -17,6 +18,7 @@ import { Badge } from '@/components/ui/badge';
 import { useToast } from '@/hooks/use-toast';
 import { useBrandStats } from '@/hooks/useDivisions';
 import { BrandDivisionsManager } from '@/components/admin/BrandDivisionsManager';
+import { BrandCaseStudiesManager } from '@/components/admin/BrandCaseStudiesManager';
 
 interface BrandRecord {
   id: string;
@@ -98,9 +100,10 @@ export default function BrandWorkspace() {
     }
     setUploadField(field as string);
     try {
-      const ext = file.name.split('.').pop();
+      const webpFile = await toWebP(file);
+      const ext = webpFile.name.split('.').pop();
       const path = `brand-${brandId}/${String(field)}-${Date.now()}.${ext}`;
-      const { error } = await supabase.storage.from('brand-images').upload(path, file, { upsert: true });
+      const { error } = await supabase.storage.from('brand-images').upload(path, webpFile, { upsert: true });
       if (error) throw error;
       const { data: { publicUrl } } = supabase.storage.from('brand-images').getPublicUrl(path);
       update({ [field]: publicUrl } as any);
@@ -168,6 +171,7 @@ export default function BrandWorkspace() {
     { v: 'general', label: 'Asosiy', icon: SettingsIcon },
     { v: 'seo', label: 'SEO', icon: Globe },
     { v: 'divisions', label: "Bo'limlar", icon: Layers },
+    { v: 'case-studies', label: 'Loyihalar', icon: Briefcase },
     { v: 'media', label: 'Media', icon: FileImage },
     { v: 'stats', label: 'Statistika', icon: BarChart3 },
     { v: 'settings', label: 'Sozlamalar', icon: Sliders },
@@ -214,7 +218,7 @@ export default function BrandWorkspace() {
 
       {/* Tabs */}
       <Tabs value={tab} onValueChange={setTab}>
-        <TabsList className="grid w-full md:w-auto md:inline-grid grid-cols-3 md:grid-cols-6 h-auto p-1">
+        <TabsList className="grid w-full md:w-auto md:inline-grid grid-cols-3 md:grid-cols-7 h-auto p-1">
           {tabs.map((t) => (
             <TabsTrigger key={t.v} value={t.v} className="gap-2">
               <t.icon className="h-4 w-4" />{t.label}
@@ -288,6 +292,13 @@ export default function BrandWorkspace() {
         <TabsContent value="divisions" className="mt-6">
           <Card><CardContent className="pt-6">
             <BrandDivisionsManager brandId={brand.id} />
+          </CardContent></Card>
+        </TabsContent>
+
+        {/* Case Studies */}
+        <TabsContent value="case-studies" className="mt-6">
+          <Card><CardContent className="pt-6">
+            <BrandCaseStudiesManager brandId={brand.id} />
           </CardContent></Card>
         </TabsContent>
 

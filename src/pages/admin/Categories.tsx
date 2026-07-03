@@ -15,6 +15,7 @@ import {
   Loader2
 } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
+import { toWebP } from '@/lib/imageOptimizer';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -133,13 +134,14 @@ export default function Categories() {
 
     setImageUploading(true);
     try {
-      const fileExt = file.name.split('.').pop();
+      const webpFile = await toWebP(file);
+      const fileExt = webpFile.name.split('.').pop();
       const fileName = `category-${Date.now()}.${fileExt}`;
       const filePath = `categories/${fileName}`;
 
       const { error: uploadError } = await supabase.storage
         .from('product-images')
-        .upload(filePath, file);
+        .upload(filePath, webpFile);
 
       if (uploadError) throw uploadError;
 

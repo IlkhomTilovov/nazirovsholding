@@ -16,6 +16,7 @@ import {
   Video
 } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
+import { toWebP } from '@/lib/imageOptimizer';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -469,14 +470,14 @@ export default function ProductsNew() {
 
     try {
       for (let i = 0; i < files.length; i++) {
-        const file = files[i];
-        const fileExt = file.name.split('.').pop();
+        const webpFile = await toWebP(files[i]);
+        const fileExt = webpFile.name.split('.').pop();
         const fileName = `product-${Date.now()}-${Math.random().toString(36).substring(7)}.${fileExt}`;
         const filePath = `products/${fileName}`;
 
         const { error: uploadError } = await supabase.storage
           .from('product-images')
-          .upload(filePath, file, {
+          .upload(filePath, webpFile, {
             upsert: true,
             cacheControl: '31536000',
           });

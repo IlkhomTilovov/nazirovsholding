@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { ArrowLeft, ExternalLink, Loader2, Globe } from 'lucide-react';
+import { ArrowLeft, ExternalLink, Loader2, Globe, CheckCircle2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
 import { ProductCard } from '@/components/ProductCard';
@@ -9,6 +9,7 @@ import { useLanguage } from '@/hooks/useLanguage';
 import { useSEO } from '@/hooks/useSEO';
 import { useBrand, useBrandProducts } from '@/hooks/useBrands';
 import { useSystemSettings } from '@/hooks/useSystemSettings';
+import { useCaseStudies, countryFlagEmoji } from '@/hooks/useCaseStudies';
 
 export default function BrandDetails() {
   const { slug } = useParams<{ slug: string }>();
@@ -16,8 +17,8 @@ export default function BrandDetails() {
   const { getPrimaryDomain } = useSystemSettings();
   const { brand, loading } = useBrand(slug);
   const { products, categories, divisions, loading: productsLoading } = useBrandProducts(brand?.id, 48);
-  const [activeDivisionId, setActiveDivisionId] = useState<string | 'all'>('all');
-  const [activeCategoryId, setActiveCategoryId] = useState<string | 'all'>('all');
+  const { caseStudies } = useCaseStudies(brand?.id, true);
+  const [activeCategory, setActiveCategory] = useState<Record<string, string>>({});
 
   const isUz = language === 'uz';
   const name = brand ? (isUz ? brand.name_uz : brand.name_ru) : '';
@@ -147,103 +148,50 @@ export default function BrandDetails() {
       <div className="container mx-auto px-4 py-8">
 
 
-        {divisions.length > 0 && (
-          <div className="mb-8">
-            <div className="text-[11px] uppercase tracking-[0.25em] text-muted-foreground mb-3">
-              {isUz ? 'Bo\'limlar' : 'Подразделения'}
-            </div>
-            <div className="flex flex-wrap gap-2">
-              <button
-                type="button"
-                onClick={() => { setActiveDivisionId('all'); setActiveCategoryId('all'); }}
-                className={`px-4 py-2 rounded-sm text-sm tracking-wider uppercase transition-colors border ${
-                  activeDivisionId === 'all'
-                    ? 'bg-primary text-primary-foreground border-primary'
-                    : 'bg-background text-foreground border-border hover:border-primary'
-                }`}
-              >
-                {isUz ? 'Barchasi' : 'Все'}
-              </button>
-              {divisions.map((d) => (
+        {(() => {
+          const catDivisionMap = new Map(categories.map((c) => [c.id, c.division_id]));
+
+          const renderCategoryPills = (sectionKey: string, sectionCategories: typeof categories) => {
+            if (sectionCategories.length === 0) return null;
+            const active = activeCategory[sectionKey] ?? 'all';
+            return (
+              <div className="flex flex-wrap gap-2 mb-6">
                 <button
-                  key={d.id}
                   type="button"
-                  onClick={() => { setActiveDivisionId(d.id); setActiveCategoryId('all'); }}
-                  className={`px-4 py-2 rounded-sm text-sm tracking-wider uppercase transition-colors border ${
-                    activeDivisionId === d.id
-                      ? 'bg-primary text-primary-foreground border-primary'
-                      : 'bg-background text-foreground border-border hover:border-primary'
+                  onClick={() => setActiveCategory((p) => ({ ...p, [sectionKey]: 'all' }))}
+                  className={`px-3 py-1.5 rounded-full text-xs tracking-wide transition-colors border ${
+                    active === 'all'
+                      ? 'bg-foreground text-background border-foreground'
+                      : 'bg-transparent text-muted-foreground border-border hover:border-foreground'
                   }`}
                 >
-                  {isUz ? d.name_uz : d.name_ru}
+                  {isUz ? 'Barchasi' : 'Все'}
                 </button>
-              ))}
-            </div>
-          </div>
-        )}
-
-        {(() => {
-          const visibleCategories =
-            activeDivisionId === 'all'
-              ? categories
-              : categories.filter((c) => c.division_id === activeDivisionId);
-          return visibleCategories.length > 0 ? (
-            <div className="mb-6 flex flex-wrap gap-2">
-              <button
-                type="button"
-                onClick={() => setActiveCategoryId('all')}
-                className={`px-4 py-2 rounded-sm text-sm tracking-wider uppercase transition-colors border ${
-                  activeCategoryId === 'all'
-                    ? 'bg-primary text-primary-foreground border-primary'
-                    : 'bg-background text-foreground border-border hover:border-primary'
-                }`}
-              >
-                {isUz ? 'Barchasi' : 'Все'}
-              </button>
-              {visibleCategories.map((cat) => (
-                <button
-                  key={cat.id}
-                  type="button"
-                  onClick={() => setActiveCategoryId(cat.id)}
-                  className={`px-4 py-2 rounded-sm text-sm tracking-wider uppercase transition-colors border ${
-                    activeCategoryId === cat.id
-                      ? 'bg-primary text-primary-foreground border-primary'
-                      : 'bg-background text-foreground border-border hover:border-primary'
-                  }`}
-                >
-                  {isUz ? cat.name_uz : cat.name_ru}
-                </button>
-              ))}
-            </div>
-          ) : null;
-        })()}
-
-        {(() => {
-          const divisionCategoryIds = new Set(
-            (activeDivisionId === 'all'
-              ? categories
-              : categories.filter((c) => c.division_id === activeDivisionId)
-            ).map((c) => c.id)
-          );
-          const filtered = products.filter((p) => {
-            if (activeCategoryId !== 'all') return p.category_id === activeCategoryId;
-            if (activeDivisionId === 'all') return true;
-            return p.category_id ? divisionCategoryIds.has(p.category_id) : false;
-          });
-          return (
-            <>
-              <div className="flex items-center justify-between mb-6">
-                <h2 className="font-serif text-2xl md:text-3xl font-bold">
-                  {isUz ? 'Brend mahsulotlari' : 'Товары бренда'}
-                </h2>
-                <span className="text-sm text-muted-foreground">
-                  {filtered.length} {isUz ? 'ta' : 'шт'}
-                </span>
+                {sectionCategories.map((cat) => (
+                  <button
+                    key={cat.id}
+                    type="button"
+                    onClick={() => setActiveCategory((p) => ({ ...p, [sectionKey]: cat.id }))}
+                    className={`px-3 py-1.5 rounded-full text-xs tracking-wide transition-colors border ${
+                      active === cat.id
+                        ? 'bg-foreground text-background border-foreground'
+                        : 'bg-transparent text-muted-foreground border-border hover:border-foreground'
+                    }`}
+                  >
+                    {isUz ? cat.name_uz : cat.name_ru}
+                  </button>
+                ))}
               </div>
+            );
+          };
 
-              {productsLoading ? (
+          const renderProductGrid = (sectionKey: string, sectionProducts: typeof products) => {
+            const active = activeCategory[sectionKey] ?? 'all';
+            const filtered = active === 'all' ? sectionProducts : sectionProducts.filter((p) => p.category_id === active);
+            if (productsLoading) {
+              return (
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                  {Array.from({ length: 8 }).map((_, i) => (
+                  {Array.from({ length: 4 }).map((_, i) => (
                     <div key={i} className="bg-card rounded-2xl overflow-hidden animate-pulse">
                       <div className="aspect-[4/3] bg-muted" />
                       <div className="p-4 space-y-3">
@@ -253,20 +201,147 @@ export default function BrandDetails() {
                     </div>
                   ))}
                 </div>
-              ) : filtered.length > 0 ? (
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                  {filtered.map((p) => (
-                    <ProductCard key={p.id} product={p} />
-                  ))}
-                </div>
-              ) : (
-                <div className="text-center py-16 text-muted-foreground">
-                  {isUz ? 'Bu brendda hozircha mahsulotlar mavjud emas' : 'Пока нет товаров этого бренда'}
-                </div>
+              );
+            }
+            if (filtered.length === 0) return null;
+            return (
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                {filtered.map((p) => (
+                  <ProductCard key={p.id} product={p} />
+                ))}
+              </div>
+            );
+          };
+
+          const otherCategories = categories.filter((c) => !c.division_id);
+          const otherProducts = products.filter((p) => {
+            const div = p.category_id != null ? catDivisionMap.get(p.category_id) : null;
+            return !div;
+          });
+
+          return (
+            <>
+              {divisions.map((division) => {
+                const sectionCategories = categories.filter((c) => c.division_id === division.id);
+                const catIds = new Set(sectionCategories.map((c) => c.id));
+                const sectionProducts = products.filter((p) => p.category_id != null && catIds.has(p.category_id));
+                const description = isUz ? division.description_uz : division.description_ru;
+                const benefits = isUz ? division.benefits_uz : division.benefits_ru;
+                const sectionKey = `division:${division.id}`;
+                return (
+                  <section key={division.id} className="mb-16">
+                    <h2 className="font-serif text-2xl md:text-3xl font-bold mb-6">
+                      {isUz ? division.name_uz : division.name_ru}
+                    </h2>
+                    {(description || benefits.length > 0) && (
+                      <div className="mb-8 space-y-6">
+                        {description && (
+                          <div className="rounded-lg border bg-card p-6">
+                            <p className="text-muted-foreground leading-relaxed">{description}</p>
+                          </div>
+                        )}
+                        {benefits.length > 0 && (
+                          <div className="rounded-lg bg-muted/40 p-6 md:p-8">
+                            <h3 className="font-serif text-xl font-bold mb-5">
+                              {isUz ? 'Nima olasiz' : 'Что вы получите'}
+                            </h3>
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-3">
+                              {benefits.map((b, i) => (
+                                <div key={i} className="flex items-center gap-2.5">
+                                  <CheckCircle2 className="h-5 w-5 text-primary shrink-0" />
+                                  <span>{b}</span>
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    )}
+                    {renderCategoryPills(sectionKey, sectionCategories)}
+                    {renderProductGrid(sectionKey, sectionProducts)}
+                  </section>
+                );
+              })}
+
+              {(divisions.length === 0 || otherProducts.length > 0) && (
+                <section className="mb-16">
+                  <div className="flex items-center justify-between mb-6">
+                    <h2 className="font-serif text-2xl md:text-3xl font-bold">
+                      {isUz ? 'Brend mahsulotlari' : 'Товары бренда'}
+                    </h2>
+                    <span className="text-sm text-muted-foreground">
+                      {otherProducts.length} {isUz ? 'ta' : 'шт'}
+                    </span>
+                  </div>
+                  {renderCategoryPills('other', otherCategories)}
+                  {renderProductGrid('other', otherProducts)}
+                </section>
               )}
             </>
           );
         })()}
+
+        {caseStudies.length > 0 && (
+          <div className="mt-16">
+            <div className="flex items-center gap-3 mb-2">
+              <span className="w-8 h-px bg-primary" />
+              <span className="text-primary text-xs tracking-[0.3em] uppercase font-semibold">
+                {isUz ? 'Loyihalar' : 'Проекты'}
+              </span>
+            </div>
+            <h2 className="font-serif text-3xl md:text-4xl font-bold mb-8">
+              {isUz ? "Tanlangan xalqaro loyihalar" : 'Избранные международные проекты'}
+            </h2>
+            <div className="space-y-6">
+              {caseStudies.map((c) => (
+                <div key={c.id} className="flex flex-col md:flex-row border border-primary/30 overflow-hidden">
+                  <div className="relative w-full md:w-1/2 aspect-[16/10] md:aspect-auto">
+                    {c.image ? (
+                      <img src={c.image} alt={isUz ? c.title_uz : c.title_ru} className="absolute inset-0 w-full h-full object-cover" />
+                    ) : (
+                      <div className="absolute inset-0 bg-muted" />
+                    )}
+                    <div className="hidden md:block absolute inset-y-0 right-0 w-24 bg-gradient-to-r from-transparent to-background" />
+                    <div className="absolute top-4 left-4 flex items-center gap-1.5 bg-background/90 px-2.5 py-1 text-xs font-semibold tracking-wide">
+                      <span>{countryFlagEmoji(c.country_code)}</span>
+                      <span>{c.country_code}</span>
+                      <span className="text-muted-foreground font-normal uppercase">
+                        {isUz ? c.country_name_uz : c.country_name_ru}
+                      </span>
+                    </div>
+                  </div>
+                  <div className="w-full md:w-1/2 p-6 md:p-10 flex flex-col justify-center">
+                    <span className="text-primary text-[11px] tracking-[0.25em] uppercase font-semibold mb-3">
+                      {isUz ? c.category_uz : c.category_ru}
+                    </span>
+                    <h3 className="font-serif text-2xl md:text-3xl text-primary font-bold mb-4">
+                      {isUz ? c.title_uz : c.title_ru}
+                    </h3>
+                    <span className="w-12 h-px bg-primary/40 mb-6" />
+                    <div className="flex items-center gap-10">
+                      {(c.result_uz || c.result_ru) && (
+                        <div>
+                          <p className="text-[11px] tracking-[0.2em] uppercase text-muted-foreground mb-1">
+                            {isUz ? 'Natija' : 'Результат'}
+                          </p>
+                          <p className="font-medium">{isUz ? c.result_uz : c.result_ru}</p>
+                        </div>
+                      )}
+                      {c.year && (
+                        <div>
+                          <p className="text-[11px] tracking-[0.2em] uppercase text-muted-foreground mb-1">
+                            {isUz ? 'Yil' : 'Год'}
+                          </p>
+                          <p className="font-medium text-primary">{c.year}</p>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

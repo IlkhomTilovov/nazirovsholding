@@ -1,6 +1,7 @@
 import { useEffect, useState, useRef } from 'react';
 import { Plus, Pencil, Trash2, Image as ImageIcon, Loader2, Upload, Handshake, ExternalLink } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
+import { toWebP } from '@/lib/imageOptimizer';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -68,9 +69,10 @@ export default function Partners() {
       return;
     }
     setUploading(true);
-    const ext = file.name.split('.').pop();
+    const webpFile = await toWebP(file);
+    const ext = webpFile.name.split('.').pop();
     const path = `partners/partner-${Date.now()}.${ext}`;
-    const { error } = await supabase.storage.from('brand-images').upload(path, file, { upsert: true });
+    const { error } = await supabase.storage.from('brand-images').upload(path, webpFile, { upsert: true });
     if (error) {
       toast({ variant: 'destructive', title: 'Yuklash xatosi', description: error.message });
       setUploading(false);
