@@ -20,7 +20,6 @@ import { toWebP } from '@/lib/imageOptimizer';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Textarea } from '@/components/ui/textarea';
 import { Switch } from '@/components/ui/switch';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
@@ -40,22 +39,22 @@ import { AddMediaModal, MediaItem } from '@/components/admin/AddMediaModal';
 import { MediaGrid } from '@/components/admin/MediaGrid';
 import { DynamicAttributesForm } from '@/components/admin/DynamicAttributesForm';
 import { saveProductAttributeValues, fetchCategoryAttributes, type Attribute } from '@/hooks/useAttributes';
+import { TranslatedInput } from '@/components/admin/translated/TranslatedInput';
+import { TranslatedTextarea } from '@/components/admin/translated/TranslatedTextarea';
+import { LanguageTabsProvider, useLanguageTabs } from '@/components/admin/translated/LanguageTabsProvider';
+import { LanguageTabBar } from '@/components/admin/translated/LanguageTabBar';
 
 interface Category {
   id: string;
-  name_uz: string;
-  name_ru: string;
+  name: Record<string, string>;
 }
 
 interface Product {
   id: string;
-  name_uz: string;
-  name_ru: string;
+  name: Record<string, string>;
   slug: string | null;
-  description_uz: string | null;
-  description_ru: string | null;
-  full_description_uz: string | null;
-  full_description_ru: string | null;
+  description: Record<string, string>;
+  full_description: Record<string, string>;
   category_id: string | null;
   brand_id: string | null;
   price: number | null;
@@ -70,29 +69,22 @@ interface Product {
   is_active: boolean;
   created_at: string;
   updated_at: string;
-  meta_title_uz: string | null;
-  meta_title_ru: string | null;
-  meta_description_uz: string | null;
-  meta_description_ru: string | null;
+  meta_title: Record<string, string>;
+  meta_description: Record<string, string>;
   meta_keywords: string | null;
   is_indexed: boolean;
   is_followed: boolean;
   target_keyword: string | null;
   keyword_variations: string[] | null;
-  keyword_uz: string | null;
-  keyword_ru: string | null;
-  variants_uz: string[] | null;
-  variants_ru: string[] | null;
+  keyword: Record<string, string> | null;
+  variants: Record<string, string[]> | null;
 }
 
 interface FormData {
-  name_uz: string;
-  name_ru: string;
+  name: Record<string, string>;
   slug: string;
-  description_uz: string;
-  description_ru: string;
-  full_description_uz: string;
-  full_description_ru: string;
+  description: Record<string, string>;
+  full_description: Record<string, string>;
   category_id: string;
   brand_id: string;
   price: string;
@@ -102,29 +94,22 @@ interface FormData {
   in_stock: boolean;
   is_featured: boolean;
   is_active: boolean;
-  meta_title_uz: string;
-  meta_title_ru: string;
-  meta_description_uz: string;
-  meta_description_ru: string;
+  meta_title: Record<string, string>;
+  meta_description: Record<string, string>;
   meta_keywords: string;
   is_indexed: boolean;
   is_followed: boolean;
   target_keyword: string;
   keyword_variations: string[];
-  keyword_uz: string;
-  keyword_ru: string;
-  variants_uz: string[];
-  variants_ru: string[];
+  keyword: Record<string, string>;
+  variants: Record<string, string[]>;
 }
 
 const emptyForm: FormData = {
-  name_uz: '',
-  name_ru: '',
+  name: {},
   slug: '',
-  description_uz: '',
-  description_ru: '',
-  full_description_uz: '',
-  full_description_ru: '',
+  description: {},
+  full_description: {},
   category_id: '',
   brand_id: '',
   price: '',
@@ -134,20 +119,75 @@ const emptyForm: FormData = {
   in_stock: true,
   is_featured: false,
   is_active: true,
-  meta_title_uz: '',
-  meta_title_ru: '',
-  meta_description_uz: '',
-  meta_description_ru: '',
+  meta_title: {},
+  meta_description: {},
   meta_keywords: '',
   is_indexed: true,
   is_followed: true,
   target_keyword: '',
   keyword_variations: [],
-  keyword_uz: '',
-  keyword_ru: '',
-  variants_uz: [],
-  variants_ru: [],
+  keyword: {},
+  variants: {},
 };
+
+function SeoPreview({ formData }: { formData: FormData }) {
+  const { activeLang } = useLanguageTabs();
+  const title = formData.meta_title[activeLang] || formData.keyword[activeLang] || formData.name[activeLang];
+  const desc = formData.meta_description[activeLang] || formData.description[activeLang] || (activeLang === 'ru' ? 'Мета описание...' : 'Meta tavsif...');
+  if (!title) return null;
+  return (
+    <div className="space-y-4">
+      <h3 className="font-medium text-base">📋 Google qidiruv ko'rinishi</h3>
+      <div className="bg-card border rounded-lg p-4 space-y-1 max-w-md">
+        <p className="text-primary text-lg truncate">{title}</p>
+        <p className="text-emerald-600 text-sm">nazirovsholding.lovable.app/product/{formData.slug || 'slug'}</p>
+        <p className="text-sm text-muted-foreground line-clamp-2">{desc}</p>
+      </div>
+    </div>
+  );
+}
+
+function VariantsListEditor({ variants, onChange }: { variants: Record<string, string[]>; onChange: (variants: Record<string, string[]>) => void }) {
+  const { activeLang } = useLanguageTabs();
+  const list = variants[activeLang] || [];
+  return (
+    <div className="space-y-3">
+      <div className="flex items-center justify-between">
+        <Label>Variantlar ({activeLang.toUpperCase()})</Label>
+        <Button
+          type="button" variant="outline" size="sm"
+          onClick={() => onChange({ ...variants, [activeLang]: [...list, ''] })}
+          className="gap-1 h-7 text-xs"
+        >
+          <Plus className="h-3 w-3" /> Qo'shish
+        </Button>
+      </div>
+      {list.map((v, i) => (
+        <div key={i} className="flex items-center gap-2">
+          <Input
+            value={v}
+            onChange={(e) => {
+              const arr = [...list];
+              arr[i] = e.target.value;
+              onChange({ ...variants, [activeLang]: arr });
+            }}
+            placeholder={`Variant ${i + 1}`}
+            className="text-sm"
+          />
+          <Button
+            type="button" variant="ghost" size="icon" className="h-8 w-8 shrink-0"
+            onClick={() => onChange({ ...variants, [activeLang]: list.filter((_, idx) => idx !== i) })}
+          >
+            <X className="h-4 w-4 text-destructive" />
+          </Button>
+        </div>
+      ))}
+      {list.length === 0 && (
+        <p className="text-xs text-muted-foreground italic">Hali variant qo'shilmagan</p>
+      )}
+    </div>
+  );
+}
 
 const ADMIN_PAGE_SIZE = 20;
 
@@ -175,7 +215,7 @@ export default function ProductsNew() {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const { toast } = useToast();
   const { language } = useLanguage();
-  const { defaultLanguage } = useLanguages();
+  const { languages, defaultLanguage } = useLanguages();
   const { brands: brandList } = useBrands(false);
   const { divisions: divisionList } = useDivisions(formData.brand_id || null, false);
   const [selectedDivisionId, setSelectedDivisionId] = useState<string>('');
@@ -224,11 +264,11 @@ export default function ProductsNew() {
     try {
       const { data, error } = await supabase
         .from('categories')
-        .select('id, name_uz, name_ru')
+        .select('id, name')
         .order('sort_order');
-      
+
       if (error) throw error;
-      setCategories(data || []);
+      setCategories((data || []) as unknown as Category[]);
     } catch (error) {
       console.error('Error:', error);
     }
@@ -272,7 +312,7 @@ export default function ProductsNew() {
 
       if (error) throw error;
 
-      setProducts(data || []);
+      setProducts((data || []) as unknown as Product[]);
       setTotalCount(count || 0);
     } catch (error) {
       console.error('Error:', error);
@@ -317,7 +357,7 @@ export default function ProductsNew() {
   const getCategoryName = (categoryId: string | null) => {
     if (!categoryId) return '—';
     const category = categories.find(c => c.id === categoryId);
-    return category ? (language === 'uz' ? category.name_uz : category.name_ru) : '—';
+    return category ? getTranslated(category.name, language, defaultLanguage) : '—';
   };
 
   // Convert images array to MediaItem array
@@ -390,14 +430,12 @@ export default function ProductsNew() {
     setSelectedProduct(product);
     const parsedMedia = parseImagesForEdit(product.images || []);
     setMediaItems(parsedMedia);
+    const keyword = product.keyword || {};
     setFormData({
-      name_uz: product.name_uz,
-      name_ru: product.name_ru,
+      name: product.name || {},
       slug: product.slug || '',
-      description_uz: product.description_uz || '',
-      description_ru: product.description_ru || '',
-      full_description_uz: product.full_description_uz || '',
-      full_description_ru: product.full_description_ru || '',
+      description: product.description || {},
+      full_description: product.full_description || {},
       category_id: product.category_id || '',
       brand_id: (product as any).brand_id || '',
       price: product.price?.toString() || '',
@@ -407,19 +445,18 @@ export default function ProductsNew() {
       in_stock: product.in_stock,
       is_featured: product.is_featured,
       is_active: product.is_active,
-      meta_title_uz: product.meta_title_uz || '',
-      meta_title_ru: product.meta_title_ru || '',
-      meta_description_uz: product.meta_description_uz || '',
-      meta_description_ru: product.meta_description_ru || '',
+      meta_title: product.meta_title || {},
+      meta_description: product.meta_description || {},
       meta_keywords: product.meta_keywords || '',
       is_indexed: product.is_indexed ?? true,
       is_followed: product.is_followed ?? true,
       target_keyword: product.target_keyword || '',
       keyword_variations: product.keyword_variations || [],
-      keyword_uz: (product as any).keyword_uz || product.target_keyword || '',
-      keyword_ru: (product as any).keyword_ru || '',
-      variants_uz: (product as any).variants_uz || product.keyword_variations || [],
-      variants_ru: (product as any).variants_ru || [],
+      keyword: {
+        ...keyword,
+        [defaultLanguage]: keyword[defaultLanguage] || product.target_keyword || '',
+      },
+      variants: product.variants || { [defaultLanguage]: product.keyword_variations || [] },
     });
     setSlugError('');
     setActiveTab('basic');
@@ -442,14 +479,14 @@ export default function ProductsNew() {
     setDialogOpen(true);
   };
 
-  const handleNameChange = (value: string, field: 'name_uz' | 'name_ru') => {
-    const newFormData = { ...formData, [field]: value };
-    
-    if (field === 'name_uz' && (!formData.slug || formData.slug === generateSlug(formData.name_uz))) {
-      newFormData.slug = generateSlug(value);
-    }
-    
-    setFormData(newFormData);
+  const handleNameChange = (name: Record<string, string>) => {
+    const baseName = name[defaultLanguage] || '';
+    const prevBaseName = formData.name[defaultLanguage] || '';
+    setFormData((p) => ({
+      ...p,
+      name,
+      slug: !p.slug || p.slug === generateSlug(prevBaseName) ? generateSlug(baseName) : p.slug,
+    }));
   };
 
   const handleSlugChange = async (value: string) => {
@@ -529,8 +566,9 @@ export default function ProductsNew() {
 
   const handleSubmit = async () => {
     // Validate required fields
-    if (!formData.name_uz || !formData.name_ru) {
-      toast({ variant: 'destructive', title: 'Xatolik', description: 'Mahsulot nomini kiriting' });
+    const hasAllNames = languages.every((lang) => formData.name[lang.code]?.trim());
+    if (!hasAllNames) {
+      toast({ variant: 'destructive', title: 'Xatolik', description: 'Barcha tillar uchun mahsulot nomini kiriting' });
       setActiveTab('basic');
       return;
     }
@@ -548,7 +586,8 @@ export default function ProductsNew() {
       return;
     }
 
-    const slug = formData.slug || generateSlug(formData.name_uz);
+    const baseName = formData.name[defaultLanguage] || '';
+    const slug = formData.slug || generateSlug(baseName);
 
     const isUnique = await checkSlugUnique(slug, selectedProduct?.id);
     if (!isUnique) {
@@ -556,14 +595,13 @@ export default function ProductsNew() {
       return;
     }
 
+    const baseKeyword = formData.keyword[defaultLanguage] || '';
+    const baseVariants = formData.variants[defaultLanguage] || [];
     const productData = {
-      name_uz: formData.name_uz.trim(),
-      name_ru: formData.name_ru.trim(),
+      name: formData.name,
       slug,
-      description_uz: formData.description_uz || null,
-      description_ru: formData.description_ru || null,
-      full_description_uz: formData.full_description_uz || null,
-      full_description_ru: formData.full_description_ru || null,
+      description: formData.description,
+      full_description: formData.full_description,
       category_id: formData.category_id || null,
       brand_id: formData.brand_id || null,
       price: formData.price ? parseFloat(formData.price) : null,
@@ -576,29 +614,25 @@ export default function ProductsNew() {
       in_stock: formData.in_stock,
       is_featured: formData.is_featured,
       is_active: formData.is_active,
-      meta_title_uz: formData.meta_title_uz || null,
-      meta_title_ru: formData.meta_title_ru || null,
-      meta_description_uz: formData.meta_description_uz || null,
-      meta_description_ru: formData.meta_description_ru || null,
+      meta_title: formData.meta_title,
+      meta_description: formData.meta_description,
       meta_keywords: formData.meta_keywords || null,
       is_indexed: formData.is_indexed,
       is_followed: formData.is_followed,
-      target_keyword: formData.keyword_uz || formData.target_keyword || null,
-      keyword_variations: (formData.variants_uz || []).length > 0 ? formData.variants_uz : (formData.keyword_variations || []).length > 0 ? formData.keyword_variations : [],
-      keyword_uz: formData.keyword_uz || null,
-      keyword_ru: formData.keyword_ru || null,
-      variants_uz: (formData.variants_uz || []).length > 0 ? formData.variants_uz : [],
-      variants_ru: (formData.variants_ru || []).length > 0 ? formData.variants_ru : [],
+      target_keyword: baseKeyword || formData.target_keyword || null,
+      keyword_variations: baseVariants.length > 0 ? baseVariants : (formData.keyword_variations || []),
+      keyword: formData.keyword,
+      variants: formData.variants,
     };
 
     try {
       let savedId: string | null = selectedProduct?.id || null;
       if (selectedProduct) {
-        const { error } = await supabase.from('products').update(productData).eq('id', selectedProduct.id);
+        const { error } = await supabase.from('products').update(productData as any).eq('id', selectedProduct.id);
         if (error) throw error;
         toast({ title: 'Muvaffaqiyat', description: 'Mahsulot yangilandi' });
       } else {
-        const { data, error } = await supabase.from('products').insert([productData]).select('id').single();
+        const { data, error } = await supabase.from('products').insert([productData] as any).select('id').single();
         if (error) throw error;
         savedId = (data as any)?.id || null;
         toast({ title: 'Muvaffaqiyat', description: 'Mahsulot yaratildi' });
@@ -655,8 +689,8 @@ export default function ProductsNew() {
   };
 
   const getSeoStatus = (product: Product) => {
-    const hasTitle = product.meta_title_uz || product.meta_title_ru;
-    const hasDescription = product.meta_description_uz || product.meta_description_ru;
+    const hasTitle = Object.values(product.meta_title || {}).some(Boolean);
+    const hasDescription = Object.values(product.meta_description || {}).some(Boolean);
     
     if (hasTitle && hasDescription) return { status: 'complete', label: 'SEO tayyor' };
     if (hasTitle || hasDescription) return { status: 'partial', label: 'SEO qisman' };
@@ -720,7 +754,7 @@ export default function ProductsNew() {
                 <SelectItem value="all">Barcha toifalar</SelectItem>
                 {categories.map(cat => (
                   <SelectItem key={cat.id} value={cat.id}>
-                    {language === 'uz' ? cat.name_uz : cat.name_ru}
+                    {getTranslated(cat.name, language, defaultLanguage)}
                   </SelectItem>
                 ))}
               </SelectContent>
@@ -772,7 +806,7 @@ export default function ProductsNew() {
                   <TableRow key={product.id}>
                     <TableCell>
                       {product.images?.[0] ? (
-                        <img src={product.images[0]} alt={product.name_uz} className="h-12 w-12 object-cover rounded-lg border" />
+                        <img src={product.images[0]} alt={getTranslated(product.name, defaultLanguage, defaultLanguage)} className="h-12 w-12 object-cover rounded-lg border" />
                       ) : (
                         <div className="h-12 w-12 bg-muted rounded-lg flex items-center justify-center">
                           <ImageIcon className="h-5 w-5 text-muted-foreground" />
@@ -781,7 +815,7 @@ export default function ProductsNew() {
                     </TableCell>
                     <TableCell>
                       <div>
-                        <p className="font-medium">{language === 'uz' ? product.name_uz : product.name_ru}</p>
+                        <p className="font-medium">{getTranslated(product.name, language, defaultLanguage)}</p>
                         {product.slug && (
                           <code className="text-xs text-muted-foreground">/{product.slug}</code>
                         )}
@@ -899,7 +933,9 @@ export default function ProductsNew() {
           <DialogHeader>
             <DialogTitle>{selectedProduct ? 'Mahsulotni tahrirlash' : 'Yangi mahsulot'}</DialogTitle>
           </DialogHeader>
-          
+
+          <LanguageTabsProvider languages={languages} defaultLanguage={defaultLanguage}>
+          <LanguageTabBar />
           <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
             <TabsList className="grid w-full grid-cols-5">
               <TabsTrigger value="basic">Asosiy</TabsTrigger>
@@ -914,24 +950,13 @@ export default function ProductsNew() {
 
             {/* Basic Tab */}
             <TabsContent value="basic" className="space-y-4 mt-4">
-              <div className="grid grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <Label>Nomi (UZ) *</Label>
-                  <Input
-                    value={formData.name_uz}
-                    onChange={(e) => handleNameChange(e.target.value, 'name_uz')}
-                    placeholder="O'zbek tilida"
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label>Nomi (RU) *</Label>
-                  <Input
-                    value={formData.name_ru}
-                    onChange={(e) => handleNameChange(e.target.value, 'name_ru')}
-                    placeholder="На русском"
-                  />
-                </div>
-              </div>
+              <TranslatedInput
+                label="Nomi"
+                required
+                value={formData.name}
+                onChange={handleNameChange}
+                placeholder={{ uz: "O'zbek tilida", ru: 'На русском' }}
+              />
 
               <div className="space-y-2">
                 <Label>Slug (URL)</Label>
@@ -1015,7 +1040,7 @@ export default function ProductsNew() {
                       })
                       .map((cat) => (
                         <SelectItem key={cat.id} value={cat.id}>
-                          {language === 'uz' ? cat.name_uz : cat.name_ru}
+                          {getTranslated(cat.name, language, defaultLanguage)}
                         </SelectItem>
                       ))}
                   </SelectContent>
@@ -1080,47 +1105,21 @@ export default function ProductsNew() {
 
             {/* Description Tab */}
             <TabsContent value="description" className="space-y-4 mt-4">
-              <div className="grid grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <Label>Qisqa tavsif (UZ)</Label>
-                  <Textarea
-                    value={formData.description_uz}
-                    onChange={(e) => setFormData({ ...formData, description_uz: e.target.value })}
-                    rows={3}
-                    placeholder="Mahsulot haqida qisqacha..."
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label>Qisqa tavsif (RU)</Label>
-                  <Textarea
-                    value={formData.description_ru}
-                    onChange={(e) => setFormData({ ...formData, description_ru: e.target.value })}
-                    rows={3}
-                    placeholder="Краткое описание..."
-                  />
-                </div>
-              </div>
+              <TranslatedTextarea
+                label="Qisqa tavsif"
+                rows={3}
+                value={formData.description}
+                onChange={(description) => setFormData({ ...formData, description })}
+                placeholder={{ uz: 'Mahsulot haqida qisqacha...', ru: 'Краткое описание...' }}
+              />
               <Separator />
-              <div className="grid grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <Label>To'liq tavsif (UZ)</Label>
-                  <Textarea
-                    value={formData.full_description_uz}
-                    onChange={(e) => setFormData({ ...formData, full_description_uz: e.target.value })}
-                    rows={6}
-                    placeholder="Batafsil tavsif..."
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label>To'liq tavsif (RU)</Label>
-                  <Textarea
-                    value={formData.full_description_ru}
-                    onChange={(e) => setFormData({ ...formData, full_description_ru: e.target.value })}
-                    rows={6}
-                    placeholder="Подробное описание..."
-                  />
-                </div>
-              </div>
+              <TranslatedTextarea
+                label="To'liq tavsif"
+                rows={6}
+                value={formData.full_description}
+                onChange={(full_description) => setFormData({ ...formData, full_description })}
+                placeholder={{ uz: 'Batafsil tavsif...', ru: 'Подробное описание...' }}
+              />
             </TabsContent>
 
             {/* Media Tab */}
@@ -1201,162 +1200,49 @@ export default function ProductsNew() {
                 </p>
               </div>
 
-              {/* Target Keywords - Bilingual */}
+              {/* Target Keyword */}
               <div className="space-y-3">
                 <h3 className="font-medium text-base">🎯 Asosiy kalit so'z</h3>
                 <p className="text-xs text-muted-foreground">
                   Bu so'z SEO Title, H1 sarlavha va URL slug uchun ishlatiladi
                 </p>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div className="space-y-2">
-                    <Label className="flex items-center gap-2">
-                      <Badge variant="outline" className="text-xs">UZ</Badge>
-                      Asosiy kalit so'z
-                    </Label>
-                    <Input
-                      value={formData.keyword_uz}
-                      onChange={(e) => {
-                        const keyword = e.target.value;
-                        const newFormData = { ...formData, keyword_uz: keyword };
-                        if (keyword && (!formData.slug || formData.slug === generateSlug(formData.keyword_uz))) {
-                          newFormData.slug = generateSlug(keyword);
+                <TranslatedInput
+                  label="Asosiy kalit so'z"
+                  value={formData.keyword}
+                  onChange={(keyword) => {
+                    const changedLang = languages.find((l) => keyword[l.code] !== formData.keyword[l.code])?.code || defaultLanguage;
+                    const value = keyword[changedLang] || '';
+                    setFormData((p) => {
+                      const next: FormData = { ...p, keyword };
+                      if (changedLang === defaultLanguage && value && (!p.slug || p.slug === generateSlug(p.keyword[defaultLanguage] || ''))) {
+                        next.slug = generateSlug(value);
+                      }
+                      if (value && !p.meta_title[changedLang]) {
+                        const autoTitle = value.charAt(0).toUpperCase() + value.slice(1);
+                        if (autoTitle.length <= 60) {
+                          const withName = autoTitle + (p.name[changedLang] ? ` | ${p.name[changedLang]}` : '');
+                          next.meta_title = { ...p.meta_title, [changedLang]: withName.length > 60 ? autoTitle : withName };
                         }
-                        if (keyword && !formData.meta_title_uz) {
-                          const autoTitle = keyword.charAt(0).toUpperCase() + keyword.slice(1);
-                          if (autoTitle.length <= 60) {
-                            newFormData.meta_title_uz = autoTitle + (formData.name_uz ? ` | ${formData.name_uz}` : '');
-                            if (newFormData.meta_title_uz.length > 60) {
-                              newFormData.meta_title_uz = autoTitle;
-                            }
-                          }
-                        }
-                        setFormData(newFormData);
-                      }}
-                      placeholder="Masalan: shkaf buyurtma asosida"
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <Label className="flex items-center gap-2">
-                      <Badge variant="outline" className="text-xs">RU</Badge>
-                      Основное ключевое слово
-                    </Label>
-                    <Input
-                      value={formData.keyword_ru}
-                      onChange={(e) => {
-                        const keyword = e.target.value;
-                        const newFormData = { ...formData, keyword_ru: keyword };
-                        if (keyword && !formData.meta_title_ru) {
-                          const autoTitle = keyword.charAt(0).toUpperCase() + keyword.slice(1);
-                          if (autoTitle.length <= 60) {
-                            newFormData.meta_title_ru = autoTitle + (formData.name_ru ? ` | ${formData.name_ru}` : '');
-                            if (newFormData.meta_title_ru.length > 60) {
-                              newFormData.meta_title_ru = autoTitle;
-                            }
-                          }
-                        }
-                        setFormData(newFormData);
-                      }}
-                      placeholder="Например: шкаф на заказ"
-                    />
-                  </div>
-                </div>
+                      }
+                      return next;
+                    });
+                  }}
+                  placeholder={{ uz: 'Masalan: shkaf buyurtma asosida', ru: 'Например: шкаф на заказ' }}
+                />
               </div>
 
               <Separator />
 
-              {/* Keyword Variants - Bilingual */}
+              {/* Keyword Variants */}
               <div className="space-y-3">
                 <h3 className="font-medium text-base">🔄 Kalit so'z variantlari</h3>
                 <p className="text-xs text-muted-foreground">
                   Variantlar tavsif va rasm alt teglarida tabiiy ravishda ishlatiladi
                 </p>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  {/* UZ Variants */}
-                  <div className="space-y-3">
-                    <div className="flex items-center justify-between">
-                      <Label className="flex items-center gap-2">
-                        <Badge variant="outline" className="text-xs">UZ</Badge>
-                        Variantlar
-                      </Label>
-                      <Button
-                        type="button"
-                        variant="outline"
-                        size="sm"
-                        onClick={() => setFormData({ ...formData, variants_uz: [...formData.variants_uz, ''] })}
-                        className="gap-1 h-7 text-xs"
-                      >
-                        <Plus className="h-3 w-3" />
-                        Qo'shish
-                      </Button>
-                    </div>
-                    {(formData.variants_uz || []).map((v, i) => (
-                      <div key={i} className="flex items-center gap-2">
-                        <Input
-                          value={v}
-                          onChange={(e) => {
-                            const arr = [...formData.variants_uz];
-                            arr[i] = e.target.value;
-                            setFormData({ ...formData, variants_uz: arr });
-                          }}
-                          placeholder={`Variant ${i + 1}: masalan, mebel buyurtma`}
-                          className="text-sm"
-                        />
-                        <Button
-                          type="button" variant="ghost" size="icon" className="h-8 w-8 shrink-0"
-                          onClick={() => setFormData({ ...formData, variants_uz: (formData.variants_uz || []).filter((_, idx) => idx !== i) })}
-                        >
-                          <X className="h-4 w-4 text-destructive" />
-                        </Button>
-                      </div>
-                    ))}
-                    {(formData.variants_uz || []).length === 0 && (
-                      <p className="text-xs text-muted-foreground italic">Hali variant qo'shilmagan</p>
-                    )}
-                  </div>
-
-                  {/* RU Variants */}
-                  <div className="space-y-3">
-                    <div className="flex items-center justify-between">
-                      <Label className="flex items-center gap-2">
-                        <Badge variant="outline" className="text-xs">RU</Badge>
-                        Варианты
-                      </Label>
-                      <Button
-                        type="button"
-                        variant="outline"
-                        size="sm"
-                        onClick={() => setFormData({ ...formData, variants_ru: [...formData.variants_ru, ''] })}
-                        className="gap-1 h-7 text-xs"
-                      >
-                        <Plus className="h-3 w-3" />
-                        Добавить
-                      </Button>
-                    </div>
-                    {(formData.variants_ru || []).map((v, i) => (
-                      <div key={i} className="flex items-center gap-2">
-                        <Input
-                          value={v}
-                          onChange={(e) => {
-                            const arr = [...formData.variants_ru];
-                            arr[i] = e.target.value;
-                            setFormData({ ...formData, variants_ru: arr });
-                          }}
-                          placeholder={`Вариант ${i + 1}: например, мебель на заказ`}
-                          className="text-sm"
-                        />
-                        <Button
-                          type="button" variant="ghost" size="icon" className="h-8 w-8 shrink-0"
-                          onClick={() => setFormData({ ...formData, variants_ru: (formData.variants_ru || []).filter((_, idx) => idx !== i) })}
-                        >
-                          <X className="h-4 w-4 text-destructive" />
-                        </Button>
-                      </div>
-                    ))}
-                    {(formData.variants_ru || []).length === 0 && (
-                      <p className="text-xs text-muted-foreground italic">Вариантов пока нет</p>
-                    )}
-                  </div>
-                </div>
+                <VariantsListEditor
+                  variants={formData.variants}
+                  onChange={(variants) => setFormData({ ...formData, variants })}
+                />
               </div>
 
               <Separator />
@@ -1364,38 +1250,12 @@ export default function ProductsNew() {
               {/* Meta Title */}
               <div className="space-y-3">
                 <h3 className="font-medium text-base">📝 Meta Title</h3>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div className="space-y-2">
-                    <Label className="flex items-center gap-2">
-                      <Badge variant="outline" className="text-xs">UZ</Badge>
-                      Meta Title
-                    </Label>
-                    <Input
-                      value={formData.meta_title_uz}
-                      onChange={(e) => setFormData({ ...formData, meta_title_uz: e.target.value.slice(0, 60) })}
-                      placeholder={formData.keyword_uz || formData.name_uz || 'Mahsulot nomi'}
-                      maxLength={60}
-                    />
-                    <p className={`text-xs ${formData.meta_title_uz.length > 55 ? 'text-destructive' : 'text-muted-foreground'}`}>
-                      {formData.meta_title_uz.length}/60 belgi
-                    </p>
-                  </div>
-                  <div className="space-y-2">
-                    <Label className="flex items-center gap-2">
-                      <Badge variant="outline" className="text-xs">RU</Badge>
-                      Meta Title
-                    </Label>
-                    <Input
-                      value={formData.meta_title_ru}
-                      onChange={(e) => setFormData({ ...formData, meta_title_ru: e.target.value.slice(0, 60) })}
-                      placeholder={formData.keyword_ru || formData.name_ru || 'Название товара'}
-                      maxLength={60}
-                    />
-                    <p className={`text-xs ${formData.meta_title_ru.length > 55 ? 'text-destructive' : 'text-muted-foreground'}`}>
-                      {formData.meta_title_ru.length}/60 символов
-                    </p>
-                  </div>
-                </div>
+                <TranslatedInput
+                  label="Meta Title"
+                  value={formData.meta_title}
+                  onChange={(meta_title) => setFormData({ ...formData, meta_title })}
+                  placeholder={formData.keyword[defaultLanguage] ? formData.keyword : formData.name}
+                />
               </div>
 
               <Separator />
@@ -1403,82 +1263,18 @@ export default function ProductsNew() {
               {/* Meta Description */}
               <div className="space-y-3">
                 <h3 className="font-medium text-base">📄 Meta Description</h3>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div className="space-y-2">
-                    <Label className="flex items-center gap-2">
-                      <Badge variant="outline" className="text-xs">UZ</Badge>
-                      Meta Description
-                    </Label>
-                    <Textarea
-                      value={formData.meta_description_uz}
-                      onChange={(e) => setFormData({ ...formData, meta_description_uz: e.target.value.slice(0, 160) })}
-                      placeholder="Mahsulot haqida qisqa tavsif..."
-                      maxLength={160}
-                      rows={3}
-                    />
-                    <p className={`text-xs ${formData.meta_description_uz.length > 150 ? 'text-destructive' : 'text-muted-foreground'}`}>
-                      {formData.meta_description_uz.length}/160 belgi
-                    </p>
-                  </div>
-                  <div className="space-y-2">
-                    <Label className="flex items-center gap-2">
-                      <Badge variant="outline" className="text-xs">RU</Badge>
-                      Meta Description
-                    </Label>
-                    <Textarea
-                      value={formData.meta_description_ru}
-                      onChange={(e) => setFormData({ ...formData, meta_description_ru: e.target.value.slice(0, 160) })}
-                      placeholder="Краткое описание товара..."
-                      maxLength={160}
-                      rows={3}
-                    />
-                    <p className={`text-xs ${formData.meta_description_ru.length > 150 ? 'text-destructive' : 'text-muted-foreground'}`}>
-                      {formData.meta_description_ru.length}/160 символов
-                    </p>
-                  </div>
-                </div>
+                <TranslatedTextarea
+                  label="Meta Description"
+                  rows={3}
+                  value={formData.meta_description}
+                  onChange={(meta_description) => setFormData({ ...formData, meta_description })}
+                  placeholder={{ uz: 'Mahsulot haqida qisqa tavsif...', ru: 'Краткое описание товара...' }}
+                />
               </div>
 
               <Separator />
 
-              {/* SEO Preview - Both languages */}
-              {(formData.keyword_uz || formData.meta_title_uz || formData.keyword_ru || formData.meta_title_ru) && (
-                <div className="space-y-4">
-                  <h3 className="font-medium text-base">📋 Google qidiruv ko'rinishi</h3>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    {/* UZ Preview */}
-                    <div className="space-y-1">
-                      <Badge variant="outline" className="text-xs mb-2">UZ</Badge>
-                      <div className="bg-card border rounded-lg p-4 space-y-1">
-                        <p className="text-primary text-lg truncate">
-                          {formData.meta_title_uz || formData.keyword_uz || formData.name_uz}
-                        </p>
-                        <p className="text-emerald-600 text-sm">
-                          nazirovsholding.lovable.app/product/{formData.slug || 'slug'}
-                        </p>
-                        <p className="text-sm text-muted-foreground line-clamp-2">
-                          {formData.meta_description_uz || formData.description_uz || 'Meta tavsif...'}
-                        </p>
-                      </div>
-                    </div>
-                    {/* RU Preview */}
-                    <div className="space-y-1">
-                      <Badge variant="outline" className="text-xs mb-2">RU</Badge>
-                      <div className="bg-card border rounded-lg p-4 space-y-1">
-                        <p className="text-primary text-lg truncate">
-                          {formData.meta_title_ru || formData.keyword_ru || formData.name_ru}
-                        </p>
-                        <p className="text-emerald-600 text-sm">
-                          nazirovsholding.lovable.app/ru/product/{formData.slug || 'slug'}
-                        </p>
-                        <p className="text-sm text-muted-foreground line-clamp-2">
-                          {formData.meta_description_ru || formData.description_ru || 'Мета описание...'}
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              )}
+              <SeoPreview formData={formData} />
 
               <Separator />
 
@@ -1511,6 +1307,7 @@ export default function ProductsNew() {
               </div>
             </TabsContent>
           </Tabs>
+          </LanguageTabsProvider>
 
           <DialogFooter className="mt-6">
             <Button variant="outline" onClick={() => setDialogOpen(false)}>Bekor qilish</Button>
@@ -1530,18 +1327,17 @@ export default function ProductsNew() {
           {selectedProduct && (
             <div className="space-y-4">
               {selectedProduct.images?.[0] && (
-                <img 
-                  src={selectedProduct.images[0]} 
-                  alt={selectedProduct.name_uz} 
+                <img
+                  src={selectedProduct.images[0]}
+                  alt={getTranslated(selectedProduct.name, defaultLanguage, defaultLanguage)}
                   className="w-full h-64 object-cover rounded-lg"
                 />
               )}
               <div>
-                <h2 className="text-xl font-bold">{selectedProduct.name_uz}</h2>
-                <p className="text-muted-foreground">{selectedProduct.name_ru}</p>
+                <h2 className="text-xl font-bold">{getTranslated(selectedProduct.name, language, defaultLanguage)}</h2>
               </div>
-              {selectedProduct.description_uz && (
-                <p>{selectedProduct.description_uz}</p>
+              {getTranslated(selectedProduct.description, language, defaultLanguage) && (
+                <p>{getTranslated(selectedProduct.description, language, defaultLanguage)}</p>
               )}
               <div className="flex items-center gap-4">
                 <span className="text-2xl font-bold">{formatPrice(selectedProduct.price)}</span>
@@ -1560,7 +1356,7 @@ export default function ProductsNew() {
           <AlertDialogHeader>
             <AlertDialogTitle>Mahsulotni o'chirish</AlertDialogTitle>
             <AlertDialogDescription>
-              Haqiqatan ham "{selectedProduct?.name_uz}" mahsulotini o'chirmoqchimisiz?
+              Haqiqatan ham "{selectedProduct ? getTranslated(selectedProduct.name, defaultLanguage, defaultLanguage) : ''}" mahsulotini o'chirmoqchimisiz?
               Bu amalni qaytarib bo'lmaydi.
             </AlertDialogDescription>
           </AlertDialogHeader>
