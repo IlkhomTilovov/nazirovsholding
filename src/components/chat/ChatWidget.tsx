@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { useLanguage } from "@/hooks/useLanguage";
+import { useSystemSettings } from "@/hooks/useSystemSettings";
 import {
   CHAT_CONFIG,
   SUGGESTED_QUESTIONS,
@@ -19,9 +20,18 @@ function uid() {
 }
 
 export function ChatWidget() {
+  const { settings } = useSystemSettings();
+  // Admin paneldan yoqilmagan bo'lsa — widgetni umuman ko'rsatmaslik
+  if (!settings?.chat_enabled) return null;
+  return <ChatWidgetInner />;
+}
+
+function ChatWidgetInner() {
   const { language } = useLanguage();
   const lang: ChatLanguage = language === "ru" ? "ru" : "uz";
   const t = UI_TEXT[lang];
+
+
 
   const [open, setOpen] = useState(false);
   const [messages, setMessages] = useState<ChatMessage[]>([]);

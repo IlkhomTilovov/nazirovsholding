@@ -37,6 +37,7 @@ interface SystemSettingsData {
   social_telegram: string | null;
   facebook_pixel_id: string | null;
   facebook_domain_verification: string | null;
+  chat_enabled: boolean;
 }
 
 const defaultSettings: Omit<SystemSettingsData, 'id'> = {
@@ -61,6 +62,7 @@ const defaultSettings: Omit<SystemSettingsData, 'id'> = {
   social_telegram: '',
   facebook_pixel_id: '',
   facebook_domain_verification: '',
+  chat_enabled: false,
 };
 
 export default function SystemSettings() {
@@ -116,6 +118,7 @@ export default function SystemSettings() {
           social_telegram: settingsData.social_telegram || '',
           facebook_pixel_id: settingsData.facebook_pixel_id || '',
           facebook_domain_verification: settingsData.facebook_domain_verification || '',
+          chat_enabled: settingsData.chat_enabled ?? false,
         });
         setLogoPreview(settingsData.logo_url);
         setFaviconPreview(settingsData.favicon_url);
@@ -450,6 +453,28 @@ export default function SystemSettings() {
                 <p className="text-xs text-muted-foreground">
                   Favicon brauzer tabida ko'rinadi. 32x32 yoki 64x64 piksel o'lcham tavsiya etiladi.
                 </p>
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader>
+              <CardTitle>Chat widget</CardTitle>
+              <CardDescription>Saytning o'ng pastki burchagidagi chat tugmasini boshqarish</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="flex items-center justify-between">
+                <div className="space-y-0.5">
+                  <Label htmlFor="chat-enabled">Chat tugmasini ko'rsatish</Label>
+                  <p className="text-xs text-muted-foreground">
+                    O'chirilgan holatda saytda chat tugmasi umuman ko'rinmaydi
+                  </p>
+                </div>
+                <Switch
+                  id="chat-enabled"
+                  checked={formData.chat_enabled}
+                  onCheckedChange={(checked) => setFormData({ ...formData, chat_enabled: checked })}
+                />
               </div>
             </CardContent>
           </Card>

@@ -18,6 +18,7 @@ export type Database = {
         Row: {
           category_id: string | null
           created_at: string
+          description: Json
           description_ru: string | null
           description_uz: string | null
           filter_visible: boolean
@@ -26,6 +27,7 @@ export type Database = {
           is_active: boolean
           is_collapsible: boolean
           json_ld_visible: boolean
+          name: Json
           name_ru: string
           name_uz: string
           seo_visible: boolean
@@ -36,6 +38,7 @@ export type Database = {
         Insert: {
           category_id?: string | null
           created_at?: string
+          description?: Json
           description_ru?: string | null
           description_uz?: string | null
           filter_visible?: boolean
@@ -44,6 +47,7 @@ export type Database = {
           is_active?: boolean
           is_collapsible?: boolean
           json_ld_visible?: boolean
+          name?: Json
           name_ru: string
           name_uz: string
           seo_visible?: boolean
@@ -54,6 +58,7 @@ export type Database = {
         Update: {
           category_id?: string | null
           created_at?: string
+          description?: Json
           description_ru?: string | null
           description_uz?: string | null
           filter_visible?: boolean
@@ -62,6 +67,7 @@ export type Database = {
           is_active?: boolean
           is_collapsible?: boolean
           json_ld_visible?: boolean
+          name?: Json
           name_ru?: string
           name_uz?: string
           seo_visible?: boolean
@@ -84,6 +90,7 @@ export type Database = {
           attribute_id: string
           created_at: string
           id: string
+          label: Json
           label_ru: string
           label_uz: string
           sort_order: number
@@ -93,6 +100,7 @@ export type Database = {
           attribute_id: string
           created_at?: string
           id?: string
+          label?: Json
           label_ru: string
           label_uz: string
           sort_order?: number
@@ -102,6 +110,7 @@ export type Database = {
           attribute_id?: string
           created_at?: string
           id?: string
+          label?: Json
           label_ru?: string
           label_uz?: string
           sort_order?: number
@@ -126,8 +135,10 @@ export type Database = {
           is_active: boolean
           is_filterable: boolean
           is_required: boolean
+          name: Json
           name_ru: string
           name_uz: string
+          placeholder: Json
           placeholder_ru: string | null
           placeholder_uz: string | null
           show_in_card: boolean
@@ -144,8 +155,10 @@ export type Database = {
           is_active?: boolean
           is_filterable?: boolean
           is_required?: boolean
+          name?: Json
           name_ru: string
           name_uz: string
+          placeholder?: Json
           placeholder_ru?: string | null
           placeholder_uz?: string | null
           show_in_card?: boolean
@@ -162,8 +175,10 @@ export type Database = {
           is_active?: boolean
           is_filterable?: boolean
           is_required?: boolean
+          name?: Json
           name_ru?: string
           name_uz?: string
+          placeholder?: Json
           placeholder_ru?: string | null
           placeholder_uz?: string | null
           show_in_card?: boolean
@@ -182,6 +197,86 @@ export type Database = {
           },
         ]
       }
+      brand_case_studies: {
+        Row: {
+          brand_id: string
+          category: Json
+          category_ru: string
+          category_uz: string
+          country_code: string
+          country_name: Json
+          country_name_ru: string
+          country_name_uz: string
+          created_at: string
+          id: string
+          image: string | null
+          is_active: boolean
+          result: Json
+          result_ru: string | null
+          result_uz: string | null
+          sort_order: number
+          title: Json
+          title_ru: string
+          title_uz: string
+          updated_at: string
+          year: string | null
+        }
+        Insert: {
+          brand_id: string
+          category?: Json
+          category_ru: string
+          category_uz: string
+          country_code: string
+          country_name?: Json
+          country_name_ru: string
+          country_name_uz: string
+          created_at?: string
+          id?: string
+          image?: string | null
+          is_active?: boolean
+          result?: Json
+          result_ru?: string | null
+          result_uz?: string | null
+          sort_order?: number
+          title?: Json
+          title_ru: string
+          title_uz: string
+          updated_at?: string
+          year?: string | null
+        }
+        Update: {
+          brand_id?: string
+          category?: Json
+          category_ru?: string
+          category_uz?: string
+          country_code?: string
+          country_name?: Json
+          country_name_ru?: string
+          country_name_uz?: string
+          created_at?: string
+          id?: string
+          image?: string | null
+          is_active?: boolean
+          result?: Json
+          result_ru?: string | null
+          result_uz?: string | null
+          sort_order?: number
+          title?: Json
+          title_ru?: string
+          title_uz?: string
+          updated_at?: string
+          year?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "brand_case_studies_brand_id_fkey"
+            columns: ["brand_id"]
+            isOneToOne: false
+            referencedRelation: "brands"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       brands: {
         Row: {
           accent_color: string | null
@@ -191,6 +286,7 @@ export type Database = {
           created_at: string
           dark_logo: string | null
           default_sort: string
+          description: Json
           description_ru: string | null
           description_uz: string | null
           gallery: Json
@@ -202,11 +298,14 @@ export type Database = {
           is_indexed: boolean
           light_logo: string | null
           logo: string | null
+          meta_description: Json
           meta_description_ru: string | null
           meta_description_uz: string | null
           meta_keywords: string | null
+          meta_title: Json
           meta_title_ru: string | null
           meta_title_uz: string | null
+          name: Json
           name_ru: string
           name_uz: string
           og_image: string | null
@@ -228,6 +327,7 @@ export type Database = {
           created_at?: string
           dark_logo?: string | null
           default_sort?: string
+          description?: Json
           description_ru?: string | null
           description_uz?: string | null
           gallery?: Json
@@ -239,11 +339,14 @@ export type Database = {
           is_indexed?: boolean
           light_logo?: string | null
           logo?: string | null
+          meta_description?: Json
           meta_description_ru?: string | null
           meta_description_uz?: string | null
           meta_keywords?: string | null
+          meta_title?: Json
           meta_title_ru?: string | null
           meta_title_uz?: string | null
+          name?: Json
           name_ru: string
           name_uz: string
           og_image?: string | null
@@ -265,6 +368,7 @@ export type Database = {
           created_at?: string
           dark_logo?: string | null
           default_sort?: string
+          description?: Json
           description_ru?: string | null
           description_uz?: string | null
           gallery?: Json
@@ -276,11 +380,14 @@ export type Database = {
           is_indexed?: boolean
           light_logo?: string | null
           logo?: string | null
+          meta_description?: Json
           meta_description_ru?: string | null
           meta_description_uz?: string | null
           meta_keywords?: string | null
+          meta_title?: Json
           meta_title_ru?: string | null
           meta_title_uz?: string | null
+          name?: Json
           name_ru?: string
           name_uz?: string
           og_image?: string | null
@@ -299,9 +406,13 @@ export type Database = {
       business_divisions: {
         Row: {
           banner: string | null
+          benefits: Json
+          benefits_ru: Json
+          benefits_uz: Json
           brand_id: string
           cover_image: string | null
           created_at: string
+          description: Json
           description_ru: string | null
           description_uz: string | null
           gallery: Json
@@ -309,11 +420,14 @@ export type Database = {
           icon: string | null
           id: string
           is_active: boolean
+          meta_description: Json
           meta_description_ru: string | null
           meta_description_uz: string | null
           meta_keywords: string | null
+          meta_title: Json
           meta_title_ru: string | null
           meta_title_uz: string | null
+          name: Json
           name_ru: string
           name_uz: string
           slug: string
@@ -322,9 +436,13 @@ export type Database = {
         }
         Insert: {
           banner?: string | null
+          benefits?: Json
+          benefits_ru?: Json
+          benefits_uz?: Json
           brand_id: string
           cover_image?: string | null
           created_at?: string
+          description?: Json
           description_ru?: string | null
           description_uz?: string | null
           gallery?: Json
@@ -332,11 +450,14 @@ export type Database = {
           icon?: string | null
           id?: string
           is_active?: boolean
+          meta_description?: Json
           meta_description_ru?: string | null
           meta_description_uz?: string | null
           meta_keywords?: string | null
+          meta_title?: Json
           meta_title_ru?: string | null
           meta_title_uz?: string | null
+          name?: Json
           name_ru: string
           name_uz: string
           slug: string
@@ -345,9 +466,13 @@ export type Database = {
         }
         Update: {
           banner?: string | null
+          benefits?: Json
+          benefits_ru?: Json
+          benefits_uz?: Json
           brand_id?: string
           cover_image?: string | null
           created_at?: string
+          description?: Json
           description_ru?: string | null
           description_uz?: string | null
           gallery?: Json
@@ -355,11 +480,14 @@ export type Database = {
           icon?: string | null
           id?: string
           is_active?: boolean
+          meta_description?: Json
           meta_description_ru?: string | null
           meta_description_uz?: string | null
           meta_keywords?: string | null
+          meta_title?: Json
           meta_title_ru?: string | null
           meta_title_uz?: string | null
+          name?: Json
           name_ru?: string
           name_uz?: string
           slug?: string
@@ -387,11 +515,14 @@ export type Database = {
           is_active: boolean | null
           is_followed: boolean | null
           is_indexed: boolean | null
+          meta_description: Json
           meta_description_ru: string | null
           meta_description_uz: string | null
           meta_keywords: string | null
+          meta_title: Json
           meta_title_ru: string | null
           meta_title_uz: string | null
+          name: Json
           name_ru: string
           name_uz: string
           slug: string
@@ -408,11 +539,14 @@ export type Database = {
           is_active?: boolean | null
           is_followed?: boolean | null
           is_indexed?: boolean | null
+          meta_description?: Json
           meta_description_ru?: string | null
           meta_description_uz?: string | null
           meta_keywords?: string | null
+          meta_title?: Json
           meta_title_ru?: string | null
           meta_title_uz?: string | null
+          name?: Json
           name_ru: string
           name_uz: string
           slug: string
@@ -429,11 +563,14 @@ export type Database = {
           is_active?: boolean | null
           is_followed?: boolean | null
           is_indexed?: boolean | null
+          meta_description?: Json
           meta_description_ru?: string | null
           meta_description_uz?: string | null
           meta_keywords?: string | null
+          meta_title?: Json
           meta_title_ru?: string | null
           meta_title_uz?: string | null
+          name?: Json
           name_ru?: string
           name_uz?: string
           slug?: string
@@ -590,6 +727,78 @@ export type Database = {
           notes?: string | null
           phone?: string
           updated_at?: string
+        }
+        Relationships: []
+      }
+      languages: {
+        Row: {
+          code: string
+          created_at: string
+          id: string
+          is_active: boolean
+          is_default: boolean
+          name: string
+          sort_order: number
+          updated_at: string
+        }
+        Insert: {
+          code: string
+          created_at?: string
+          id?: string
+          is_active?: boolean
+          is_default?: boolean
+          name: string
+          sort_order?: number
+          updated_at?: string
+        }
+        Update: {
+          code?: string
+          created_at?: string
+          id?: string
+          is_active?: boolean
+          is_default?: boolean
+          name?: string
+          sort_order?: number
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      official_links: {
+        Row: {
+          created_at: string
+          id: string
+          is_active: boolean
+          logo: string
+          name: Json
+          name_ru: string
+          name_uz: string
+          sort_order: number
+          updated_at: string
+          url: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          is_active?: boolean
+          logo: string
+          name?: Json
+          name_ru: string
+          name_uz: string
+          sort_order?: number
+          updated_at?: string
+          url: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          is_active?: boolean
+          logo?: string
+          name?: Json
+          name_ru?: string
+          name_uz?: string
+          sort_order?: number
+          updated_at?: string
+          url?: string
         }
         Relationships: []
       }
@@ -775,8 +984,10 @@ export type Database = {
           category_id: string | null
           colors: string[] | null
           created_at: string
+          description: Json
           description_ru: string | null
           description_uz: string | null
+          full_description: Json
           full_description_ru: string | null
           full_description_uz: string | null
           fur_length: string[] | null
@@ -788,15 +999,19 @@ export type Database = {
           is_followed: boolean | null
           is_indexed: boolean | null
           is_negotiable: boolean | null
+          keyword: Json
           keyword_ru: string | null
           keyword_uz: string | null
           keyword_variations: string[] | null
           materials: string[] | null
+          meta_description: Json
           meta_description_ru: string | null
           meta_description_uz: string | null
           meta_keywords: string | null
+          meta_title: Json
           meta_title_ru: string | null
           meta_title_uz: string | null
+          name: Json
           name_ru: string
           name_uz: string
           original_price: number | null
@@ -806,6 +1021,7 @@ export type Database = {
           sort_order: number | null
           target_keyword: string | null
           updated_at: string
+          variants: Json
           variants_ru: string[] | null
           variants_uz: string[] | null
         }
@@ -815,8 +1031,10 @@ export type Database = {
           category_id?: string | null
           colors?: string[] | null
           created_at?: string
+          description?: Json
           description_ru?: string | null
           description_uz?: string | null
+          full_description?: Json
           full_description_ru?: string | null
           full_description_uz?: string | null
           fur_length?: string[] | null
@@ -828,15 +1046,19 @@ export type Database = {
           is_followed?: boolean | null
           is_indexed?: boolean | null
           is_negotiable?: boolean | null
+          keyword?: Json
           keyword_ru?: string | null
           keyword_uz?: string | null
           keyword_variations?: string[] | null
           materials?: string[] | null
+          meta_description?: Json
           meta_description_ru?: string | null
           meta_description_uz?: string | null
           meta_keywords?: string | null
+          meta_title?: Json
           meta_title_ru?: string | null
           meta_title_uz?: string | null
+          name?: Json
           name_ru: string
           name_uz: string
           original_price?: number | null
@@ -846,6 +1068,7 @@ export type Database = {
           sort_order?: number | null
           target_keyword?: string | null
           updated_at?: string
+          variants?: Json
           variants_ru?: string[] | null
           variants_uz?: string[] | null
         }
@@ -855,8 +1078,10 @@ export type Database = {
           category_id?: string | null
           colors?: string[] | null
           created_at?: string
+          description?: Json
           description_ru?: string | null
           description_uz?: string | null
+          full_description?: Json
           full_description_ru?: string | null
           full_description_uz?: string | null
           fur_length?: string[] | null
@@ -868,15 +1093,19 @@ export type Database = {
           is_followed?: boolean | null
           is_indexed?: boolean | null
           is_negotiable?: boolean | null
+          keyword?: Json
           keyword_ru?: string | null
           keyword_uz?: string | null
           keyword_variations?: string[] | null
           materials?: string[] | null
+          meta_description?: Json
           meta_description_ru?: string | null
           meta_description_uz?: string | null
           meta_keywords?: string | null
+          meta_title?: Json
           meta_title_ru?: string | null
           meta_title_uz?: string | null
+          name?: Json
           name_ru?: string
           name_uz?: string
           original_price?: number | null
@@ -886,6 +1115,7 @@ export type Database = {
           sort_order?: number | null
           target_keyword?: string | null
           updated_at?: string
+          variants?: Json
           variants_ru?: string[] | null
           variants_uz?: string[] | null
         }
@@ -1063,6 +1293,7 @@ export type Database = {
         Row: {
           address_ru: string | null
           address_uz: string | null
+          chat_enabled: boolean
           clarity_enabled: boolean
           clarity_project_id: string | null
           contact_phone: string | null
@@ -1094,6 +1325,7 @@ export type Database = {
         Insert: {
           address_ru?: string | null
           address_uz?: string | null
+          chat_enabled?: boolean
           clarity_enabled?: boolean
           clarity_project_id?: string | null
           contact_phone?: string | null
@@ -1125,6 +1357,7 @@ export type Database = {
         Update: {
           address_ru?: string | null
           address_uz?: string | null
+          chat_enabled?: boolean
           clarity_enabled?: boolean
           clarity_project_id?: string | null
           contact_phone?: string | null
