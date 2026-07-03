@@ -24,6 +24,7 @@ export interface SystemSettings {
   social_telegram: string | null;
   facebook_pixel_id: string | null;
   facebook_domain_verification: string | null;
+  chat_enabled: boolean;
 }
 
 interface SystemSettingsContextType {
@@ -66,6 +67,7 @@ const defaultSettings: SystemSettings = {
   social_telegram: null,
   facebook_pixel_id: null,
   facebook_domain_verification: null,
+  chat_enabled: false,
 };
 
 type CachedSiteAssets = {
