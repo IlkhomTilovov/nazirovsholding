@@ -34,11 +34,11 @@ export function useCaseStudies(brandId?: string | null, activeOnly = false) {
       return;
     }
     setLoading(true);
-    let q = supabase.from('brand_case_studies').select('*').eq('brand_id', brandId).order('sort_order', { ascending: true });
+    let q = supabase.from('brand_case_studies' as any).select('*').eq('brand_id', brandId).order('sort_order', { ascending: true });
     if (activeOnly) q = q.eq('is_active', true);
     const { data, error } = await q;
     if (error) console.error('Failed to load case studies:', error.message);
-    setCaseStudies((data || []) as CaseStudy[]);
+    setCaseStudies((data || []) as unknown as CaseStudy[]);
     setLoading(false);
   }, [brandId, activeOnly]);
 

@@ -2,6 +2,8 @@ import { Link } from 'react-router-dom';
 import { ShoppingBag, Check } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useLanguage } from '@/hooks/useLanguage';
+import { useLanguages } from '@/hooks/useLanguages';
+import { getTranslated } from '@/lib/i18n';
 import { useCart } from '@/hooks/useCart';
 import { LazyImage } from '@/components/LazyImage';
 import type { Product } from '@/hooks/useProducts';
@@ -24,10 +26,14 @@ interface ProductCardProps {
 
 export function ProductCard({ product }: ProductCardProps) {
   const { language, t } = useLanguage();
+  const { defaultLanguage } = useLanguages();
   const { addItem, isInCart } = useCart();
   const inCart = isInCart(product.id);
 
-  const name = language === 'uz' ? product.name_uz : product.name_ru;
+  const isStaticProduct = 'name_uz' in product;
+  const name = isStaticProduct
+    ? (language === 'uz' ? product.name_uz : product.name_ru)
+    : getTranslated(product.name, language, defaultLanguage);
   const formatPrice = (price: number) => price.toLocaleString('uz-UZ');
   
   // Handle both database and static data formats
@@ -85,8 +91,8 @@ export function ProductCard({ product }: ProductCardProps) {
                 // Create a cart-compatible product object
                 const cartProduct = {
                   id: product.id,
-                  name_uz: product.name_uz,
-                  name_ru: product.name_ru,
+                  name_uz: isStaticProduct ? product.name_uz : getTranslated(product.name, 'uz', defaultLanguage),
+                  name_ru: isStaticProduct ? product.name_ru : getTranslated(product.name, 'ru', defaultLanguage),
                   price,
                   images,
                 };

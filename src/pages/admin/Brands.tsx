@@ -22,6 +22,8 @@ import { useToast } from '@/hooks/use-toast';
 import { useLanguages } from '@/hooks/useLanguages';
 import { TranslatedInput } from '@/components/admin/translated/TranslatedInput';
 import { TranslatedTextarea } from '@/components/admin/translated/TranslatedTextarea';
+import { LanguageTabsProvider } from '@/components/admin/translated/LanguageTabsProvider';
+import { LanguageTabBar } from '@/components/admin/translated/LanguageTabBar';
 
 interface Brand {
   id: string;
@@ -233,7 +235,7 @@ export default function Brands() {
         if (error) throw error;
         toast({ title: 'Muvaffaqiyat', description: 'Brend yangilandi' });
       } else {
-        const { error } = await supabase.from('brands').insert([payload]);
+        const { error } = await supabase.from('brands').insert([payload] as any);
         if (error) throw error;
         toast({ title: 'Muvaffaqiyat', description: 'Brend yaratildi' });
       }
@@ -395,6 +397,8 @@ export default function Brands() {
             <DialogTitle>{selected ? 'Brendni tahrirlash' : 'Yangi brend'}</DialogTitle>
           </DialogHeader>
 
+          <LanguageTabsProvider languages={languages} defaultLanguage={defaultLanguage}>
+          <LanguageTabBar />
           <Tabs value={activeTab} onValueChange={setActiveTab}>
             <TabsList className="grid w-full grid-cols-2">
               <TabsTrigger value="general">Asosiy</TabsTrigger>
@@ -405,7 +409,6 @@ export default function Brands() {
               <TranslatedInput
                 label="Nomi"
                 required
-                languages={languages}
                 value={formData.name}
                 onChange={handleNameChange}
                 placeholder={{ uz: "O'zbek tilida", ru: 'На русском' }}
@@ -461,7 +464,6 @@ export default function Brands() {
 
               <TranslatedTextarea
                 label="Tavsif"
-                languages={languages}
                 value={formData.description}
                 onChange={(description) => setFormData({ ...formData, description })}
               />
@@ -486,7 +488,6 @@ export default function Brands() {
             <TabsContent value="seo" className="space-y-4 mt-4">
               <TranslatedInput
                 label="Meta Title"
-                languages={languages}
                 value={formData.meta_title}
                 onChange={(meta_title) => setFormData({ ...formData, meta_title })}
                 placeholder={formData.name}
@@ -494,7 +495,6 @@ export default function Brands() {
               <Separator />
               <TranslatedTextarea
                 label="Meta Description"
-                languages={languages}
                 value={formData.meta_description}
                 onChange={(meta_description) => setFormData({ ...formData, meta_description })}
               />
@@ -516,6 +516,7 @@ export default function Brands() {
               </div>
             </TabsContent>
           </Tabs>
+          </LanguageTabsProvider>
 
           <DialogFooter className="mt-6">
             <Button variant="outline" onClick={() => setDialogOpen(false)}>Bekor qilish</Button>

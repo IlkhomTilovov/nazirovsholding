@@ -181,7 +181,7 @@ export default function BrandDetails() {
                         : 'bg-transparent text-muted-foreground border-border hover:border-foreground'
                     }`}
                   >
-                    {isUz ? cat.name_uz : cat.name_ru}
+                    {getTranslated(cat.name, language, defaultLanguage)}
                   </button>
                 ))}
               </div>

@@ -46,9 +46,9 @@ export function LanguagesManager() {
     }
     setSaving(true);
     try {
-      const { error } = await supabase.from('languages').insert([
+      const { error } = await supabase.from('languages' as any).insert([
         { code, name, sort_order: allLanguages.length, is_active: true, is_default: false },
-      ]);
+      ] as any);
       if (error) throw error;
       toast({ title: "Til qo'shildi" });
       setDialogOpen(false);
@@ -65,7 +65,7 @@ export function LanguagesManager() {
       toast({ variant: 'destructive', title: 'Xatolik', description: "Standart tilni faolsizlantirib bo'lmaydi" });
       return;
     }
-    const { error } = await supabase.from('languages').update({ is_active: !lang.isActive }).eq('id', lang.id);
+    const { error } = await supabase.from('languages' as any).update({ is_active: !lang.isActive }).eq('id', lang.id);
     if (error) {
       toast({ variant: 'destructive', title: 'Xatolik', description: error.message });
       return;
@@ -76,9 +76,9 @@ export function LanguagesManager() {
   const setAsDefault = async (lang: LanguageDef) => {
     if (lang.isDefault) return;
     try {
-      const { error: clearError } = await supabase.from('languages').update({ is_default: false }).eq('is_default', true);
+      const { error: clearError } = await supabase.from('languages' as any).update({ is_default: false }).eq('is_default', true);
       if (clearError) throw clearError;
-      const { error: setError } = await supabase.from('languages').update({ is_default: true, is_active: true }).eq('id', lang.id);
+      const { error: setError } = await supabase.from('languages' as any).update({ is_default: true, is_active: true }).eq('id', lang.id);
       if (setError) throw setError;
       toast({ title: 'Standart til yangilandi' });
       refetch();
@@ -89,7 +89,7 @@ export function LanguagesManager() {
 
   const renameLanguage = async (lang: LanguageDef, name: string) => {
     if (!name.trim() || name === lang.name) return;
-    const { error } = await supabase.from('languages').update({ name: name.trim() }).eq('id', lang.id);
+    const { error } = await supabase.from('languages' as any).update({ name: name.trim() }).eq('id', lang.id);
     if (error) {
       toast({ variant: 'destructive', title: 'Xatolik', description: error.message });
       return;

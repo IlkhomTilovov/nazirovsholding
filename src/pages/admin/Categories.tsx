@@ -20,7 +20,6 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Switch } from '@/components/ui/switch';
-import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
@@ -38,11 +37,14 @@ import { getTranslated } from '@/lib/i18n';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { ChevronDown, Award } from 'lucide-react';
+import { TranslatedInput } from '@/components/admin/translated/TranslatedInput';
+import { TranslatedTextarea } from '@/components/admin/translated/TranslatedTextarea';
+import { LanguageTabsProvider } from '@/components/admin/translated/LanguageTabsProvider';
+import { LanguageTabBar } from '@/components/admin/translated/LanguageTabBar';
 
 interface Category {
   id: string;
-  name_uz: string;
-  name_ru: string;
+  name: Record<string, string>;
   slug: string;
   image: string | null;
   icon: string;
@@ -50,10 +52,8 @@ interface Category {
   is_active: boolean;
   created_at: string;
   updated_at: string;
-  meta_title_uz: string | null;
-  meta_title_ru: string | null;
-  meta_description_uz: string | null;
-  meta_description_ru: string | null;
+  meta_title: Record<string, string>;
+  meta_description: Record<string, string>;
   meta_keywords: string | null;
   is_indexed: boolean;
   is_followed: boolean;
@@ -63,17 +63,14 @@ interface Category {
 }
 
 interface FormData {
-  name_uz: string;
-  name_ru: string;
+  name: Record<string, string>;
   slug: string;
   image: string;
   icon: string;
   is_active: boolean;
   sort_order: number;
-  meta_title_uz: string;
-  meta_title_ru: string;
-  meta_description_uz: string;
-  meta_description_ru: string;
+  meta_title: Record<string, string>;
+  meta_description: Record<string, string>;
   meta_keywords: string;
   is_indexed: boolean;
   is_followed: boolean;
@@ -82,17 +79,14 @@ interface FormData {
 }
 
 const initialFormData: FormData = {
-  name_uz: '',
-  name_ru: '',
+  name: {},
   slug: '',
   image: '',
   icon: 'Package',
   is_active: true,
   sort_order: 0,
-  meta_title_uz: '',
-  meta_title_ru: '',
-  meta_description_uz: '',
-  meta_description_ru: '',
+  meta_title: {},
+  meta_description: {},
   meta_keywords: '',
   is_indexed: true,
   is_followed: true,
@@ -115,7 +109,7 @@ export default function Categories() {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const { toast } = useToast();
   const { language } = useLanguage();
-  const { defaultLanguage } = useLanguages();
+  const { languages, defaultLanguage } = useLanguages();
   const { brands } = useBrands(false);
   const primaryBrandId = formData.brand_ids[0] || null;
   const { divisions } = useDivisions(primaryBrandId, false);
@@ -180,7 +174,7 @@ export default function Categories() {
         .order('sort_order', { ascending: true });
 
       if (error) throw error;
-      setCategories(data || []);
+      setCategories((data || []) as unknown as Category[]);
 
       // Fetch product counts per category
       const { data: products, error: productsError } = await supabase
@@ -253,17 +247,14 @@ export default function Categories() {
   const openEditDialog = (category: Category) => {
     setSelectedCategory(category);
     setFormData({
-      name_uz: category.name_uz,
-      name_ru: category.name_ru,
+      name: category.name || {},
       slug: category.slug,
       image: category.image || '',
       icon: category.icon,
       is_active: category.is_active,
       sort_order: category.sort_order,
-      meta_title_uz: category.meta_title_uz || '',
-      meta_title_ru: category.meta_title_ru || '',
-      meta_description_uz: category.meta_description_uz || '',
-      meta_description_ru: category.meta_description_ru || '',
+      meta_title: category.meta_title || {},
+      meta_description: category.meta_description || {},
       meta_keywords: category.meta_keywords || '',
       is_indexed: category.is_indexed ?? true,
       is_followed: category.is_followed ?? true,
@@ -275,15 +266,14 @@ export default function Categories() {
     setDialogOpen(true);
   };
 
-  const handleNameChange = (value: string, field: 'name_uz' | 'name_ru') => {
-    const newFormData = { ...formData, [field]: value };
-    
-    // Auto-generate slug from UZ name if slug is empty or matches the previous auto-generated slug
-    if (field === 'name_uz' && (!formData.slug || formData.slug === generateSlug(formData.name_uz))) {
-      newFormData.slug = generateSlug(value);
-    }
-    
-    setFormData(newFormData);
+  const handleNameChange = (name: Record<string, string>) => {
+    const baseName = name[defaultLanguage] || '';
+    const prevBaseName = formData.name[defaultLanguage] || '';
+    setFormData((p) => ({
+      ...p,
+      name,
+      slug: !p.slug || p.slug === generateSlug(prevBaseName) ? generateSlug(baseName) : p.slug,
+    }));
   };
 
   const handleSlugChange = async (value: string) => {
@@ -299,12 +289,14 @@ export default function Categories() {
   };
 
   const handleSubmit = async () => {
-    if (!formData.name_uz || !formData.name_ru) {
-      toast({ variant: 'destructive', title: 'Xatolik', description: 'Barcha majburiy maydonlarni to\'ldiring' });
+    const hasAllNames = languages.every((lang) => formData.name[lang.code]?.trim());
+    if (!hasAllNames) {
+      toast({ variant: 'destructive', title: 'Xatolik', description: 'Barcha tillar uchun nomni to\'ldiring' });
       return;
     }
 
-    const slug = formData.slug || generateSlug(formData.name_uz);
+    const baseName = formData.name[defaultLanguage] || '';
+    const slug = formData.slug || generateSlug(baseName);
 
     // Check slug uniqueness
     const isUnique = await checkSlugUnique(slug, selectedCategory?.id);
@@ -315,17 +307,14 @@ export default function Categories() {
 
     try {
       const categoryData = {
-        name_uz: formData.name_uz.trim(),
-        name_ru: formData.name_ru.trim(),
+        name: formData.name,
         slug,
         image: formData.image || null,
         icon: formData.icon,
         is_active: formData.is_active,
         sort_order: formData.sort_order,
-        meta_title_uz: formData.meta_title_uz || null,
-        meta_title_ru: formData.meta_title_ru || null,
-        meta_description_uz: formData.meta_description_uz || null,
-        meta_description_ru: formData.meta_description_ru || null,
+        meta_title: formData.meta_title,
+        meta_description: formData.meta_description,
         meta_keywords: formData.meta_keywords || null,
         is_indexed: formData.is_indexed,
         is_followed: formData.is_followed,
@@ -344,7 +333,7 @@ export default function Categories() {
       } else {
         const { error } = await supabase
           .from('categories')
-          .insert([categoryData]);
+          .insert([categoryData] as any);
 
         if (error) throw error;
         toast({ title: 'Muvaffaqiyat', description: 'Toifa yaratildi' });
@@ -413,16 +402,15 @@ export default function Categories() {
     if (!searchQuery) return true;
     const query = searchQuery.toLowerCase();
     return (
-      cat.name_uz.toLowerCase().includes(query) ||
-      cat.name_ru.toLowerCase().includes(query) ||
+      Object.values(cat.name || {}).some((n) => n.toLowerCase().includes(query)) ||
       cat.slug.toLowerCase().includes(query)
     );
   });
 
   const getSeoStatus = (category: Category) => {
-    const hasTitle = category.meta_title_uz || category.meta_title_ru;
-    const hasDescription = category.meta_description_uz || category.meta_description_ru;
-    
+    const hasTitle = Object.values(category.meta_title || {}).some(Boolean);
+    const hasDescription = Object.values(category.meta_description || {}).some(Boolean);
+
     if (hasTitle && hasDescription) {
       return { status: 'complete', label: 'SEO tayyor' };
     } else if (hasTitle || hasDescription) {
@@ -504,7 +492,8 @@ export default function Categories() {
               {filteredCategories.map((category) => {
                 const seoStatus = getSeoStatus(category);
                 const productsCount = productCounts[category.id] || 0;
-                
+                const catName = getTranslated(category.name, defaultLanguage, defaultLanguage);
+
                 return (
                   <TableRow key={category.id}>
                     <TableCell>
@@ -512,9 +501,9 @@ export default function Categories() {
                     </TableCell>
                     <TableCell>
                       {category.image ? (
-                        <img 
-                          src={category.image} 
-                          alt={category.name_uz} 
+                        <img
+                          src={category.image}
+                          alt={catName}
                           className="h-12 w-12 object-cover rounded-lg border"
                         />
                       ) : (
@@ -525,8 +514,7 @@ export default function Categories() {
                     </TableCell>
                     <TableCell>
                       <div>
-                        <p className="font-medium">{category.name_uz}</p>
-                        <p className="text-sm text-muted-foreground">{category.name_ru}</p>
+                        <p className="font-medium">{catName}</p>
                       </div>
                     </TableCell>
                     <TableCell>
@@ -610,24 +598,16 @@ export default function Categories() {
 
             {/* General Tab */}
             <TabsContent value="general" className="space-y-4 mt-4">
-              <div className="grid grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <Label>Nomi (UZ) *</Label>
-                  <Input
-                    value={formData.name_uz}
-                    onChange={(e) => handleNameChange(e.target.value, 'name_uz')}
-                    placeholder="O'zbek tilida"
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label>Nomi (RU) *</Label>
-                  <Input
-                    value={formData.name_ru}
-                    onChange={(e) => handleNameChange(e.target.value, 'name_ru')}
-                    placeholder="На русском"
-                  />
-                </div>
-              </div>
+              <LanguageTabsProvider languages={languages} defaultLanguage={defaultLanguage}>
+                <LanguageTabBar />
+                <TranslatedInput
+                  label="Nomi"
+                  required
+                  value={formData.name}
+                  onChange={handleNameChange}
+                  placeholder={{ uz: "O'zbek tilida", ru: 'На русском' }}
+                />
+              </LanguageTabsProvider>
 
               <div className="space-y-2">
                 <Label>Slug (URL)</Label>
@@ -824,69 +804,22 @@ export default function Categories() {
 
               <Separator />
 
-              <div className="space-y-4">
-                <h3 className="font-medium">Meta Title</h3>
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="space-y-2">
-                    <Label>Meta Title (UZ)</Label>
-                    <Input
-                      value={formData.meta_title_uz}
-                      onChange={(e) => setFormData({ ...formData, meta_title_uz: e.target.value })}
-                      placeholder={formData.name_uz || 'Toifa nomi'}
-                      maxLength={60}
-                    />
-                    <p className="text-xs text-muted-foreground">
-                      {formData.meta_title_uz.length}/60 belgi
-                    </p>
-                  </div>
-                  <div className="space-y-2">
-                    <Label>Meta Title (RU)</Label>
-                    <Input
-                      value={formData.meta_title_ru}
-                      onChange={(e) => setFormData({ ...formData, meta_title_ru: e.target.value })}
-                      placeholder={formData.name_ru || 'Название категории'}
-                      maxLength={60}
-                    />
-                    <p className="text-xs text-muted-foreground">
-                      {formData.meta_title_ru.length}/60 belgi
-                    </p>
-                  </div>
+              <LanguageTabsProvider languages={languages} defaultLanguage={defaultLanguage}>
+                <LanguageTabBar />
+                <div className="space-y-4">
+                  <TranslatedInput
+                    label="Meta Title"
+                    value={formData.meta_title}
+                    onChange={(meta_title) => setFormData({ ...formData, meta_title })}
+                    placeholder={formData.name}
+                  />
+                  <TranslatedTextarea
+                    label="Meta Description"
+                    value={formData.meta_description}
+                    onChange={(meta_description) => setFormData({ ...formData, meta_description })}
+                  />
                 </div>
-              </div>
-
-              <Separator />
-
-              <div className="space-y-4">
-                <h3 className="font-medium">Meta Description</h3>
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="space-y-2">
-                    <Label>Meta Description (UZ)</Label>
-                    <Textarea
-                      value={formData.meta_description_uz}
-                      onChange={(e) => setFormData({ ...formData, meta_description_uz: e.target.value })}
-                      placeholder="Toifa tavsifi..."
-                      maxLength={160}
-                      rows={3}
-                    />
-                    <p className="text-xs text-muted-foreground">
-                      {formData.meta_description_uz.length}/160 belgi
-                    </p>
-                  </div>
-                  <div className="space-y-2">
-                    <Label>Meta Description (RU)</Label>
-                    <Textarea
-                      value={formData.meta_description_ru}
-                      onChange={(e) => setFormData({ ...formData, meta_description_ru: e.target.value })}
-                      placeholder="Описание категории..."
-                      maxLength={160}
-                      rows={3}
-                    />
-                    <p className="text-xs text-muted-foreground">
-                      {formData.meta_description_ru.length}/160 belgi
-                    </p>
-                  </div>
-                </div>
-              </div>
+              </LanguageTabsProvider>
 
               <Separator />
 
@@ -952,13 +885,13 @@ export default function Categories() {
             <AlertDialogDescription>
               {(productCounts[selectedCategory?.id || ''] || 0) > 0 ? (
                 <>
-                  <span className="text-amber-600 font-medium">Diqqat!</span> "{selectedCategory?.name_uz}" toifasida{' '}
-                  <strong>{productCounts[selectedCategory?.id || '']}</strong> ta mahsulot bor. 
+                  <span className="text-amber-600 font-medium">Diqqat!</span> "{selectedCategory ? getTranslated(selectedCategory.name, defaultLanguage, defaultLanguage) : ''}" toifasida{' '}
+                  <strong>{productCounts[selectedCategory?.id || '']}</strong> ta mahsulot bor.
                   Avval mahsulotlarni boshqa toifaga o'tkazing.
                 </>
               ) : (
                 <>
-                  Haqiqatan ham "{selectedCategory?.name_uz}" toifasini o'chirmoqchimisiz? 
+                  Haqiqatan ham "{selectedCategory ? getTranslated(selectedCategory.name, defaultLanguage, defaultLanguage) : ''}" toifasini o'chirmoqchimisiz?
                   Bu amalni qaytarib bo'lmaydi.
                 </>
               )}

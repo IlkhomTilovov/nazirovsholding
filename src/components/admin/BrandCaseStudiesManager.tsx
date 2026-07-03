@@ -15,6 +15,8 @@ import { useToast } from '@/hooks/use-toast';
 import { useLanguages } from '@/hooks/useLanguages';
 import { useCaseStudies, countryFlagEmoji, type CaseStudy } from '@/hooks/useCaseStudies';
 import { TranslatedInput } from '@/components/admin/translated/TranslatedInput';
+import { LanguageTabsProvider } from '@/components/admin/translated/LanguageTabsProvider';
+import { LanguageTabBar } from '@/components/admin/translated/LanguageTabBar';
 
 interface Props {
   brandId: string;
@@ -110,11 +112,11 @@ export function BrandCaseStudiesManager({ brandId }: Props) {
         sort_order: form.sort_order,
       };
       if (selected) {
-        const { error } = await supabase.from('brand_case_studies').update(payload).eq('id', selected.id);
+        const { error } = await supabase.from('brand_case_studies' as any).update(payload as any).eq('id', selected.id);
         if (error) throw error;
         toast({ title: 'Yangilandi' });
       } else {
-        const { error } = await supabase.from('brand_case_studies').insert([payload]);
+        const { error } = await supabase.from('brand_case_studies' as any).insert([payload] as any);
         if (error) throw error;
         toast({ title: 'Yaratildi' });
       }
@@ -130,7 +132,7 @@ export function BrandCaseStudiesManager({ brandId }: Props) {
   const handleDelete = async () => {
     if (!selected) return;
     try {
-      const { error } = await supabase.from('brand_case_studies').delete().eq('id', selected.id);
+      const { error } = await supabase.from('brand_case_studies' as any).delete().eq('id', selected.id);
       if (error) throw error;
       toast({ title: "O'chirildi" });
       setConfirmDelete(false);
@@ -141,7 +143,7 @@ export function BrandCaseStudiesManager({ brandId }: Props) {
   };
 
   const toggleActive = async (c: CaseStudy) => {
-    await supabase.from('brand_case_studies').update({ is_active: !c.is_active }).eq('id', c.id);
+    await supabase.from('brand_case_studies' as any).update({ is_active: !c.is_active }).eq('id', c.id);
     refetch();
   };
 
@@ -242,38 +244,39 @@ export function BrandCaseStudiesManager({ brandId }: Props) {
                 onChange={(e) => setForm((p) => ({ ...p, country_code: e.target.value.toUpperCase() }))} />
             </div>
 
-            <TranslatedInput
-              label="Davlat nomi"
-              languages={languages}
-              value={form.country_name}
-              onChange={(country_name) => setForm((p) => ({ ...p, country_name }))}
-              placeholder={{ uz: 'Germaniya', ru: 'Германия' }}
-            />
+            <LanguageTabsProvider languages={languages} defaultLanguage={defaultLanguage}>
+              <LanguageTabBar />
+              <div className="space-y-4">
+                <TranslatedInput
+                  label="Davlat nomi"
+                  value={form.country_name}
+                  onChange={(country_name) => setForm((p) => ({ ...p, country_name }))}
+                  placeholder={{ uz: 'Germaniya', ru: 'Германия' }}
+                />
 
-            <TranslatedInput
-              label="Kategoriya"
-              languages={languages}
-              value={form.category}
-              onChange={(category) => setForm((p) => ({ ...p, category }))}
-              placeholder={{ uz: 'Tekstil ishlab chiqarish', ru: 'Текстильное производство' }}
-            />
+                <TranslatedInput
+                  label="Kategoriya"
+                  value={form.category}
+                  onChange={(category) => setForm((p) => ({ ...p, category }))}
+                  placeholder={{ uz: 'Tekstil ishlab chiqarish', ru: 'Текстильное производство' }}
+                />
 
-            <TranslatedInput
-              label="Sarlavha"
-              required
-              languages={languages}
-              value={form.title}
-              onChange={(title) => setForm((p) => ({ ...p, title }))}
-              placeholder={{ uz: 'Germaniyaga tekstil eksporti', ru: 'Экспорт текстиля в Германию' }}
-            />
+                <TranslatedInput
+                  label="Sarlavha"
+                  required
+                  value={form.title}
+                  onChange={(title) => setForm((p) => ({ ...p, title }))}
+                  placeholder={{ uz: 'Germaniyaga tekstil eksporti', ru: 'Экспорт текстиля в Германию' }}
+                />
 
-            <TranslatedInput
-              label="Natija"
-              languages={languages}
-              value={form.result}
-              onChange={(result) => setForm((p) => ({ ...p, result }))}
-              placeholder={{ uz: '120 konteyner yetkazildi', ru: 'Доставлено 120 контейнеров' }}
-            />
+                <TranslatedInput
+                  label="Natija"
+                  value={form.result}
+                  onChange={(result) => setForm((p) => ({ ...p, result }))}
+                  placeholder={{ uz: '120 konteyner yetkazildi', ru: 'Доставлено 120 контейнеров' }}
+                />
+              </div>
+            </LanguageTabsProvider>
 
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">

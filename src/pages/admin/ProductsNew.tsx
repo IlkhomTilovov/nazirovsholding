@@ -607,7 +607,7 @@ export default function ProductsNew() {
       // Save dynamic attribute values and clear incompatible values from previous categories.
       if (savedId) {
         try {
-          console.log('[attrs:save]', { loadedAttrs: loadedAttrs.map(a => ({id:a.id, name:a.name_uz, type:a.field_type})), attrValues });
+          console.log('[attrs:save]', { loadedAttrs: loadedAttrs.map(a => ({id:a.id, name:a.name?.[defaultLanguage], type:a.field_type})), attrValues });
           await saveProductAttributeValues(savedId, loadedAttrs, attrValues);
         } catch (err: any) {
           console.error('Attribute save error:', err);

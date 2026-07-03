@@ -18,6 +18,8 @@ import { useDivisions, type BusinessDivision } from '@/hooks/useDivisions';
 import { TranslatedInput } from '@/components/admin/translated/TranslatedInput';
 import { TranslatedTextarea } from '@/components/admin/translated/TranslatedTextarea';
 import { TranslatedListField } from '@/components/admin/translated/TranslatedListField';
+import { LanguageTabsProvider } from '@/components/admin/translated/LanguageTabsProvider';
+import { LanguageTabBar } from '@/components/admin/translated/LanguageTabBar';
 
 interface Props {
   brandId: string;
@@ -145,7 +147,7 @@ export function BrandDivisionsManager({ brandId }: Props) {
         if (error) throw error;
         toast({ title: 'Yangilandi', description: 'Bo\'lim yangilandi' });
       } else {
-        const { error } = await supabase.from('business_divisions').insert([payload]);
+        const { error } = await supabase.from('business_divisions').insert([payload] as any);
         if (error) throw error;
         toast({ title: 'Yaratildi', description: 'Yangi bo\'lim qo\'shildi' });
       }
@@ -277,6 +279,8 @@ export function BrandDivisionsManager({ brandId }: Props) {
           <DialogHeader>
             <DialogTitle>{selected ? 'Bo\'limni tahrirlash' : 'Yangi bo\'lim'}</DialogTitle>
           </DialogHeader>
+          <LanguageTabsProvider languages={languages} defaultLanguage={defaultLanguage}>
+          <LanguageTabBar />
           <Tabs value={tab} onValueChange={setTab}>
             <TabsList className="grid w-full grid-cols-3">
               <TabsTrigger value="general">Asosiy</TabsTrigger>
@@ -288,7 +292,6 @@ export function BrandDivisionsManager({ brandId }: Props) {
               <TranslatedInput
                 label="Nomi"
                 required
-                languages={languages}
                 value={form.name}
                 onChange={(name) => {
                   const baseName = name[defaultLanguage] || '';
@@ -306,14 +309,12 @@ export function BrandDivisionsManager({ brandId }: Props) {
               </div>
               <TranslatedTextarea
                 label="Qisqa tavsif"
-                languages={languages}
                 value={form.description}
                 onChange={(description) => setForm((p) => ({ ...p, description }))}
               />
               <TranslatedListField
                 label="Nima olasiz"
                 hint="har bir qator alohida band"
-                languages={languages}
                 value={form.benefits}
                 onChange={(benefits) => setForm((p) => ({ ...p, benefits }))}
                 placeholder={{ uz: 'Tez va aniq diagnostika\nTajribali mutaxassislar bilan konsultatsiya', ru: 'Быстрая и точная диагностика\nКонсультация опытных специалистов' }}
@@ -337,13 +338,11 @@ export function BrandDivisionsManager({ brandId }: Props) {
             <TabsContent value="seo" className="space-y-4 mt-4">
               <TranslatedInput
                 label="Meta Title"
-                languages={languages}
                 value={form.meta_title}
                 onChange={(meta_title) => setForm((p) => ({ ...p, meta_title }))}
               />
               <TranslatedTextarea
                 label="Meta Description"
-                languages={languages}
                 value={form.meta_description}
                 onChange={(meta_description) => setForm((p) => ({ ...p, meta_description }))}
               />
@@ -358,6 +357,7 @@ export function BrandDivisionsManager({ brandId }: Props) {
               </div>
             </TabsContent>
           </Tabs>
+          </LanguageTabsProvider>
 
           <DialogFooter>
             <Button variant="outline" onClick={() => setDialog(false)}>Bekor qilish</Button>

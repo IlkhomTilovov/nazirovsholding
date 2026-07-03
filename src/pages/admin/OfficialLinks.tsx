@@ -16,6 +16,8 @@ import { useToast } from '@/hooks/use-toast';
 import { useLanguages } from '@/hooks/useLanguages';
 import { useOfficialLinks, type OfficialLink } from '@/hooks/useOfficialLinks';
 import { TranslatedInput } from '@/components/admin/translated/TranslatedInput';
+import { LanguageTabsProvider } from '@/components/admin/translated/LanguageTabsProvider';
+import { LanguageTabBar } from '@/components/admin/translated/LanguageTabBar';
 
 interface FormData {
   name: Record<string, string>;
@@ -95,11 +97,11 @@ export default function OfficialLinks() {
     };
     try {
       if (selected) {
-        const { error } = await supabase.from('official_links').update(payload).eq('id', selected.id);
+        const { error } = await supabase.from('official_links' as any).update(payload as any).eq('id', selected.id);
         if (error) throw error;
         toast({ title: 'Yangilandi' });
       } else {
-        const { error } = await supabase.from('official_links').insert([payload]);
+        const { error } = await supabase.from('official_links' as any).insert([payload] as any);
         if (error) throw error;
         toast({ title: "Qo'shildi" });
       }
@@ -113,7 +115,7 @@ export default function OfficialLinks() {
   const handleDelete = async () => {
     if (!selected) return;
     try {
-      const { error } = await supabase.from('official_links').delete().eq('id', selected.id);
+      const { error } = await supabase.from('official_links' as any).delete().eq('id', selected.id);
       if (error) throw error;
       toast({ title: "O'chirildi" });
       setDeleteOpen(false);
@@ -124,7 +126,7 @@ export default function OfficialLinks() {
   };
 
   const toggleActive = async (l: OfficialLink) => {
-    await supabase.from('official_links').update({ is_active: !l.is_active }).eq('id', l.id);
+    await supabase.from('official_links' as any).update({ is_active: !l.is_active }).eq('id', l.id);
     refetch();
   };
 
@@ -233,14 +235,16 @@ export default function OfficialLinks() {
           </DialogHeader>
 
           <div className="space-y-4">
-            <TranslatedInput
-              label="Nomi"
-              required
-              languages={languages}
-              value={form.name}
-              onChange={(name) => setForm({ ...form, name })}
-              placeholder={{ uz: 'Prezident veb-sayti', ru: 'Сайт Президента' }}
-            />
+            <LanguageTabsProvider languages={languages} defaultLanguage={defaultLanguage}>
+              <LanguageTabBar />
+              <TranslatedInput
+                label="Nomi"
+                required
+                value={form.name}
+                onChange={(name) => setForm({ ...form, name })}
+                placeholder={{ uz: 'Prezident veb-sayti', ru: 'Сайт Президента' }}
+              />
+            </LanguageTabsProvider>
 
             <div className="space-y-2">
               <Label>Logo *</Label>

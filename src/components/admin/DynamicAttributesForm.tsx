@@ -12,6 +12,8 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { Badge } from '@/components/ui/badge';
 import { useCategoryAttributes, type Attribute } from '@/hooks/useAttributes';
 import { useLanguage } from '@/hooks/useLanguage';
+import { useLanguages } from '@/hooks/useLanguages';
+import { getTranslated } from '@/lib/i18n';
 
 const EMPTY_FIELD = '__empty__';
 
@@ -75,6 +77,7 @@ const createDynamicSchema = (attrs: Attribute[]) => {
 export function DynamicAttributesForm({ categoryId, values, onChange, onAttributesLoaded, onLoadingChange }: Props) {
   const { groups, loading } = useCategoryAttributes(categoryId);
   const { language } = useLanguage();
+  const { defaultLanguage } = useLanguages();
 
   const allAttrs = useMemo<Attribute[]>(
     () => groups.flatMap((g) => g.attributes || []),
@@ -144,7 +147,7 @@ export function DynamicAttributesForm({ categoryId, values, onChange, onAttribut
       {groups.map((g) => (
         <div key={g.id} className="border rounded-xl p-4 bg-card">
           <h3 className="font-semibold text-base mb-4">
-            {language === 'uz' ? g.name_uz : g.name_ru}
+            {getTranslated(g.name, language, defaultLanguage)}
           </h3>
           {(g.attributes || []).length === 0 && (
             <div className="text-sm text-muted-foreground bg-muted/40 border border-dashed rounded-lg p-4 text-center">
@@ -152,14 +155,14 @@ export function DynamicAttributesForm({ categoryId, values, onChange, onAttribut
               <a href="/admin/attributes" className="text-primary underline font-medium">
                 Atributlar sahifasi
               </a>
-              dan "{language === 'uz' ? g.name_uz : g.name_ru}" guruhiga yangi atribut qo'shing
+              dan "{getTranslated(g.name, language, defaultLanguage)}" guruhiga yangi atribut qo'shing
               (masalan: Balandlik, Og'irlik, Material).
             </div>
           )}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {(g.attributes || []).map((a) => {
-              const label = language === 'uz' ? a.name_uz : a.name_ru;
-              const placeholder = (language === 'uz' ? a.placeholder_uz : a.placeholder_ru) || '';
+              const label = getTranslated(a.name, language, defaultLanguage);
+              const placeholder = getTranslated(a.placeholder, language, defaultLanguage);
               const error = form.formState.errors[a.id]?.message as string | undefined;
 
               return (
@@ -226,7 +229,7 @@ export function DynamicAttributesForm({ categoryId, values, onChange, onAttribut
                             )}
                             {(a.options || []).map((opt) => (
                               <SelectItem key={opt.id} value={opt.value}>
-                                {language === 'uz' ? opt.label_uz : opt.label_ru}
+                                {getTranslated(opt.label, language, defaultLanguage)}
                               </SelectItem>
                             ))}
                           </SelectContent>
@@ -264,7 +267,7 @@ export function DynamicAttributesForm({ categoryId, values, onChange, onAttribut
                                   }}
                                   className={checked ? 'border-primary-foreground' : ''}
                                 />
-                                {language === 'uz' ? opt.label_uz : opt.label_ru}
+                                {getTranslated(opt.label, language, defaultLanguage)}
                               </label>
                             );
                           })}

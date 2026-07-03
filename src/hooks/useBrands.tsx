@@ -33,7 +33,7 @@ export function useBrands(activeOnly = true) {
       if (activeOnly) query = query.eq('is_active', true);
       const { data, error: e } = await query;
       if (e) throw e;
-      setBrands((data || []) as Brand[]);
+      setBrands((data || []) as unknown as Brand[]);
     } catch (err) {
       console.error('Error fetching brands:', err);
       setError(err instanceof Error ? err : new Error('Failed'));
@@ -69,7 +69,7 @@ export function useBrand(slug: string | undefined) {
           .eq('is_active', true)
           .maybeSingle();
         if (e) throw e;
-        setBrand(data as Brand | null);
+        setBrand(data as unknown as Brand | null);
       } catch (err) {
         console.error('Error fetching brand:', err);
         setError(err instanceof Error ? err : new Error('Failed'));
@@ -100,7 +100,7 @@ export function useBrandById(id: string | null | undefined) {
           .select('*')
           .eq('id', id)
           .maybeSingle();
-        setBrand((data as Brand) || null);
+        setBrand((data as unknown as Brand) || null);
       } finally {
         setLoading(false);
       }
@@ -112,8 +112,7 @@ export function useBrandById(id: string | null | undefined) {
 
 export interface BrandCategory {
   id: string;
-  name_uz: string;
-  name_ru: string;
+  name: Record<string, string>;
   slug: string;
   division_id: string | null;
 }
@@ -156,7 +155,7 @@ export function useBrandProducts(brandId: string | null | undefined, limit = 48)
 
         const { data: cats } = await supabase
           .from('categories')
-          .select('id, name_uz, name_ru, slug, brand_ids, division_id, sort_order, is_active')
+          .select('id, name, slug, brand_ids, division_id, sort_order, is_active')
           .eq('is_active', true)
           .contains('brand_ids', [brandId])
           .order('sort_order', { ascending: true });
@@ -165,8 +164,7 @@ export function useBrandProducts(brandId: string | null | undefined, limit = 48)
         setCategories(
           catList.map((c) => ({
             id: c.id,
-            name_uz: c.name_uz,
-            name_ru: c.name_ru,
+            name: c.name,
             slug: c.slug,
             division_id: c.division_id ?? null,
           }))
@@ -191,7 +189,7 @@ export function useBrandProducts(brandId: string | null | undefined, limit = 48)
         }
 
         const { data } = await query;
-        setProducts((data || []) as Product[]);
+        setProducts((data || []) as unknown as Product[]);
       } finally {
         setLoading(false);
       }

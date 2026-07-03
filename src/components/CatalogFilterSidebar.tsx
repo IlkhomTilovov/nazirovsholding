@@ -173,7 +173,7 @@ export function CatalogFilterSidebar({ categories, onApply, initialFilters, dyna
             <SelectItem value="all">{isUz ? 'Barcha toifalar' : 'Все категории'}</SelectItem>
             {categories.map(cat => (
               <SelectItem key={cat.id} value={cat.id}>
-                {isUz ? cat.name_uz : cat.name_ru}
+                {getTranslated(cat.name, language, defaultLanguage)}
               </SelectItem>
             ))}
           </SelectContent>

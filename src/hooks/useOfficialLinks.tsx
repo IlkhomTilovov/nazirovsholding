@@ -18,11 +18,11 @@ export function useOfficialLinks(activeOnly = false) {
 
   const fetchLinks = useCallback(async () => {
     setLoading(true);
-    let q = supabase.from('official_links').select('*').order('sort_order', { ascending: true });
+    let q = supabase.from('official_links' as any).select('*').order('sort_order', { ascending: true });
     if (activeOnly) q = q.eq('is_active', true);
     const { data, error } = await q;
     if (error) console.error('Failed to load official links:', error.message);
-    setLinks((data || []) as OfficialLink[]);
+    setLinks((data || []) as unknown as OfficialLink[]);
     setLoading(false);
   }, [activeOnly]);
 

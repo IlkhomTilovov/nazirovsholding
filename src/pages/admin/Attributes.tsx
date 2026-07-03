@@ -19,7 +19,13 @@ import { Textarea } from '@/components/ui/textarea';
 import { Separator } from '@/components/ui/separator';
 import { useToast } from '@/hooks/use-toast';
 import { useLanguage } from '@/hooks/useLanguage';
+import { useLanguages } from '@/hooks/useLanguages';
+import { getTranslated } from '@/lib/i18n';
 import { useCategoryAttributes, type FieldType, type Attribute, type AttributeGroup, type AttributeOption } from '@/hooks/useAttributes';
+import { TranslatedInput } from '@/components/admin/translated/TranslatedInput';
+import { TranslatedTextarea } from '@/components/admin/translated/TranslatedTextarea';
+import { LanguageTabsProvider, useLanguageTabs } from '@/components/admin/translated/LanguageTabsProvider';
+import { LanguageTabBar } from '@/components/admin/translated/LanguageTabBar';
 
 const ICON_MAP: Record<string, any> = {
   Shield, Cpu, Battery, Wifi, Lock, Settings, Ruler, Wrench,
@@ -33,7 +39,7 @@ function GroupIcon({ name, className }: { name?: string | null; className?: stri
   return <Cmp className={className} />;
 }
 
-interface Category { id: string; name_uz: string; name_ru: string; }
+interface Category { id: string; name: Record<string, string>; }
 
 const fieldTypeLabels: Record<FieldType, string> = {
   text: 'Matn',
@@ -48,9 +54,22 @@ function slugify(s: string) {
   return s.toLowerCase().replace(/[^a-z0-9\s-]/g, '').replace(/\s+/g, '-').replace(/-+/g, '-').trim();
 }
 
+function OptionLabelInput({ label, onChange }: { label: Record<string, string>; onChange: (label: Record<string, string>) => void }) {
+  const { activeLang } = useLanguageTabs();
+  return (
+    <Input
+      className="col-span-4"
+      placeholder={`Label (${activeLang.toUpperCase()})`}
+      value={label[activeLang] || ''}
+      onChange={(e) => onChange({ ...label, [activeLang]: e.target.value })}
+    />
+  );
+}
+
 export default function Attributes() {
   const { toast } = useToast();
   const { language } = useLanguage();
+  const { languages, defaultLanguage } = useLanguages();
   const [categories, setCategories] = useState<Category[]>([]);
   const [categoryId, setCategoryId] = useState<string>('');
   const { groups, loading, refetch } = useCategoryAttributes(categoryId || null);
@@ -58,13 +77,11 @@ export default function Attributes() {
   const [groupDialog, setGroupDialog] = useState(false);
   const [editingGroup, setEditingGroup] = useState<AttributeGroup | null>(null);
   const [groupForm, setGroupForm] = useState({
-    name_uz: '',
-    name_ru: '',
+    name: {} as Record<string, string>,
     slug: '',
     slugTouched: false,
     icon: 'Layers',
-    description_uz: '',
-    description_ru: '',
+    description: {} as Record<string, string>,
     sort_order: 0,
     is_active: true,
     is_collapsible: true,
@@ -77,26 +94,26 @@ export default function Attributes() {
   const [editingAttr, setEditingAttr] = useState<Attribute | null>(null);
   const [attrGroupId, setAttrGroupId] = useState<string>('');
   const [attrForm, setAttrForm] = useState<any>({
-    name_uz: '', name_ru: '', field_type: 'text' as FieldType, unit: '',
-    placeholder_uz: '', placeholder_ru: '',
+    name: {} as Record<string, string>, field_type: 'text' as FieldType, unit: '',
+    placeholder: {} as Record<string, string>,
     is_required: false, is_filterable: false, show_in_card: false, sort_order: 0, is_active: true,
-    options: [] as { id?: string; label_uz: string; label_ru: string; value: string }[],
+    options: [] as { id?: string; label: Record<string, string>; value: string }[],
   });
 
   const [expanded, setExpanded] = useState<Set<string>>(new Set());
 
   useEffect(() => {
     (async () => {
-      const { data } = await supabase.from('categories').select('id, name_uz, name_ru').order('sort_order');
-      setCategories((data || []) as Category[]);
+      const { data } = await supabase.from('categories').select('id, name').order('sort_order');
+      setCategories((data || []) as unknown as Category[]);
     })();
   }, []);
 
   const openCreateGroup = () => {
     setEditingGroup(null);
     setGroupForm({
-      name_uz: '', name_ru: '', slug: '', slugTouched: false, icon: 'Layers',
-      description_uz: '', description_ru: '',
+      name: {}, slug: '', slugTouched: false, icon: 'Layers',
+      description: {},
       sort_order: groups.length, is_active: true,
       is_collapsible: true, seo_visible: true, json_ld_visible: true, filter_visible: true,
     });
@@ -105,14 +122,13 @@ export default function Attributes() {
 
   const openEditGroup = (g: AttributeGroup) => {
     setEditingGroup(g);
+    const baseName = g.name[defaultLanguage] || '';
     setGroupForm({
-      name_uz: g.name_uz,
-      name_ru: g.name_ru,
-      slug: g.slug || slugify(g.name_uz),
+      name: g.name || {},
+      slug: g.slug || slugify(baseName),
       slugTouched: true,
       icon: g.icon || 'Layers',
-      description_uz: g.description_uz || '',
-      description_ru: g.description_ru || '',
+      description: g.description || {},
       sort_order: g.sort_order,
       is_active: g.is_active,
       is_collapsible: g.is_collapsible ?? true,
@@ -125,14 +141,16 @@ export default function Attributes() {
 
   const saveGroup = async () => {
     if (!categoryId) return;
-    if (!groupForm.name_uz || !groupForm.name_ru) {
-      toast({ variant: 'destructive', title: 'Xatolik', description: 'Nom kiriting' });
+    const hasAllNames = languages.every((lang) => groupForm.name[lang.code]?.trim());
+    if (!hasAllNames) {
+      toast({ variant: 'destructive', title: 'Xatolik', description: "Barcha tillar uchun nomni to'ldiring" });
       return;
     }
     const { slugTouched, ...rest } = groupForm;
+    const baseName = groupForm.name[defaultLanguage] || '';
     const payload: any = {
       ...rest,
-      slug: (groupForm.slug || slugify(groupForm.name_uz)).trim(),
+      slug: (groupForm.slug || slugify(baseName)).trim(),
       category_id: categoryId,
     };
     try {
@@ -155,7 +173,7 @@ export default function Attributes() {
   };
 
   const deleteGroup = async (g: AttributeGroup) => {
-    if (!confirm(`"${g.name_uz}" guruhini o'chirish? Barcha atributlari ham o'chiriladi.`)) return;
+    if (!confirm(`"${getTranslated(g.name, defaultLanguage, defaultLanguage)}" guruhini o'chirish? Barcha atributlari ham o'chiriladi.`)) return;
     const { error } = await supabase.from('attribute_groups' as any).delete().eq('id', g.id);
     if (error) {
       toast({ variant: 'destructive', title: 'Xatolik', description: error.message });
@@ -168,8 +186,8 @@ export default function Attributes() {
     setEditingAttr(null);
     setAttrGroupId(groupId);
     setAttrForm({
-      name_uz: '', name_ru: '', field_type: 'text', unit: '',
-      placeholder_uz: '', placeholder_ru: '',
+      name: {}, field_type: 'text', unit: '',
+      placeholder: {},
       is_required: false, is_filterable: false, show_in_card: false, sort_order: 0, is_active: true,
       options: [],
     });
@@ -180,30 +198,29 @@ export default function Attributes() {
     setEditingAttr(a);
     setAttrGroupId(a.group_id);
     setAttrForm({
-      name_uz: a.name_uz, name_ru: a.name_ru, field_type: a.field_type, unit: a.unit || '',
-      placeholder_uz: a.placeholder_uz || '', placeholder_ru: a.placeholder_ru || '',
+      name: a.name, field_type: a.field_type, unit: a.unit || '',
+      placeholder: a.placeholder || {},
       is_required: a.is_required, is_filterable: a.is_filterable, show_in_card: a.show_in_card,
       sort_order: a.sort_order, is_active: a.is_active,
-      options: (a.options || []).map((o) => ({ id: o.id, label_uz: o.label_uz, label_ru: o.label_ru, value: o.value })),
+      options: (a.options || []).map((o) => ({ id: o.id, label: o.label || {}, value: o.value })),
     });
     setAttrDialog(true);
   };
 
   const saveAttr = async () => {
-    if (!attrGroupId || !attrForm.name_uz || !attrForm.name_ru) {
+    const hasAllNames = languages.every((lang) => attrForm.name[lang.code]?.trim());
+    if (!attrGroupId || !hasAllNames) {
       toast({ variant: 'destructive', title: 'Xatolik', description: 'Maydonlarni to\'ldiring' });
       return;
     }
-    const slug = slugify(attrForm.name_uz);
+    const slug = slugify(attrForm.name[defaultLanguage] || '');
     const payload: any = {
       group_id: attrGroupId,
-      name_uz: attrForm.name_uz,
-      name_ru: attrForm.name_ru,
+      name: attrForm.name,
       slug,
       field_type: attrForm.field_type,
       unit: attrForm.unit || null,
-      placeholder_uz: attrForm.placeholder_uz || null,
-      placeholder_ru: attrForm.placeholder_ru || null,
+      placeholder: attrForm.placeholder,
       is_required: attrForm.is_required,
       is_filterable: attrForm.is_filterable,
       show_in_card: attrForm.show_in_card,
@@ -226,11 +243,10 @@ export default function Attributes() {
         const { error: deleteOptionsError } = await supabase.from('attribute_options' as any).delete().eq('attribute_id', attrId);
         if (deleteOptionsError) throw deleteOptionsError;
         const opts = (attrForm.options || [])
-          .filter((o: any) => o.label_uz && o.value)
+          .filter((o: any) => o.label[defaultLanguage] && o.value)
           .map((o: any, i: number) => ({
             attribute_id: attrId,
-            label_uz: o.label_uz,
-            label_ru: o.label_ru || o.label_uz,
+            label: o.label,
             value: o.value,
             sort_order: i,
           }));
@@ -250,7 +266,7 @@ export default function Attributes() {
   };
 
   const deleteAttr = async (a: Attribute) => {
-    if (!confirm(`"${a.name_uz}" atributini o'chirish?`)) return;
+    if (!confirm(`"${getTranslated(a.name, defaultLanguage, defaultLanguage)}" atributini o'chirish?`)) return;
     const { error } = await supabase.from('attributes' as any).delete().eq('id', a.id);
     if (error) {
       toast({ variant: 'destructive', title: 'Xatolik', description: error.message });
@@ -288,7 +304,7 @@ export default function Attributes() {
                 <SelectContent>
                   {categories.map((c) => (
                     <SelectItem key={c.id} value={c.id}>
-                      {language === 'uz' ? c.name_uz : c.name_ru}
+                      {getTranslated(c.name, language, defaultLanguage)}
                     </SelectItem>
                   ))}
                 </SelectContent>
@@ -329,13 +345,13 @@ export default function Attributes() {
                   </div>
                   <div className="min-w-0">
                     <div className="flex items-center gap-2 flex-wrap">
-                      <CardTitle className="text-base">{g.name_uz}</CardTitle>
+                      <CardTitle className="text-base">{getTranslated(g.name, defaultLanguage, defaultLanguage)}</CardTitle>
                       <Badge variant="outline">{(g.attributes || []).length} atribut</Badge>
                       {!g.is_active && <Badge variant="secondary">Nofaol</Badge>}
                       {g.is_collapsible === false && <Badge variant="outline" className="text-xs">Doimo ochiq</Badge>}
                     </div>
-                    {g.description_uz && (
-                      <p className="text-xs text-muted-foreground mt-0.5 truncate">{g.description_uz}</p>
+                    {getTranslated(g.description, defaultLanguage, defaultLanguage) && (
+                      <p className="text-xs text-muted-foreground mt-0.5 truncate">{getTranslated(g.description, defaultLanguage, defaultLanguage)}</p>
                     )}
                   </div>
                 </button>
@@ -357,7 +373,7 @@ export default function Attributes() {
                   {(g.attributes || []).map((a) => (
                     <div key={a.id} className="flex items-center justify-between p-3 border rounded-lg hover:bg-muted/30">
                       <div className="flex items-center gap-3 flex-1 min-w-0">
-                        <span className="font-medium shrink-0">{a.name_uz}</span>
+                        <span className="font-medium shrink-0">{getTranslated(a.name, defaultLanguage, defaultLanguage)}</span>
                         <Badge variant="outline" className="text-xs shrink-0">{fieldTypeLabels[a.field_type]}</Badge>
                         {a.unit && <span className="text-xs text-muted-foreground shrink-0">({a.unit})</span>}
                         {a.is_required && <Badge variant="destructive" className="text-xs shrink-0">Majburiy</Badge>}
@@ -365,9 +381,9 @@ export default function Attributes() {
                         {(a.options?.length || 0) > 0 && (
                           <span className="text-xs text-muted-foreground shrink-0">{a.options!.length} variant</span>
                         )}
-                        {a.placeholder_uz && (
-                          <span className="text-xs text-muted-foreground italic truncate" title={`Placeholder: ${a.placeholder_uz}`}>
-                            "{a.placeholder_uz}"
+                        {getTranslated(a.placeholder, defaultLanguage, defaultLanguage) && (
+                          <span className="text-xs text-muted-foreground italic truncate" title={`Placeholder: ${getTranslated(a.placeholder, defaultLanguage, defaultLanguage)}`}>
+                            "{getTranslated(a.placeholder, defaultLanguage, defaultLanguage)}"
                           </span>
                         )}
                       </div>
@@ -401,31 +417,23 @@ export default function Attributes() {
             {/* Section: Basic info */}
             <section className="space-y-3">
               <h3 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Asosiy</h3>
-              <div className="grid grid-cols-2 gap-3">
-                <div className="space-y-2">
-                  <Label>Nomi (UZ) *</Label>
-                  <Input
-                    placeholder="masalan: Xavfsizlik"
-                    value={groupForm.name_uz}
-                    onChange={(e) => {
-                      const v = e.target.value;
-                      setGroupForm((f) => ({
-                        ...f,
-                        name_uz: v,
-                        slug: f.slugTouched ? f.slug : slugify(v),
-                      }));
-                    }}
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label>Nomi (RU) *</Label>
-                  <Input
-                    placeholder="например: Безопасность"
-                    value={groupForm.name_ru}
-                    onChange={(e) => setGroupForm({ ...groupForm, name_ru: e.target.value })}
-                  />
-                </div>
-              </div>
+              <LanguageTabsProvider languages={languages} defaultLanguage={defaultLanguage}>
+                <LanguageTabBar />
+                <TranslatedInput
+                  label="Nomi"
+                  required
+                  value={groupForm.name}
+                  onChange={(name) => {
+                    const baseName = name[defaultLanguage] || '';
+                    setGroupForm((f) => ({
+                      ...f,
+                      name,
+                      slug: f.slugTouched ? f.slug : slugify(baseName),
+                    }));
+                  }}
+                  placeholder={{ uz: 'masalan: Xavfsizlik', ru: 'например: Безопасность' }}
+                />
+              </LanguageTabsProvider>
               <div className="space-y-2">
                 <Label>Slug</Label>
                 <Input
@@ -468,26 +476,16 @@ export default function Attributes() {
             {/* Section: Description */}
             <section className="space-y-3">
               <h3 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Tavsif</h3>
-              <div className="grid grid-cols-2 gap-3">
-                <div className="space-y-2">
-                  <Label>Tavsif (UZ)</Label>
-                  <Textarea
-                    rows={2}
-                    placeholder="Zamok xavfsizlik funksiyalari"
-                    value={groupForm.description_uz}
-                    onChange={(e) => setGroupForm({ ...groupForm, description_uz: e.target.value })}
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label>Tavsif (RU)</Label>
-                  <Textarea
-                    rows={2}
-                    placeholder="Функции безопасности замка"
-                    value={groupForm.description_ru}
-                    onChange={(e) => setGroupForm({ ...groupForm, description_ru: e.target.value })}
-                  />
-                </div>
-              </div>
+              <LanguageTabsProvider languages={languages} defaultLanguage={defaultLanguage}>
+                <LanguageTabBar />
+                <TranslatedTextarea
+                  label="Tavsif"
+                  rows={2}
+                  value={groupForm.description}
+                  onChange={(description) => setGroupForm({ ...groupForm, description })}
+                  placeholder={{ uz: 'Zamok xavfsizlik funksiyalari', ru: 'Функции безопасности замка' }}
+                />
+              </LanguageTabsProvider>
             </section>
 
             <Separator />
@@ -556,11 +554,15 @@ export default function Attributes() {
       <Dialog open={attrDialog} onOpenChange={setAttrDialog}>
         <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
           <DialogHeader><DialogTitle>{editingAttr ? 'Atributni tahrirlash' : 'Yangi atribut'}</DialogTitle></DialogHeader>
+          <LanguageTabsProvider languages={languages} defaultLanguage={defaultLanguage}>
+          <LanguageTabBar />
           <div className="space-y-4">
-            <div className="grid grid-cols-2 gap-3">
-              <div className="space-y-2"><Label>Nomi (UZ) *</Label><Input value={attrForm.name_uz} onChange={(e) => setAttrForm({ ...attrForm, name_uz: e.target.value })} /></div>
-              <div className="space-y-2"><Label>Nomi (RU) *</Label><Input value={attrForm.name_ru} onChange={(e) => setAttrForm({ ...attrForm, name_ru: e.target.value })} /></div>
-            </div>
+            <TranslatedInput
+              label="Nomi"
+              required
+              value={attrForm.name}
+              onChange={(name) => setAttrForm({ ...attrForm, name })}
+            />
             <div className="grid grid-cols-2 gap-3">
               <div className="space-y-2">
                 <Label>Maydon turi</Label>
@@ -575,10 +577,11 @@ export default function Attributes() {
               </div>
               <div className="space-y-2"><Label>O'lchov birligi (ixtiyoriy)</Label><Input placeholder="masalan: kg, mm, V" value={attrForm.unit} onChange={(e) => setAttrForm({ ...attrForm, unit: e.target.value })} /></div>
             </div>
-            <div className="grid grid-cols-2 gap-3">
-              <div className="space-y-2"><Label>Placeholder (UZ)</Label><Input value={attrForm.placeholder_uz} onChange={(e) => setAttrForm({ ...attrForm, placeholder_uz: e.target.value })} /></div>
-              <div className="space-y-2"><Label>Placeholder (RU)</Label><Input value={attrForm.placeholder_ru} onChange={(e) => setAttrForm({ ...attrForm, placeholder_ru: e.target.value })} /></div>
-            </div>
+            <TranslatedInput
+              label="Placeholder"
+              value={attrForm.placeholder}
+              onChange={(placeholder) => setAttrForm({ ...attrForm, placeholder })}
+            />
             <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
               <div className="flex items-center gap-2"><Switch checked={attrForm.is_required} onCheckedChange={(c) => setAttrForm({ ...attrForm, is_required: c })} /><span className="text-sm">Majburiy</span></div>
               <div className="flex items-center gap-2"><Switch checked={attrForm.is_filterable} onCheckedChange={(c) => setAttrForm({ ...attrForm, is_filterable: c })} /><span className="text-sm">Filter</span></div>
@@ -590,7 +593,7 @@ export default function Attributes() {
               <div className="space-y-3 pt-3 border-t">
                 <div className="flex items-center justify-between">
                   <Label>Variantlar</Label>
-                  <Button size="sm" variant="outline" onClick={() => setAttrForm({ ...attrForm, options: [...attrForm.options, { label_uz: '', label_ru: '', value: '' }] })}>
+                  <Button size="sm" variant="outline" onClick={() => setAttrForm({ ...attrForm, options: [...attrForm.options, { label: {}, value: '' }] })}>
                     <Plus className="h-3 w-3 mr-1" /> Qo'shish
                   </Button>
                 </div>
@@ -598,9 +601,16 @@ export default function Attributes() {
                 <div className="space-y-2">
                   {attrForm.options.map((o: any, i: number) => (
                     <div key={i} className="grid grid-cols-12 gap-2 items-center">
-                      <Input className="col-span-4" placeholder="Label UZ" value={o.label_uz} onChange={(e) => { const arr = [...attrForm.options]; arr[i] = { ...arr[i], label_uz: e.target.value, value: arr[i].value || slugify(e.target.value) }; setAttrForm({ ...attrForm, options: arr }); }} />
-                      <Input className="col-span-4" placeholder="Label RU" value={o.label_ru} onChange={(e) => { const arr = [...attrForm.options]; arr[i] = { ...arr[i], label_ru: e.target.value }; setAttrForm({ ...attrForm, options: arr }); }} />
-                      <Input className="col-span-3" placeholder="value" value={o.value} onChange={(e) => { const arr = [...attrForm.options]; arr[i] = { ...arr[i], value: e.target.value }; setAttrForm({ ...attrForm, options: arr }); }} />
+                      <OptionLabelInput
+                        label={o.label}
+                        onChange={(label) => {
+                          const arr = [...attrForm.options];
+                          const baseName = label[defaultLanguage] || '';
+                          arr[i] = { ...arr[i], label, value: arr[i].value || slugify(baseName) };
+                          setAttrForm({ ...attrForm, options: arr });
+                        }}
+                      />
+                      <Input className="col-span-7" placeholder="value" value={o.value} onChange={(e) => { const arr = [...attrForm.options]; arr[i] = { ...arr[i], value: e.target.value }; setAttrForm({ ...attrForm, options: arr }); }} />
                       <Button size="icon" variant="ghost" className="col-span-1" onClick={() => setAttrForm({ ...attrForm, options: attrForm.options.filter((_: any, idx: number) => idx !== i) })}><X className="h-4 w-4 text-destructive" /></Button>
                     </div>
                   ))}
@@ -608,6 +618,7 @@ export default function Attributes() {
               </div>
             )}
           </div>
+          </LanguageTabsProvider>
           <DialogFooter>
             <Button variant="outline" onClick={() => setAttrDialog(false)}>Bekor</Button>
             <Button onClick={saveAttr}>Saqlash</Button>

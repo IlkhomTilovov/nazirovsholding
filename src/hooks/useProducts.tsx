@@ -3,13 +3,10 @@ import { supabase } from '@/integrations/supabase/client';
 
 export interface Product {
   id: string;
-  name_uz: string;
-  name_ru: string;
+  name: Record<string, string>;
   slug: string | null;
-  description_uz: string | null;
-  description_ru: string | null;
-  full_description_uz: string | null;
-  full_description_ru: string | null;
+  description: Record<string, string>;
+  full_description: Record<string, string>;
   category_id: string | null;
   brand_id: string | null;
   price: number | null;
@@ -26,10 +23,8 @@ export interface Product {
   is_active: boolean | null;
   is_indexed: boolean | null;
   is_followed: boolean | null;
-  meta_title_uz: string | null;
-  meta_title_ru: string | null;
-  meta_description_uz: string | null;
-  meta_description_ru: string | null;
+  meta_title: Record<string, string>;
+  meta_description: Record<string, string>;
   meta_keywords: string | null;
   created_at: string;
   updated_at: string;
@@ -37,16 +32,13 @@ export interface Product {
 
 export interface Category {
   id: string;
-  name_uz: string;
-  name_ru: string;
+  name: Record<string, string>;
   slug: string;
   icon: string | null;
   image: string | null;
   is_active: boolean | null;
-  meta_title_uz: string | null;
-  meta_title_ru: string | null;
-  meta_description_uz: string | null;
-  meta_description_ru: string | null;
+  meta_title: Record<string, string>;
+  meta_description: Record<string, string>;
   meta_keywords: string | null;
 }
 
@@ -175,7 +167,7 @@ export function useProducts(
       if (queryError) throw queryError;
 
       // Client-side filter for discounted (original_price > price)
-      let filteredProducts = (products || []) as Product[];
+      let filteredProducts = (products || []) as unknown as Product[];
       if (filters.discounted) {
         filteredProducts = filteredProducts.filter(
           p => p.original_price && p.price && p.original_price > p.price
@@ -226,7 +218,7 @@ export function useFeaturedProducts(limit: number = 8) {
 
         // If no featured products, show all active products
         if (featured && featured.length > 0) {
-          setProducts(featured);
+          setProducts(featured as unknown as Product[]);
         } else {
           const { data: allActive, error: allError } = await supabase
             .from('products')
@@ -236,7 +228,7 @@ export function useFeaturedProducts(limit: number = 8) {
             .limit(limit);
 
           if (allError) throw allError;
-          setProducts(allActive || []);
+          setProducts((allActive || []) as unknown as Product[]);
         }
       } catch (err) {
         console.error('Error fetching featured products:', err);
@@ -260,12 +252,12 @@ export function useCategories() {
       try {
         const { data, error } = await supabase
           .from('categories')
-          .select('id, name_uz, name_ru, slug, icon, image, is_active, meta_title_uz, meta_title_ru, meta_description_uz, meta_description_ru, meta_keywords')
+          .select('id, name, slug, icon, image, is_active, meta_title, meta_description, meta_keywords')
           .eq('is_active', true)
           .order('sort_order', { ascending: true });
 
         if (error) throw error;
-        setCategories(data || []);
+        setCategories((data || []) as unknown as Category[]);
       } catch (err) {
         console.error('Error fetching categories:', err);
       } finally {
@@ -300,7 +292,7 @@ export function useProductBySlug(slug: string) {
           .maybeSingle();
 
         if (queryError) throw queryError;
-        setProduct(data);
+        setProduct(data as unknown as Product | null);
       } catch (err) {
         console.error('Error fetching product:', err);
         setError(err instanceof Error ? err : new Error('Failed to fetch product'));
@@ -354,7 +346,7 @@ export function useProductById(idOrSlug: string) {
           data = slugData;
         }
 
-        setProduct(data);
+        setProduct(data as unknown as Product | null);
       } catch (err) {
         console.error('Error fetching product:', err);
         setError(err instanceof Error ? err : new Error('Failed to fetch product'));

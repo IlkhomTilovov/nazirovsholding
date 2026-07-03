@@ -15,7 +15,7 @@ interface ContentItem {
 interface ContentUpdateEvent {
   type: 'content-update';
   key: string;
-  language: 'uz' | 'ru';
+  language: string;
   value: string;
   timestamp: number;
 }
@@ -23,8 +23,8 @@ interface ContentUpdateEvent {
 interface SiteContentContextType {
   content: Record<string, ContentItem>;
   loading: boolean;
-  getContent: (key: string, language: 'uz' | 'ru', fallback?: string) => string;
-  updateContent: (key: string, language: 'uz' | 'ru', value: string) => Promise<boolean>;
+  getContent: (key: string, language: string, fallback?: string) => string;
+  updateContent: (key: string, language: string, value: string) => Promise<boolean>;
   refreshContent: () => Promise<void>;
   lastUpdate: ContentUpdateEvent | null;
 }
@@ -124,14 +124,14 @@ export function SiteContentProvider({ children }: { children: ReactNode }) {
     return () => window.removeEventListener('message', handleMessage);
   }, [fetchContent]);
 
-  const getContent = useCallback((key: string, language: 'uz' | 'ru', fallback: string = '') => {
+  const getContent = useCallback((key: string, language: string, fallback: string = '') => {
     const item = content[key];
     if (!item) return fallback;
     const value = language === 'uz' ? item.value_uz : item.value_ru;
     return value || fallback;
   }, [content]);
 
-  const updateContent = useCallback(async (key: string, language: 'uz' | 'ru', value: string): Promise<boolean> => {
+  const updateContent = useCallback(async (key: string, language: string, value: string): Promise<boolean> => {
     try {
       const updateField = language === 'uz' ? 'value_uz' : 'value_ru';
       

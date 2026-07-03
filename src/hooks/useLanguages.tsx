@@ -32,7 +32,7 @@ export function LanguagesProvider({ children }: { children: ReactNode }) {
   const fetchLanguages = useCallback(async () => {
     setLoading(true);
     const { data, error } = await supabase
-      .from('languages')
+      .from('languages' as any)
       .select('*')
       .order('sort_order', { ascending: true });
     if (error) {

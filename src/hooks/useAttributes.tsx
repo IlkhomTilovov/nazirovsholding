@@ -7,8 +7,7 @@ export type FieldType = 'text' | 'number' | 'select' | 'multiselect' | 'boolean'
 export interface AttributeOption {
   id: string;
   attribute_id: string;
-  label_uz: string;
-  label_ru: string;
+  label: Record<string, string>;
   value: string;
   sort_order: number;
 }
@@ -16,13 +15,11 @@ export interface AttributeOption {
 export interface Attribute {
   id: string;
   group_id: string;
-  name_uz: string;
-  name_ru: string;
+  name: Record<string, string>;
   slug: string;
   field_type: FieldType;
   unit: string | null;
-  placeholder_uz: string | null;
-  placeholder_ru: string | null;
+  placeholder: Record<string, string>;
   is_required: boolean;
   is_filterable: boolean;
   show_in_card: boolean;
@@ -34,12 +31,10 @@ export interface Attribute {
 export interface AttributeGroup {
   id: string;
   category_id: string | null;
-  name_uz: string;
-  name_ru: string;
+  name: Record<string, string>;
   slug: string;
   icon?: string | null;
-  description_uz?: string | null;
-  description_ru?: string | null;
+  description?: Record<string, string>;
   is_collapsible?: boolean;
   seo_visible?: boolean;
   json_ld_visible?: boolean;

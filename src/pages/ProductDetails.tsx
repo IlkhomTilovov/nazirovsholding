@@ -8,6 +8,8 @@ import { ImageLightbox } from '@/components/ImageLightbox';
 import { LazyImage } from '@/components/LazyImage';
 import { VideoPlayerModal } from '@/components/VideoPlayerModal';
 import { useLanguage } from '@/hooks/useLanguage';
+import { useLanguages } from '@/hooks/useLanguages';
+import { getTranslated } from '@/lib/i18n';
 import { useSEO } from '@/hooks/useSEO';
 import { useCart } from '@/hooks/useCart';
 import { useProductById, useProducts, useCategories, Product } from '@/hooks/useProducts';
@@ -25,6 +27,7 @@ interface MediaItem {
 export default function ProductDetails() {
   const { id } = useParams();
   const { language, t } = useLanguage();
+  const { defaultLanguage } = useLanguages();
   const { addItem, isInCart } = useCart();
   const { isAdmin } = useAuth();
   const [selectedImage, setSelectedImage] = useState(0);
@@ -38,10 +41,10 @@ export default function ProductDetails() {
   const { product, loading, error } = useProductById(id || '');
   const { categories } = useCategories();
 
-  const productName = product ? (language === 'uz' ? product.name_uz : product.name_ru) : '';
-  const productDesc = product ? (language === 'uz' ? product.description_uz : product.description_ru) : '';
-  const metaTitle = product ? (language === 'uz' ? product.meta_title_uz : product.meta_title_ru) : null;
-  const metaDesc = product ? (language === 'uz' ? product.meta_description_uz : product.meta_description_ru) : null;
+  const productName = product ? getTranslated(product.name, language, defaultLanguage) : '';
+  const productDesc = product ? getTranslated(product.description, language, defaultLanguage) : '';
+  const metaTitle = product ? getTranslated(product.meta_title, language, defaultLanguage) : null;
+  const metaDesc = product ? getTranslated(product.meta_description, language, defaultLanguage) : null;
   const targetKeyword = (product as any)?.target_keyword || '';
   const keywordVariations: string[] = (product as any)?.keyword_variations || [];
 
@@ -105,9 +108,9 @@ export default function ProductDetails() {
     trackProductView({
       id: (product as any).id,
       slug: (product as any).slug,
-      name: language === 'uz' ? product.name_uz : product.name_ru,
+      name: getTranslated(product.name, language, defaultLanguage),
       category_id: (product as any).category_id,
-      category_name: cat ? (language === 'uz' ? cat.name_uz : cat.name_ru) : undefined,
+      category_name: cat ? getTranslated((cat as any).name, language, defaultLanguage) : undefined,
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [product?.id]);
@@ -182,9 +185,9 @@ export default function ProductDetails() {
   }
 
   // Get localized content with fallback
-  const name = (language === 'uz' ? product.name_uz : product.name_ru) || product.name_uz || product.name_ru;
-  const description = (language === 'uz' ? product.description_uz : product.description_ru) || product.description_uz || product.description_ru;
-  const fullDescription = (language === 'uz' ? product.full_description_uz : product.full_description_ru) || product.full_description_uz || product.full_description_ru;
+  const name = getTranslated(product.name, language, defaultLanguage);
+  const description = getTranslated(product.description, language, defaultLanguage);
+  const fullDescription = getTranslated(product.full_description, language, defaultLanguage);
   
   // H1 uses target keyword if available, otherwise product name
   const h1Text = targetKeyword || name;
@@ -208,8 +211,8 @@ export default function ProductDetails() {
 
   // Get category name
   const category = categories.find(c => c.id === product.category_id);
-  const categoryName = category 
-    ? (language === 'uz' ? category.name_uz : category.name_ru)
+  const categoryName = category
+    ? getTranslated(category.name, language, defaultLanguage)
     : (product.category_id || '—');
 
   const whatsappMessage = encodeURIComponent(

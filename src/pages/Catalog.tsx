@@ -7,6 +7,8 @@ import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/co
 import { ProductCard } from '@/components/ProductCard';
 import { useProducts, useCategories, useProductFilterOptions, ProductFilters } from '@/hooks/useProducts';
 import { useLanguage } from '@/hooks/useLanguage';
+import { useLanguages } from '@/hooks/useLanguages';
+import { getTranslated } from '@/lib/i18n';
 import { useSEO } from '@/hooks/useSEO';
 import { useSystemSettings } from '@/hooks/useSystemSettings';
 import { useAuth } from '@/hooks/useAuth';
@@ -16,6 +18,7 @@ const PAGE_SIZE = 24;
 
 export default function Catalog() {
   const { language, t } = useLanguage();
+  const { defaultLanguage } = useLanguages();
   const { settings } = useSystemSettings();
   const { isAdmin } = useAuth();
   const [searchParams, setSearchParams] = useSearchParams();
@@ -94,13 +97,13 @@ export default function Catalog() {
 
   const selectedCategory = categories?.find(c => c.slug === sidebarFilters.categoryId || c.id === sidebarFilters.categoryId);
   const categoryName = selectedCategory
-    ? (language === 'uz' ? selectedCategory.name_uz : selectedCategory.name_ru)
+    ? getTranslated(selectedCategory.name, language, defaultLanguage)
     : null;
 
   useSEO({
     title: categoryName || t.catalog.title,
     description: selectedCategory
-      ? (language === 'uz' ? selectedCategory.meta_description_uz : selectedCategory.meta_description_ru) || categoryName || undefined
+      ? getTranslated(selectedCategory.meta_description, language, defaultLanguage) || categoryName || undefined
       : undefined,
     keywords: selectedCategory?.meta_keywords || undefined,
     canonical: currentPage > 1 ? '/catalog' : undefined,

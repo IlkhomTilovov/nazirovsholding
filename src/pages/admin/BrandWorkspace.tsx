@@ -22,6 +22,8 @@ import { BrandDivisionsManager } from '@/components/admin/BrandDivisionsManager'
 import { BrandCaseStudiesManager } from '@/components/admin/BrandCaseStudiesManager';
 import { TranslatedInput } from '@/components/admin/translated/TranslatedInput';
 import { TranslatedTextarea } from '@/components/admin/translated/TranslatedTextarea';
+import { LanguageTabsProvider } from '@/components/admin/translated/LanguageTabsProvider';
+import { LanguageTabBar } from '@/components/admin/translated/LanguageTabBar';
 
 interface BrandRecord {
   id: string;
@@ -233,22 +235,25 @@ export default function BrandWorkspace() {
           <Card>
             <CardHeader><CardTitle>Asosiy ma'lumotlar</CardTitle></CardHeader>
             <CardContent className="space-y-4">
-              <TranslatedInput
-                label="Nomi"
-                required
-                languages={languages}
-                value={brand.name}
-                onChange={(name) => update({ name })}
-              />
+              <LanguageTabsProvider languages={languages} defaultLanguage={defaultLanguage}>
+                <LanguageTabBar />
+                <div className="space-y-4">
+                  <TranslatedInput
+                    label="Nomi"
+                    required
+                    value={brand.name}
+                    onChange={(name) => update({ name })}
+                  />
+                  <TranslatedTextarea
+                    label="Qisqa tavsif"
+                    value={brand.description}
+                    onChange={(description) => update({ description })}
+                  />
+                </div>
+              </LanguageTabsProvider>
               <div className="space-y-2"><Label>Slug (URL)</Label>
                 <Input value={brand.slug} onChange={(e) => update({ slug: e.target.value })} />
                 <p className="text-xs text-muted-foreground">/brand/{brand.slug}</p></div>
-              <TranslatedTextarea
-                label="Qisqa tavsif"
-                languages={languages}
-                value={brand.description}
-                onChange={(description) => update({ description })}
-              />
               <div className="grid md:grid-cols-3 gap-4">
                 <div className="space-y-2 md:col-span-2"><Label>Veb-sayt</Label>
                   <Input type="url" value={brand.website || ''} onChange={(e) => update({ website: e.target.value })} placeholder="https://..." /></div>
@@ -268,19 +273,22 @@ export default function BrandWorkspace() {
           <Card>
             <CardHeader><CardTitle>SEO sozlamalari</CardTitle></CardHeader>
             <CardContent className="space-y-4">
-              <TranslatedInput
-                label="SEO Title"
-                languages={languages}
-                value={brand.meta_title}
-                onChange={(meta_title) => update({ meta_title })}
-                placeholder={brand.name}
-              />
-              <TranslatedTextarea
-                label="Meta Description"
-                languages={languages}
-                value={brand.meta_description}
-                onChange={(meta_description) => update({ meta_description })}
-              />
+              <LanguageTabsProvider languages={languages} defaultLanguage={defaultLanguage}>
+                <LanguageTabBar />
+                <div className="space-y-4">
+                  <TranslatedInput
+                    label="SEO Title"
+                    value={brand.meta_title}
+                    onChange={(meta_title) => update({ meta_title })}
+                    placeholder={brand.name}
+                  />
+                  <TranslatedTextarea
+                    label="Meta Description"
+                    value={brand.meta_description}
+                    onChange={(meta_description) => update({ meta_description })}
+                  />
+                </div>
+              </LanguageTabsProvider>
               <div className="space-y-2"><Label>Keywords</Label>
                 <Input value={brand.meta_keywords || ''} onChange={(e) => update({ meta_keywords: e.target.value })} placeholder="kalit, soz, lar" /></div>
               <div className="grid md:grid-cols-2 gap-4">
