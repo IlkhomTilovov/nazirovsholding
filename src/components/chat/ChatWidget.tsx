@@ -20,13 +20,18 @@ function uid() {
 }
 
 export function ChatWidget() {
-  const { language } = useLanguage();
   const { settings } = useSystemSettings();
+  // Admin paneldan yoqilmagan bo'lsa — widgetni umuman ko'rsatmaslik
+  if (!settings?.chat_enabled) return null;
+  return <ChatWidgetInner />;
+}
+
+function ChatWidgetInner() {
+  const { language } = useLanguage();
   const lang: ChatLanguage = language === "ru" ? "ru" : "uz";
   const t = UI_TEXT[lang];
 
-  // Admin paneldan yoqilmagan bo'lsa — widgetni umuman ko'rsatmaslik
-  if (!settings?.chat_enabled) return null;
+
 
   const [open, setOpen] = useState(false);
   const [messages, setMessages] = useState<ChatMessage[]>([]);
