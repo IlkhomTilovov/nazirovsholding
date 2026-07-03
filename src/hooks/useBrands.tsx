@@ -4,20 +4,16 @@ import type { Product } from '@/hooks/useProducts';
 
 export interface Brand {
   id: string;
-  name_uz: string;
-  name_ru: string;
+  name: Record<string, string>;
   slug: string;
   logo: string | null;
   banner: string | null;
-  description_uz: string | null;
-  description_ru: string | null;
+  description: Record<string, string>;
   website: string | null;
   is_active: boolean;
   sort_order: number;
-  meta_title_uz: string | null;
-  meta_title_ru: string | null;
-  meta_description_uz: string | null;
-  meta_description_ru: string | null;
+  meta_title: Record<string, string>;
+  meta_description: Record<string, string>;
   meta_keywords: string | null;
   is_indexed: boolean;
   is_followed: boolean;
@@ -124,14 +120,11 @@ export interface BrandCategory {
 
 export interface BrandDivision {
   id: string;
-  name_uz: string;
-  name_ru: string;
+  name: Record<string, string>;
   slug: string;
-  description_uz: string | null;
-  description_ru: string | null;
+  description: Record<string, string>;
   cover_image: string | null;
-  benefits_uz: string[];
-  benefits_ru: string[];
+  benefits: Record<string, string[]>;
   sort_order: number;
 }
 
@@ -154,16 +147,12 @@ export function useBrandProducts(brandId: string | null | undefined, limit = 48)
       try {
         const { data: divs, error: divsError } = await supabase
           .from('business_divisions')
-          .select('id, name_uz, name_ru, slug, description_uz, description_ru, cover_image, benefits_uz, benefits_ru, sort_order')
+          .select('id, name, slug, description, cover_image, benefits, sort_order')
           .eq('brand_id', brandId)
           .eq('is_active', true)
           .order('sort_order', { ascending: true });
         if (divsError) console.error('Failed to load business divisions:', divsError.message);
-        setDivisions(((divs || []) as any[]).map((d) => ({
-          ...d,
-          benefits_uz: Array.isArray(d.benefits_uz) ? d.benefits_uz : [],
-          benefits_ru: Array.isArray(d.benefits_ru) ? d.benefits_ru : [],
-        })) as BrandDivision[]);
+        setDivisions((divs || []) as unknown as BrandDivision[]);
 
         const { data: cats } = await supabase
           .from('categories')

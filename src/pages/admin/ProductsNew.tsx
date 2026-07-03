@@ -32,6 +32,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Separator } from '@/components/ui/separator';
 import { useToast } from '@/hooks/use-toast';
 import { useLanguage } from '@/hooks/useLanguage';
+import { useLanguages } from '@/hooks/useLanguages';
+import { getTranslated } from '@/lib/i18n';
 import { useBrands } from '@/hooks/useBrands';
 import { useDivisions } from '@/hooks/useDivisions';
 import { AddMediaModal, MediaItem } from '@/components/admin/AddMediaModal';
@@ -173,6 +175,7 @@ export default function ProductsNew() {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const { toast } = useToast();
   const { language } = useLanguage();
+  const { defaultLanguage } = useLanguages();
   const { brands: brandList } = useBrands(false);
   const { divisions: divisionList } = useDivisions(formData.brand_id || null, false);
   const [selectedDivisionId, setSelectedDivisionId] = useState<string>('');
@@ -963,7 +966,7 @@ export default function ProductsNew() {
                     <SelectItem value="__none__">— Brendsiz —</SelectItem>
                     {brandList.map((b) => (
                       <SelectItem key={b.id} value={b.id}>
-                        {language === 'uz' ? b.name_uz : b.name_ru}
+                        {getTranslated(b.name, language, defaultLanguage)}
                       </SelectItem>
                     ))}
                   </SelectContent>
@@ -984,7 +987,7 @@ export default function ProductsNew() {
                     <SelectItem value="__none__">— Barchasi —</SelectItem>
                     {divisionList.map((d) => (
                       <SelectItem key={d.id} value={d.id}>
-                        {language === 'uz' ? d.name_uz : d.name_ru}
+                        {getTranslated(d.name, language, defaultLanguage)}
                       </SelectItem>
                     ))}
                   </SelectContent>

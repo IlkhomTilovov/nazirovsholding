@@ -1,19 +1,23 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useRef } from 'react';
 import { Plus, Pencil, Trash2, Loader2, Upload, X, Image as ImageIcon, GripVertical } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { toWebP } from '@/lib/imageOptimizer';
+import { getTranslated } from '@/lib/i18n';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Switch } from '@/components/ui/switch';
-import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from '@/components/ui/alert-dialog';
 import { useToast } from '@/hooks/use-toast';
+import { useLanguages } from '@/hooks/useLanguages';
 import { useDivisions, type BusinessDivision } from '@/hooks/useDivisions';
+import { TranslatedInput } from '@/components/admin/translated/TranslatedInput';
+import { TranslatedTextarea } from '@/components/admin/translated/TranslatedTextarea';
+import { TranslatedListField } from '@/components/admin/translated/TranslatedListField';
 
 interface Props {
   brandId: string;
@@ -27,38 +31,32 @@ const slugify = (n: string) =>
     .replace(/[^a-z0-9\s-]/g, '').replace(/\s+/g, '-').replace(/-+/g, '-').replace(/^-|-$/g, '');
 
 interface DivFormData {
-  name_uz: string;
-  name_ru: string;
+  name: Record<string, string>;
   slug: string;
-  description_uz: string;
-  description_ru: string;
-  benefits_uz: string;
-  benefits_ru: string;
+  description: Record<string, string>;
+  benefits: Record<string, string>;
   icon: string;
   cover_image: string;
   banner: string;
   hero_image: string;
-  meta_title_uz: string;
-  meta_title_ru: string;
-  meta_description_uz: string;
-  meta_description_ru: string;
+  meta_title: Record<string, string>;
+  meta_description: Record<string, string>;
   meta_keywords: string;
   is_active: boolean;
   sort_order: number;
 }
 
 const empty: DivFormData = {
-  name_uz: '', name_ru: '', slug: '',
-  description_uz: '', description_ru: '',
-  benefits_uz: '', benefits_ru: '',
+  name: {}, slug: '',
+  description: {}, benefits: {},
   icon: '', cover_image: '', banner: '', hero_image: '',
-  meta_title_uz: '', meta_title_ru: '',
-  meta_description_uz: '', meta_description_ru: '', meta_keywords: '',
+  meta_title: {}, meta_description: {}, meta_keywords: '',
   is_active: true, sort_order: 0,
 };
 
 export function BrandDivisionsManager({ brandId }: Props) {
   const { divisions, loading, refetch } = useDivisions(brandId);
+  const { languages, defaultLanguage } = useLanguages();
   const [dialog, setDialog] = useState(false);
   const [confirmDelete, setConfirmDelete] = useState(false);
   const [selected, setSelected] = useState<BusinessDivision | null>(null);
@@ -77,14 +75,15 @@ export function BrandDivisionsManager({ brandId }: Props) {
 
   const openEdit = (d: BusinessDivision) => {
     setSelected(d);
+    const benefits: Record<string, string> = {};
+    for (const lang of languages) benefits[lang.code] = (d.benefits?.[lang.code] || []).join('\n');
     setForm({
-      name_uz: d.name_uz, name_ru: d.name_ru, slug: d.slug,
-      description_uz: d.description_uz || '', description_ru: d.description_ru || '',
-      benefits_uz: (d.benefits_uz || []).join('\n'), benefits_ru: (d.benefits_ru || []).join('\n'),
+      name: d.name || {}, slug: d.slug,
+      description: d.description || {},
+      benefits,
       icon: d.icon || '', cover_image: d.cover_image || '',
       banner: d.banner || '', hero_image: d.hero_image || '',
-      meta_title_uz: d.meta_title_uz || '', meta_title_ru: d.meta_title_ru || '',
-      meta_description_uz: d.meta_description_uz || '', meta_description_ru: d.meta_description_ru || '',
+      meta_title: d.meta_title || {}, meta_description: d.meta_description || {},
       meta_keywords: d.meta_keywords || '',
       is_active: d.is_active, sort_order: d.sort_order,
     });
@@ -114,30 +113,29 @@ export function BrandDivisionsManager({ brandId }: Props) {
   };
 
   const handleSubmit = async () => {
-    if (!form.name_uz || !form.name_ru) {
-      toast({ variant: 'destructive', title: 'Xatolik', description: 'Nomni to\'ldiring' });
+    const hasAllNames = languages.every((lang) => form.name[lang.code]?.trim());
+    if (!hasAllNames) {
+      toast({ variant: 'destructive', title: 'Xatolik', description: "Barcha tillar uchun nomni to'ldiring" });
       return;
     }
-    const slug = form.slug || slugify(form.name_uz);
+    const baseName = form.name[defaultLanguage] || Object.values(form.name)[0] || '';
+    const slug = form.slug || slugify(baseName);
+    const benefits: Record<string, string[]> = {};
+    for (const lang of languages) benefits[lang.code] = (form.benefits[lang.code] || '').split('\n').map((s) => s.trim()).filter(Boolean);
     setSaving(true);
     try {
       const payload = {
         brand_id: brandId,
-        name_uz: form.name_uz.trim(),
-        name_ru: form.name_ru.trim(),
+        name: form.name,
         slug,
-        description_uz: form.description_uz || null,
-        description_ru: form.description_ru || null,
-        benefits_uz: form.benefits_uz.split('\n').map((s) => s.trim()).filter(Boolean),
-        benefits_ru: form.benefits_ru.split('\n').map((s) => s.trim()).filter(Boolean),
+        description: form.description,
+        benefits,
         icon: form.icon || null,
         cover_image: form.cover_image || null,
         banner: form.banner || null,
         hero_image: form.hero_image || null,
-        meta_title_uz: form.meta_title_uz || null,
-        meta_title_ru: form.meta_title_ru || null,
-        meta_description_uz: form.meta_description_uz || null,
-        meta_description_ru: form.meta_description_ru || null,
+        meta_title: form.meta_title,
+        meta_description: form.meta_description,
         meta_keywords: form.meta_keywords || null,
         is_active: form.is_active,
         sort_order: form.sort_order,
@@ -242,32 +240,35 @@ export function BrandDivisionsManager({ brandId }: Props) {
         </CardContent></Card>
       ) : (
         <div className="grid gap-3">
-          {divisions.map((d) => (
-            <Card key={d.id} className="hover:shadow-md transition-shadow">
-              <CardContent className="p-4 flex items-center gap-4">
-                <GripVertical className="h-4 w-4 text-muted-foreground cursor-grab" />
-                {d.cover_image ? (
-                  <img src={d.cover_image} alt="" className="h-14 w-14 object-cover rounded-lg" />
-                ) : (
-                  <div className="h-14 w-14 bg-muted rounded-lg flex items-center justify-center">
-                    <ImageIcon className="h-5 w-5 text-muted-foreground" />
+          {divisions.map((d) => {
+            const name = getTranslated(d.name, defaultLanguage, defaultLanguage);
+            return (
+              <Card key={d.id} className="hover:shadow-md transition-shadow">
+                <CardContent className="p-4 flex items-center gap-4">
+                  <GripVertical className="h-4 w-4 text-muted-foreground cursor-grab" />
+                  {d.cover_image ? (
+                    <img src={d.cover_image} alt="" className="h-14 w-14 object-cover rounded-lg" />
+                  ) : (
+                    <div className="h-14 w-14 bg-muted rounded-lg flex items-center justify-center">
+                      <ImageIcon className="h-5 w-5 text-muted-foreground" />
+                    </div>
+                  )}
+                  <div className="flex-1 min-w-0">
+                    <p className="font-medium truncate">{name}</p>
+                    <p className="text-sm text-muted-foreground truncate">/{d.slug}</p>
                   </div>
-                )}
-                <div className="flex-1 min-w-0">
-                  <p className="font-medium truncate">{d.name_uz}</p>
-                  <p className="text-sm text-muted-foreground truncate">{d.name_ru} · /{d.slug}</p>
-                </div>
-                <Badge variant={d.is_active ? 'default' : 'secondary'}>
-                  {d.is_active ? 'Faol' : 'Nofaol'}
-                </Badge>
-                <Switch checked={d.is_active} onCheckedChange={() => toggleActive(d)} />
-                <Button variant="ghost" size="icon" onClick={() => openEdit(d)}><Pencil className="h-4 w-4" /></Button>
-                <Button variant="ghost" size="icon" onClick={() => { setSelected(d); setConfirmDelete(true); }}>
-                  <Trash2 className="h-4 w-4 text-destructive" />
-                </Button>
-              </CardContent>
-            </Card>
-          ))}
+                  <Badge variant={d.is_active ? 'default' : 'secondary'}>
+                    {d.is_active ? 'Faol' : 'Nofaol'}
+                  </Badge>
+                  <Switch checked={d.is_active} onCheckedChange={() => toggleActive(d)} />
+                  <Button variant="ghost" size="icon" onClick={() => openEdit(d)}><Pencil className="h-4 w-4" /></Button>
+                  <Button variant="ghost" size="icon" onClick={() => { setSelected(d); setConfirmDelete(true); }}>
+                    <Trash2 className="h-4 w-4 text-destructive" />
+                  </Button>
+                </CardContent>
+              </Card>
+            );
+          })}
         </div>
       )}
 
@@ -284,43 +285,39 @@ export function BrandDivisionsManager({ brandId }: Props) {
             </TabsList>
 
             <TabsContent value="general" className="space-y-4 mt-4">
-              <div className="grid grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <Label>Nomi (UZ) *</Label>
-                  <Input value={form.name_uz} onChange={(e) => {
-                    const v = e.target.value;
-                    setForm((p) => ({ ...p, name_uz: v, slug: !p.slug || p.slug === slugify(p.name_uz) ? slugify(v) : p.slug }));
-                  }} />
-                </div>
-                <div className="space-y-2">
-                  <Label>Nomi (RU) *</Label>
-                  <Input value={form.name_ru} onChange={(e) => setForm((p) => ({ ...p, name_ru: e.target.value }))} />
-                </div>
-              </div>
+              <TranslatedInput
+                label="Nomi"
+                required
+                languages={languages}
+                value={form.name}
+                onChange={(name) => {
+                  const baseName = name[defaultLanguage] || '';
+                  const prevBaseName = form.name[defaultLanguage] || '';
+                  setForm((p) => ({
+                    ...p,
+                    name,
+                    slug: !p.slug || p.slug === slugify(prevBaseName) ? slugify(baseName) : p.slug,
+                  }));
+                }}
+              />
               <div className="space-y-2">
                 <Label>Slug</Label>
                 <Input value={form.slug} onChange={(e) => setForm((p) => ({ ...p, slug: e.target.value.toLowerCase().replace(/[^a-z0-9-]/g, '') }))} placeholder="avtomatik" />
               </div>
-              <div className="grid grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <Label>Qisqa tavsif (UZ)</Label>
-                  <Textarea rows={3} value={form.description_uz} onChange={(e) => setForm((p) => ({ ...p, description_uz: e.target.value }))} />
-                </div>
-                <div className="space-y-2">
-                  <Label>Qisqa tavsif (RU)</Label>
-                  <Textarea rows={3} value={form.description_ru} onChange={(e) => setForm((p) => ({ ...p, description_ru: e.target.value }))} />
-                </div>
-              </div>
-              <div className="grid grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <Label>Nima olasiz (UZ) — har bir qator alohida band</Label>
-                  <Textarea rows={4} value={form.benefits_uz} onChange={(e) => setForm((p) => ({ ...p, benefits_uz: e.target.value }))} placeholder={'Tez va aniq diagnostika\nTajribali mutaxassislar bilan konsultatsiya'} />
-                </div>
-                <div className="space-y-2">
-                  <Label>Nima olasiz (RU) — каждая строка отдельный пункт</Label>
-                  <Textarea rows={4} value={form.benefits_ru} onChange={(e) => setForm((p) => ({ ...p, benefits_ru: e.target.value }))} placeholder={'Быстрая и точная диагностика\nКонсультация опытных специалистов'} />
-                </div>
-              </div>
+              <TranslatedTextarea
+                label="Qisqa tavsif"
+                languages={languages}
+                value={form.description}
+                onChange={(description) => setForm((p) => ({ ...p, description }))}
+              />
+              <TranslatedListField
+                label="Nima olasiz"
+                hint="har bir qator alohida band"
+                languages={languages}
+                value={form.benefits}
+                onChange={(benefits) => setForm((p) => ({ ...p, benefits }))}
+                placeholder={{ uz: 'Tez va aniq diagnostika\nTajribali mutaxassislar bilan konsultatsiya', ru: 'Быстрая и точная диагностика\nКонсультация опытных специалистов' }}
+              />
               <div className="grid grid-cols-2 gap-4">
                 <ImageUpload field="icon" label="Ikonka" />
                 <ImageUpload field="cover_image" label="Cover Image" />
@@ -338,18 +335,18 @@ export function BrandDivisionsManager({ brandId }: Props) {
             </TabsContent>
 
             <TabsContent value="seo" className="space-y-4 mt-4">
-              <div className="grid grid-cols-2 gap-4">
-                <div className="space-y-2"><Label>Meta Title (UZ)</Label>
-                  <Input value={form.meta_title_uz} onChange={(e) => setForm((p) => ({ ...p, meta_title_uz: e.target.value }))} /></div>
-                <div className="space-y-2"><Label>Meta Title (RU)</Label>
-                  <Input value={form.meta_title_ru} onChange={(e) => setForm((p) => ({ ...p, meta_title_ru: e.target.value }))} /></div>
-              </div>
-              <div className="grid grid-cols-2 gap-4">
-                <div className="space-y-2"><Label>Meta Description (UZ)</Label>
-                  <Textarea rows={3} value={form.meta_description_uz} onChange={(e) => setForm((p) => ({ ...p, meta_description_uz: e.target.value }))} /></div>
-                <div className="space-y-2"><Label>Meta Description (RU)</Label>
-                  <Textarea rows={3} value={form.meta_description_ru} onChange={(e) => setForm((p) => ({ ...p, meta_description_ru: e.target.value }))} /></div>
-              </div>
+              <TranslatedInput
+                label="Meta Title"
+                languages={languages}
+                value={form.meta_title}
+                onChange={(meta_title) => setForm((p) => ({ ...p, meta_title }))}
+              />
+              <TranslatedTextarea
+                label="Meta Description"
+                languages={languages}
+                value={form.meta_description}
+                onChange={(meta_description) => setForm((p) => ({ ...p, meta_description }))}
+              />
               <div className="space-y-2"><Label>Keywords</Label>
                 <Input value={form.meta_keywords} onChange={(e) => setForm((p) => ({ ...p, meta_keywords: e.target.value }))} placeholder="kalit, soz, lar" /></div>
             </TabsContent>
@@ -377,7 +374,7 @@ export function BrandDivisionsManager({ brandId }: Props) {
           <AlertDialogHeader>
             <AlertDialogTitle>Bo'limni o'chirish</AlertDialogTitle>
             <AlertDialogDescription>
-              "{selected?.name_uz}" bo'limi o'chiriladi. Bog'liq kategoriyalardan bog'lanish olib tashlanadi. Davom etilsinmi?
+              "{selected ? getTranslated(selected.name, defaultLanguage, defaultLanguage) : ''}" bo'limi o'chiriladi. Bog'liq kategoriyalardan bog'lanish olib tashlanadi. Davom etilsinmi?
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>

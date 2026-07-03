@@ -8,6 +8,8 @@ import { Label } from '@/components/ui/label';
 import { Separator } from '@/components/ui/separator';
 import { Filter, RotateCcw } from 'lucide-react';
 import { useLanguage } from '@/hooks/useLanguage';
+import { useLanguages } from '@/hooks/useLanguages';
+import { getTranslated } from '@/lib/i18n';
 import { Category } from '@/hooks/useProducts';
 import { useBrands } from '@/hooks/useBrands';
 
@@ -39,6 +41,7 @@ interface CatalogFilterSidebarProps {
 
 export function CatalogFilterSidebar({ categories, onApply, initialFilters, dynamicOptions }: CatalogFilterSidebarProps) {
   const { language } = useLanguage();
+  const { defaultLanguage } = useLanguages();
   const isUz = language === 'uz';
 
   const maxPrice = dynamicOptions?.maxPrice || 700000;
@@ -197,7 +200,7 @@ export function CatalogFilterSidebar({ categories, onApply, initialFilters, dyna
                     }))}
                   />
                   <span className="text-sm text-foreground group-hover:text-primary transition-colors">
-                    {isUz ? b.name_uz : b.name_ru}
+                    {getTranslated(b.name, language, defaultLanguage)}
                   </span>
                 </label>
               ))}

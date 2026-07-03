@@ -2,12 +2,17 @@ import { useSEO } from '@/hooks/useSEO';
 import { ArrowUpRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useBrands } from '@/hooks/useBrands';
+import { useLanguage } from '@/hooks/useLanguage';
+import { useLanguages } from '@/hooks/useLanguages';
+import { getTranslated } from '@/lib/i18n';
 import { EditableText } from '@/components/EditableText';
 
 
 
 export default function Sectors() {
   useSEO({ title: "Faoliyat yo'nalishlari — NazirovSholding" });
+  const { language } = useLanguage();
+  const { defaultLanguage } = useLanguages();
   const { brands, loading: brandsLoading } = useBrands(true);
 
   return (
@@ -95,50 +100,54 @@ export default function Sectors() {
             </div>
           ) : brands.length === 0 ? null : (
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-px bg-foreground/5">
-              {brands.map((b, i) => (
-                <Link
-                  key={b.id}
-                  to={`/brand/${b.slug}`}
-                  className="group relative bg-background hover:bg-muted transition-colors duration-500 p-6 flex flex-col justify-between aspect-[4/5]"
-                >
-                  <div className="flex items-start justify-between">
-                    <span className="text-[10px] tracking-[0.3em] text-foreground/30">
-                      {String(i + 1).padStart(2, '0')}
-                    </span>
-                    <ArrowUpRight className="w-4 h-4 text-foreground/20 group-hover:text-primary group-hover:rotate-0 -rotate-12 transition-all duration-500" />
-                  </div>
+              {brands.map((b, i) => {
+                const name = getTranslated(b.name, language, defaultLanguage);
+                const description = getTranslated(b.description, language, defaultLanguage);
+                return (
+                  <Link
+                    key={b.id}
+                    to={`/brand/${b.slug}`}
+                    className="group relative bg-background hover:bg-muted transition-colors duration-500 p-6 flex flex-col justify-between aspect-[4/5]"
+                  >
+                    <div className="flex items-start justify-between">
+                      <span className="text-[10px] tracking-[0.3em] text-foreground/30">
+                        {String(i + 1).padStart(2, '0')}
+                      </span>
+                      <ArrowUpRight className="w-4 h-4 text-foreground/20 group-hover:text-primary group-hover:rotate-0 -rotate-12 transition-all duration-500" />
+                    </div>
 
-                  <div className="flex-1 flex items-center justify-center py-6">
-                    {b.logo ? (
-                      <img
-                        src={b.logo}
-                        alt={b.name_uz}
-                        className="max-h-16 max-w-full object-contain opacity-70 group-hover:opacity-100 transition-opacity duration-500"
-                      />
-                    ) : (
-                      <div
-                        className="text-3xl font-light text-foreground/80 group-hover:text-primary transition-colors text-center font-serif"
-                      >
-                        {b.name_uz}
-                      </div>
-                    )}
-                  </div>
+                    <div className="flex-1 flex items-center justify-center py-6">
+                      {b.logo ? (
+                        <img
+                          src={b.logo}
+                          alt={name}
+                          className="max-h-16 max-w-full object-contain opacity-70 group-hover:opacity-100 transition-opacity duration-500"
+                        />
+                      ) : (
+                        <div
+                          className="text-3xl font-light text-foreground/80 group-hover:text-primary transition-colors text-center font-serif"
+                        >
+                          {name}
+                        </div>
+                      )}
+                    </div>
 
-                  <div>
-                    <div className="h-px bg-gradient-to-r from-[hsl(var(--primary))]/0 via-[hsl(var(--primary))]/40 to-[hsl(var(--primary))]/0 scale-x-0 group-hover:scale-x-100 transition-transform duration-700 origin-left mb-4" />
-                    {b.logo ? (
-                      <h4 className="text-sm font-light tracking-wide text-foreground/70 group-hover:text-foreground transition-colors">
-                        {b.name_uz}
-                      </h4>
-                    ) : null}
-                    {b.description_uz && (
-                      <p className="text-[11px] text-foreground/40 mt-1 line-clamp-2 leading-relaxed">
-                        {b.description_uz}
-                      </p>
-                    )}
-                  </div>
-                </Link>
-              ))}
+                    <div>
+                      <div className="h-px bg-gradient-to-r from-[hsl(var(--primary))]/0 via-[hsl(var(--primary))]/40 to-[hsl(var(--primary))]/0 scale-x-0 group-hover:scale-x-100 transition-transform duration-700 origin-left mb-4" />
+                      {b.logo ? (
+                        <h4 className="text-sm font-light tracking-wide text-foreground/70 group-hover:text-foreground transition-colors">
+                          {name}
+                        </h4>
+                      ) : null}
+                      {description && (
+                        <p className="text-[11px] text-foreground/40 mt-1 line-clamp-2 leading-relaxed">
+                          {description}
+                        </p>
+                      )}
+                    </div>
+                  </Link>
+                );
+              })}
             </div>
           )}
         </div>

@@ -2,14 +2,17 @@ import { useEffect, useRef, useState, memo, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, ChevronLeft, ChevronRight } from 'lucide-react';
 import useEmblaCarousel from 'embla-carousel-react';
-import { useBrands } from '@/hooks/useBrands';
+import { useBrands, type Brand } from '@/hooks/useBrands';
 import { useLanguage } from '@/hooks/useLanguage';
+import { useLanguages } from '@/hooks/useLanguages';
+import { getTranslated } from '@/lib/i18n';
 import { EditableText } from '@/components/EditableText';
 import { LazyImage } from '@/components/LazyImage';
 import { Skeleton } from '@/components/ui/skeleton';
 
 export const BrandsSection = memo(function BrandsSection() {
   const { language } = useLanguage();
+  const { defaultLanguage } = useLanguages();
   const { brands, loading } = useBrands(true);
   const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true, align: 'start' });
   const [selectedIndex, setSelectedIndex] = useState(0);
@@ -93,7 +96,7 @@ export const BrandsSection = memo(function BrandsSection() {
           <div className="overflow-hidden" ref={emblaRef}>
             <div className="flex">
               {brands.map((brand) => (
-                <BrandSlide key={brand.id} brand={brand} language={language} />
+                <BrandSlide key={brand.id} brand={brand} language={language} defaultLanguage={defaultLanguage} />
               ))}
             </div>
           </div>
@@ -140,12 +143,14 @@ export const BrandsSection = memo(function BrandsSection() {
 const BrandSlide = memo(function BrandSlide({
   brand,
   language,
+  defaultLanguage,
 }: {
-  brand: any;
-  language: 'uz' | 'ru';
+  brand: Brand;
+  language: string;
+  defaultLanguage: string;
 }) {
-  const name = language === 'uz' ? brand.name_uz : brand.name_ru;
-  const description = language === 'uz' ? brand.description_uz : brand.description_ru;
+  const name = getTranslated(brand.name, language, defaultLanguage);
+  const description = getTranslated(brand.description, language, defaultLanguage);
   const ctaLabel = language === 'ru' ? 'Подробнее' : "Ko'rish";
   const image = brand.banner || brand.logo;
 

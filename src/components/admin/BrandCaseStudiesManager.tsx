@@ -2,6 +2,7 @@ import { useState, useRef } from 'react';
 import { Plus, Pencil, Trash2, Loader2, Upload, X, Image as ImageIcon, GripVertical } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { toWebP } from '@/lib/imageOptimizer';
+import { getTranslated } from '@/lib/i18n';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -11,7 +12,9 @@ import { Badge } from '@/components/ui/badge';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from '@/components/ui/alert-dialog';
 import { useToast } from '@/hooks/use-toast';
+import { useLanguages } from '@/hooks/useLanguages';
 import { useCaseStudies, countryFlagEmoji, type CaseStudy } from '@/hooks/useCaseStudies';
+import { TranslatedInput } from '@/components/admin/translated/TranslatedInput';
 
 interface Props {
   brandId: string;
@@ -20,28 +23,24 @@ interface Props {
 interface FormData {
   image: string;
   country_code: string;
-  country_name_uz: string;
-  country_name_ru: string;
-  category_uz: string;
-  category_ru: string;
-  title_uz: string;
-  title_ru: string;
-  result_uz: string;
-  result_ru: string;
+  country_name: Record<string, string>;
+  category: Record<string, string>;
+  title: Record<string, string>;
+  result: Record<string, string>;
   year: string;
   is_active: boolean;
   sort_order: number;
 }
 
 const empty: FormData = {
-  image: '', country_code: '', country_name_uz: '', country_name_ru: '',
-  category_uz: '', category_ru: '', title_uz: '', title_ru: '',
-  result_uz: '', result_ru: '', year: '',
+  image: '', country_code: '', country_name: {},
+  category: {}, title: {}, result: {}, year: '',
   is_active: true, sort_order: 0,
 };
 
 export function BrandCaseStudiesManager({ brandId }: Props) {
   const { caseStudies, loading, refetch } = useCaseStudies(brandId);
+  const { languages, defaultLanguage } = useLanguages();
   const [dialog, setDialog] = useState(false);
   const [confirmDelete, setConfirmDelete] = useState(false);
   const [selected, setSelected] = useState<CaseStudy | null>(null);
@@ -61,10 +60,8 @@ export function BrandCaseStudiesManager({ brandId }: Props) {
     setSelected(c);
     setForm({
       image: c.image || '',
-      country_code: c.country_code, country_name_uz: c.country_name_uz, country_name_ru: c.country_name_ru,
-      category_uz: c.category_uz, category_ru: c.category_ru,
-      title_uz: c.title_uz, title_ru: c.title_ru,
-      result_uz: c.result_uz || '', result_ru: c.result_ru || '',
+      country_code: c.country_code, country_name: c.country_name || {},
+      category: c.category || {}, title: c.title || {}, result: c.result || {},
       year: c.year || '',
       is_active: c.is_active, sort_order: c.sort_order,
     });
@@ -93,8 +90,9 @@ export function BrandCaseStudiesManager({ brandId }: Props) {
   };
 
   const handleSubmit = async () => {
-    if (!form.title_uz || !form.title_ru || !form.country_code) {
-      toast({ variant: 'destructive', title: 'Xatolik', description: 'Nom (UZ/RU) va davlat kodini to\'ldiring' });
+    const hasAllTitles = languages.every((lang) => form.title[lang.code]?.trim());
+    if (!hasAllTitles || !form.country_code) {
+      toast({ variant: 'destructive', title: 'Xatolik', description: "Barcha tillar uchun sarlavha va davlat kodini to'ldiring" });
       return;
     }
     setSaving(true);
@@ -103,14 +101,10 @@ export function BrandCaseStudiesManager({ brandId }: Props) {
         brand_id: brandId,
         image: form.image || null,
         country_code: form.country_code.trim().toUpperCase(),
-        country_name_uz: form.country_name_uz.trim(),
-        country_name_ru: form.country_name_ru.trim(),
-        category_uz: form.category_uz.trim(),
-        category_ru: form.category_ru.trim(),
-        title_uz: form.title_uz.trim(),
-        title_ru: form.title_ru.trim(),
-        result_uz: form.result_uz || null,
-        result_ru: form.result_ru || null,
+        country_name: form.country_name,
+        category: form.category,
+        title: form.title,
+        result: form.result,
         year: form.year || null,
         is_active: form.is_active,
         sort_order: form.sort_order,
@@ -172,32 +166,37 @@ export function BrandCaseStudiesManager({ brandId }: Props) {
         </CardContent></Card>
       ) : (
         <div className="grid gap-3">
-          {caseStudies.map((c) => (
-            <Card key={c.id} className="hover:shadow-md transition-shadow">
-              <CardContent className="p-4 flex items-center gap-4">
-                <GripVertical className="h-4 w-4 text-muted-foreground cursor-grab" />
-                {c.image ? (
-                  <img src={c.image} alt="" className="h-14 w-14 object-cover rounded-lg" />
-                ) : (
-                  <div className="h-14 w-14 bg-muted rounded-lg flex items-center justify-center">
-                    <ImageIcon className="h-5 w-5 text-muted-foreground" />
+          {caseStudies.map((c) => {
+            const title = getTranslated(c.title, defaultLanguage, defaultLanguage);
+            const category = getTranslated(c.category, defaultLanguage, defaultLanguage);
+            const countryName = getTranslated(c.country_name, defaultLanguage, defaultLanguage);
+            return (
+              <Card key={c.id} className="hover:shadow-md transition-shadow">
+                <CardContent className="p-4 flex items-center gap-4">
+                  <GripVertical className="h-4 w-4 text-muted-foreground cursor-grab" />
+                  {c.image ? (
+                    <img src={c.image} alt="" className="h-14 w-14 object-cover rounded-lg" />
+                  ) : (
+                    <div className="h-14 w-14 bg-muted rounded-lg flex items-center justify-center">
+                      <ImageIcon className="h-5 w-5 text-muted-foreground" />
+                    </div>
+                  )}
+                  <div className="flex-1 min-w-0">
+                    <p className="font-medium truncate">{countryFlagEmoji(c.country_code)} {title}</p>
+                    <p className="text-sm text-muted-foreground truncate">{category} · {countryName} · {c.year}</p>
                   </div>
-                )}
-                <div className="flex-1 min-w-0">
-                  <p className="font-medium truncate">{countryFlagEmoji(c.country_code)} {c.title_uz}</p>
-                  <p className="text-sm text-muted-foreground truncate">{c.category_uz} · {c.country_name_uz} · {c.year}</p>
-                </div>
-                <Badge variant={c.is_active ? 'default' : 'secondary'}>
-                  {c.is_active ? 'Faol' : 'Nofaol'}
-                </Badge>
-                <Switch checked={c.is_active} onCheckedChange={() => toggleActive(c)} />
-                <Button variant="ghost" size="icon" onClick={() => openEdit(c)}><Pencil className="h-4 w-4" /></Button>
-                <Button variant="ghost" size="icon" onClick={() => { setSelected(c); setConfirmDelete(true); }}>
-                  <Trash2 className="h-4 w-4 text-destructive" />
-                </Button>
-              </CardContent>
-            </Card>
-          ))}
+                  <Badge variant={c.is_active ? 'default' : 'secondary'}>
+                    {c.is_active ? 'Faol' : 'Nofaol'}
+                  </Badge>
+                  <Switch checked={c.is_active} onCheckedChange={() => toggleActive(c)} />
+                  <Button variant="ghost" size="icon" onClick={() => openEdit(c)}><Pencil className="h-4 w-4" /></Button>
+                  <Button variant="ghost" size="icon" onClick={() => { setSelected(c); setConfirmDelete(true); }}>
+                    <Trash2 className="h-4 w-4 text-destructive" />
+                  </Button>
+                </CardContent>
+              </Card>
+            );
+          })}
         </div>
       )}
 
@@ -237,78 +236,61 @@ export function BrandCaseStudiesManager({ brandId }: Props) {
                 onChange={(e) => e.target.files?.[0] && uploadImage(e.target.files[0])} />
             </div>
 
-            <div className="grid grid-cols-3 gap-4">
-              <div className="space-y-2">
-                <Label>Davlat kodi (ISO-2) *</Label>
-                <Input value={form.country_code} maxLength={2} placeholder="DE"
-                  onChange={(e) => setForm((p) => ({ ...p, country_code: e.target.value.toUpperCase() }))} />
-              </div>
-              <div className="space-y-2">
-                <Label>Davlat nomi (UZ)</Label>
-                <Input value={form.country_name_uz} placeholder="Germaniya"
-                  onChange={(e) => setForm((p) => ({ ...p, country_name_uz: e.target.value }))} />
-              </div>
-              <div className="space-y-2">
-                <Label>Davlat nomi (RU)</Label>
-                <Input value={form.country_name_ru} placeholder="Германия"
-                  onChange={(e) => setForm((p) => ({ ...p, country_name_ru: e.target.value }))} />
-              </div>
+            <div className="space-y-2">
+              <Label>Davlat kodi (ISO-2) *</Label>
+              <Input value={form.country_code} maxLength={2} placeholder="DE"
+                onChange={(e) => setForm((p) => ({ ...p, country_code: e.target.value.toUpperCase() }))} />
             </div>
+
+            <TranslatedInput
+              label="Davlat nomi"
+              languages={languages}
+              value={form.country_name}
+              onChange={(country_name) => setForm((p) => ({ ...p, country_name }))}
+              placeholder={{ uz: 'Germaniya', ru: 'Германия' }}
+            />
+
+            <TranslatedInput
+              label="Kategoriya"
+              languages={languages}
+              value={form.category}
+              onChange={(category) => setForm((p) => ({ ...p, category }))}
+              placeholder={{ uz: 'Tekstil ishlab chiqarish', ru: 'Текстильное производство' }}
+            />
+
+            <TranslatedInput
+              label="Sarlavha"
+              required
+              languages={languages}
+              value={form.title}
+              onChange={(title) => setForm((p) => ({ ...p, title }))}
+              placeholder={{ uz: 'Germaniyaga tekstil eksporti', ru: 'Экспорт текстиля в Германию' }}
+            />
+
+            <TranslatedInput
+              label="Natija"
+              languages={languages}
+              value={form.result}
+              onChange={(result) => setForm((p) => ({ ...p, result }))}
+              placeholder={{ uz: '120 konteyner yetkazildi', ru: 'Доставлено 120 контейнеров' }}
+            />
 
             <div className="grid grid-cols-2 gap-4">
-              <div className="space-y-2">
-                <Label>Kategoriya (UZ)</Label>
-                <Input value={form.category_uz} placeholder="Tekstil ishlab chiqarish"
-                  onChange={(e) => setForm((p) => ({ ...p, category_uz: e.target.value }))} />
-              </div>
-              <div className="space-y-2">
-                <Label>Kategoriya (RU)</Label>
-                <Input value={form.category_ru} placeholder="Текстильное производство"
-                  onChange={(e) => setForm((p) => ({ ...p, category_ru: e.target.value }))} />
-              </div>
-            </div>
-
-            <div className="grid grid-cols-2 gap-4">
-              <div className="space-y-2">
-                <Label>Sarlavha (UZ) *</Label>
-                <Input value={form.title_uz} placeholder="Germaniyaga tekstil eksporti"
-                  onChange={(e) => setForm((p) => ({ ...p, title_uz: e.target.value }))} />
-              </div>
-              <div className="space-y-2">
-                <Label>Sarlavha (RU) *</Label>
-                <Input value={form.title_ru} placeholder="Экспорт текстиля в Германию"
-                  onChange={(e) => setForm((p) => ({ ...p, title_ru: e.target.value }))} />
-              </div>
-            </div>
-
-            <div className="grid grid-cols-3 gap-4">
-              <div className="space-y-2">
-                <Label>Natija (UZ)</Label>
-                <Input value={form.result_uz} placeholder="120 konteyner yetkazildi"
-                  onChange={(e) => setForm((p) => ({ ...p, result_uz: e.target.value }))} />
-              </div>
-              <div className="space-y-2">
-                <Label>Natija (RU)</Label>
-                <Input value={form.result_ru} placeholder="Доставлено 120 контейнеров"
-                  onChange={(e) => setForm((p) => ({ ...p, result_ru: e.target.value }))} />
-              </div>
               <div className="space-y-2">
                 <Label>Yil</Label>
                 <Input value={form.year} placeholder="2024"
                   onChange={(e) => setForm((p) => ({ ...p, year: e.target.value }))} />
               </div>
-            </div>
-
-            <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
                 <Label>Tartib raqami</Label>
                 <Input type="number" value={form.sort_order}
                   onChange={(e) => setForm((p) => ({ ...p, sort_order: parseInt(e.target.value) || 0 }))} />
               </div>
-              <div className="flex items-end gap-3 pb-2">
-                <Switch checked={form.is_active} onCheckedChange={(v) => setForm((p) => ({ ...p, is_active: v }))} />
-                <Label>Faol</Label>
-              </div>
+            </div>
+
+            <div className="flex items-center gap-3">
+              <Switch checked={form.is_active} onCheckedChange={(v) => setForm((p) => ({ ...p, is_active: v }))} />
+              <Label>Faol</Label>
             </div>
           </div>
 
@@ -327,7 +309,7 @@ export function BrandCaseStudiesManager({ brandId }: Props) {
           <AlertDialogHeader>
             <AlertDialogTitle>Loyihani o'chirish</AlertDialogTitle>
             <AlertDialogDescription>
-              "{selected?.title_uz}" loyihasi o'chiriladi. Davom etilsinmi?
+              "{selected ? getTranslated(selected.title, defaultLanguage, defaultLanguage) : ''}" loyihasi o'chiriladi. Davom etilsinmi?
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>

@@ -6,14 +6,10 @@ export interface CaseStudy {
   brand_id: string;
   image: string | null;
   country_code: string;
-  country_name_uz: string;
-  country_name_ru: string;
-  category_uz: string;
-  category_ru: string;
-  title_uz: string;
-  title_ru: string;
-  result_uz: string | null;
-  result_ru: string | null;
+  country_name: Record<string, string>;
+  category: Record<string, string>;
+  title: Record<string, string>;
+  result: Record<string, string>;
   year: string | null;
   is_active: boolean;
   sort_order: number;

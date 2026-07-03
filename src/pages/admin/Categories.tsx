@@ -32,6 +32,9 @@ import { useToast } from '@/hooks/use-toast';
 import { useDivisions } from '@/hooks/useDivisions';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useBrands } from '@/hooks/useBrands';
+import { useLanguage } from '@/hooks/useLanguage';
+import { useLanguages } from '@/hooks/useLanguages';
+import { getTranslated } from '@/lib/i18n';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { ChevronDown, Award } from 'lucide-react';
@@ -111,6 +114,8 @@ export default function Categories() {
   const [imageUploading, setImageUploading] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const { toast } = useToast();
+  const { language } = useLanguage();
+  const { defaultLanguage } = useLanguages();
   const { brands } = useBrands(false);
   const primaryBrandId = formData.brand_ids[0] || null;
   const { divisions } = useDivisions(primaryBrandId, false);
@@ -737,7 +742,7 @@ export default function Categories() {
                           ? "Brendlarni tanlang (ixtiyoriy)"
                           : brands
                               .filter((b) => formData.brand_ids.includes(b.id))
-                              .map((b) => b.name_uz)
+                              .map((b) => getTranslated(b.name, language, defaultLanguage))
                               .join(', ')}
                       </span>
                       <ChevronDown className="h-4 w-4 opacity-50 shrink-0" />
@@ -752,6 +757,7 @@ export default function Categories() {
                       <div className="p-2 space-y-1">
                         {brands.map((brand) => {
                           const checked = formData.brand_ids.includes(brand.id);
+                          const brandName = getTranslated(brand.name, defaultLanguage, defaultLanguage);
                           return (
                             <label
                               key={brand.id}
@@ -769,10 +775,9 @@ export default function Categories() {
                                 }}
                               />
                               {brand.logo && (
-                                <img src={brand.logo} alt={brand.name_uz} className="h-6 w-6 object-contain rounded" />
+                                <img src={brand.logo} alt={brandName} className="h-6 w-6 object-contain rounded" />
                               )}
-                              <span className="text-sm flex-1">{brand.name_uz}</span>
-                              <span className="text-xs text-muted-foreground">{brand.name_ru}</span>
+                              <span className="text-sm flex-1">{brandName}</span>
                             </label>
                           );
                         })}
@@ -799,7 +804,7 @@ export default function Categories() {
                   <SelectContent>
                     <SelectItem value="__none__">— Yo'q —</SelectItem>
                     {divisions.map((d) => (
-                      <SelectItem key={d.id} value={d.id}>{d.name_uz}</SelectItem>
+                      <SelectItem key={d.id} value={d.id}>{getTranslated(d.name, language, defaultLanguage)}</SelectItem>
                     ))}
                   </SelectContent>
                 </Select>

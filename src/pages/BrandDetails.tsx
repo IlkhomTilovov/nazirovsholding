@@ -6,6 +6,8 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { ProductCard } from '@/components/ProductCard';
 import { LazyImage } from '@/components/LazyImage';
 import { useLanguage } from '@/hooks/useLanguage';
+import { useLanguages } from '@/hooks/useLanguages';
+import { getTranslated, getTranslatedList } from '@/lib/i18n';
 import { useSEO } from '@/hooks/useSEO';
 import { useBrand, useBrandProducts } from '@/hooks/useBrands';
 import { useSystemSettings } from '@/hooks/useSystemSettings';
@@ -14,6 +16,7 @@ import { useCaseStudies, countryFlagEmoji } from '@/hooks/useCaseStudies';
 export default function BrandDetails() {
   const { slug } = useParams<{ slug: string }>();
   const { language } = useLanguage();
+  const { defaultLanguage } = useLanguages();
   const { getPrimaryDomain } = useSystemSettings();
   const { brand, loading } = useBrand(slug);
   const { products, categories, divisions, loading: productsLoading } = useBrandProducts(brand?.id, 48);
@@ -21,10 +24,10 @@ export default function BrandDetails() {
   const [activeCategory, setActiveCategory] = useState<Record<string, string>>({});
 
   const isUz = language === 'uz';
-  const name = brand ? (isUz ? brand.name_uz : brand.name_ru) : '';
-  const description = brand ? (isUz ? brand.description_uz : brand.description_ru) : '';
-  const metaTitle = brand ? (isUz ? brand.meta_title_uz : brand.meta_title_ru) : null;
-  const metaDesc = brand ? (isUz ? brand.meta_description_uz : brand.meta_description_ru) : null;
+  const name = brand ? getTranslated(brand.name, language, defaultLanguage) : '';
+  const description = brand ? getTranslated(brand.description, language, defaultLanguage) : '';
+  const metaTitle = brand ? getTranslated(brand.meta_title, language, defaultLanguage) : null;
+  const metaDesc = brand ? getTranslated(brand.meta_description, language, defaultLanguage) : null;
 
   useSEO({
     title: metaTitle || name || undefined,
@@ -225,13 +228,13 @@ export default function BrandDetails() {
                 const sectionCategories = categories.filter((c) => c.division_id === division.id);
                 const catIds = new Set(sectionCategories.map((c) => c.id));
                 const sectionProducts = products.filter((p) => p.category_id != null && catIds.has(p.category_id));
-                const description = isUz ? division.description_uz : division.description_ru;
-                const benefits = isUz ? division.benefits_uz : division.benefits_ru;
+                const description = getTranslated(division.description, language, defaultLanguage);
+                const benefits = getTranslatedList(division.benefits, language, defaultLanguage);
                 const sectionKey = `division:${division.id}`;
                 return (
                   <section key={division.id} className="mb-16">
                     <h2 className="font-serif text-2xl md:text-3xl font-bold mb-6">
-                      {isUz ? division.name_uz : division.name_ru}
+                      {getTranslated(division.name, language, defaultLanguage)}
                     </h2>
                     {(description || benefits.length > 0) && (
                       <div className="mb-8 space-y-6">
@@ -293,52 +296,58 @@ export default function BrandDetails() {
               {isUz ? "Tanlangan xalqaro loyihalar" : 'Избранные международные проекты'}
             </h2>
             <div className="space-y-6">
-              {caseStudies.map((c) => (
-                <div key={c.id} className="flex flex-col md:flex-row border border-primary/30 overflow-hidden">
-                  <div className="relative w-full md:w-1/2 aspect-[16/10] md:aspect-auto">
-                    {c.image ? (
-                      <img src={c.image} alt={isUz ? c.title_uz : c.title_ru} className="absolute inset-0 w-full h-full object-cover" />
-                    ) : (
-                      <div className="absolute inset-0 bg-muted" />
-                    )}
-                    <div className="hidden md:block absolute inset-y-0 right-0 w-24 bg-gradient-to-r from-transparent to-background" />
-                    <div className="absolute top-4 left-4 flex items-center gap-1.5 bg-background/90 px-2.5 py-1 text-xs font-semibold tracking-wide">
-                      <span>{countryFlagEmoji(c.country_code)}</span>
-                      <span>{c.country_code}</span>
-                      <span className="text-muted-foreground font-normal uppercase">
-                        {isUz ? c.country_name_uz : c.country_name_ru}
+              {caseStudies.map((c) => {
+                const title = getTranslated(c.title, language, defaultLanguage);
+                const category = getTranslated(c.category, language, defaultLanguage);
+                const countryName = getTranslated(c.country_name, language, defaultLanguage);
+                const result = getTranslated(c.result, language, defaultLanguage);
+                return (
+                  <div key={c.id} className="flex flex-col md:flex-row border border-primary/30 overflow-hidden">
+                    <div className="relative w-full md:w-1/2 aspect-[16/10] md:aspect-auto">
+                      {c.image ? (
+                        <img src={c.image} alt={title} className="absolute inset-0 w-full h-full object-cover" />
+                      ) : (
+                        <div className="absolute inset-0 bg-muted" />
+                      )}
+                      <div className="hidden md:block absolute inset-y-0 right-0 w-24 bg-gradient-to-r from-transparent to-background" />
+                      <div className="absolute top-4 left-4 flex items-center gap-1.5 bg-background/90 px-2.5 py-1 text-xs font-semibold tracking-wide">
+                        <span>{countryFlagEmoji(c.country_code)}</span>
+                        <span>{c.country_code}</span>
+                        <span className="text-muted-foreground font-normal uppercase">
+                          {countryName}
+                        </span>
+                      </div>
+                    </div>
+                    <div className="w-full md:w-1/2 p-6 md:p-10 flex flex-col justify-center">
+                      <span className="text-primary text-[11px] tracking-[0.25em] uppercase font-semibold mb-3">
+                        {category}
                       </span>
+                      <h3 className="font-serif text-2xl md:text-3xl text-primary font-bold mb-4">
+                        {title}
+                      </h3>
+                      <span className="w-12 h-px bg-primary/40 mb-6" />
+                      <div className="flex items-center gap-10">
+                        {result && (
+                          <div>
+                            <p className="text-[11px] tracking-[0.2em] uppercase text-muted-foreground mb-1">
+                              {isUz ? 'Natija' : 'Результат'}
+                            </p>
+                            <p className="font-medium">{result}</p>
+                          </div>
+                        )}
+                        {c.year && (
+                          <div>
+                            <p className="text-[11px] tracking-[0.2em] uppercase text-muted-foreground mb-1">
+                              {isUz ? 'Yil' : 'Год'}
+                            </p>
+                            <p className="font-medium text-primary">{c.year}</p>
+                          </div>
+                        )}
+                      </div>
                     </div>
                   </div>
-                  <div className="w-full md:w-1/2 p-6 md:p-10 flex flex-col justify-center">
-                    <span className="text-primary text-[11px] tracking-[0.25em] uppercase font-semibold mb-3">
-                      {isUz ? c.category_uz : c.category_ru}
-                    </span>
-                    <h3 className="font-serif text-2xl md:text-3xl text-primary font-bold mb-4">
-                      {isUz ? c.title_uz : c.title_ru}
-                    </h3>
-                    <span className="w-12 h-px bg-primary/40 mb-6" />
-                    <div className="flex items-center gap-10">
-                      {(c.result_uz || c.result_ru) && (
-                        <div>
-                          <p className="text-[11px] tracking-[0.2em] uppercase text-muted-foreground mb-1">
-                            {isUz ? 'Natija' : 'Результат'}
-                          </p>
-                          <p className="font-medium">{isUz ? c.result_uz : c.result_ru}</p>
-                        </div>
-                      )}
-                      {c.year && (
-                        <div>
-                          <p className="text-[11px] tracking-[0.2em] uppercase text-muted-foreground mb-1">
-                            {isUz ? 'Yil' : 'Год'}
-                          </p>
-                          <p className="font-medium text-primary">{c.year}</p>
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
           </div>
         )}

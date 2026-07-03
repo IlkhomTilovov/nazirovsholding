@@ -3,12 +3,18 @@ import { Link } from 'react-router-dom';
 import { Linkedin, Send, Instagram, Youtube, ArrowUpRight, MapPin } from 'lucide-react';
 import { useSystemSettings } from '@/hooks/useSystemSettings';
 import { useLanguage } from '@/hooks/useLanguage';
+import { useOfficialLinks } from '@/hooks/useOfficialLinks';
+import { useLanguages } from '@/hooks/useLanguages';
+import { getTranslated } from '@/lib/i18n';
 import { EditableText } from '@/components/EditableText';
 import { toast } from 'sonner';
 
 export function Footer() {
   const { language } = useLanguage();
+  const { defaultLanguage } = useLanguages();
+  const isUz = language === 'uz';
   const { settings, getAddress } = useSystemSettings();
+  const { links: officialLinks } = useOfficialLinks(true);
   const [email, setEmail] = useState('');
 
   const phone = settings?.contact_phone || '+998 90 123 45 67';
@@ -202,6 +208,36 @@ export function Footer() {
             </div>
           </div>
         </div>
+
+        {/* Official Links */}
+        {officialLinks.length > 0 && (
+          <div className="py-12 border-t border-primary/[0.12]">
+            <h4 className="text-[10px] tracking-[0.4em] uppercase text-secondary-foreground/50 mb-8 text-center">
+              {isUz ? 'Rasmiy havolalar' : 'Официальные ссылки'}
+            </h4>
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-x-6 gap-y-10">
+              {officialLinks.map((l) => {
+                const name = getTranslated(l.name, language, defaultLanguage);
+                return (
+                  <a
+                    key={l.id}
+                    href={l.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="group flex flex-col items-center text-center gap-3"
+                  >
+                    <div className="h-16 w-16 flex items-center justify-center rounded-full bg-white/95 p-2.5 shadow-md transition-transform duration-300 group-hover:scale-105">
+                      <img src={l.logo} alt={name} className="h-full w-full object-contain" />
+                    </div>
+                    <span className="text-xs leading-snug text-secondary-foreground/70 group-hover:text-primary transition-colors max-w-[160px]">
+                      {name}
+                    </span>
+                  </a>
+                );
+              })}
+            </div>
+          </div>
+        )}
 
         {/* Bottom Bar */}
         <div className="pt-8 border-t border-primary/[0.12] flex flex-col lg:flex-row items-center justify-between gap-6 text-[11px] tracking-[0.15em] text-secondary-foreground/50">

@@ -7,26 +7,27 @@ import {
 } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { toWebP } from '@/lib/imageOptimizer';
+import { getTranslated } from '@/lib/i18n';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Switch } from '@/components/ui/switch';
-import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Badge } from '@/components/ui/badge';
 import { useToast } from '@/hooks/use-toast';
 import { useBrandStats } from '@/hooks/useDivisions';
+import { useLanguages } from '@/hooks/useLanguages';
 import { BrandDivisionsManager } from '@/components/admin/BrandDivisionsManager';
 import { BrandCaseStudiesManager } from '@/components/admin/BrandCaseStudiesManager';
+import { TranslatedInput } from '@/components/admin/translated/TranslatedInput';
+import { TranslatedTextarea } from '@/components/admin/translated/TranslatedTextarea';
 
 interface BrandRecord {
   id: string;
-  name_uz: string;
-  name_ru: string;
+  name: Record<string, string>;
   slug: string;
-  description_uz: string | null;
-  description_ru: string | null;
+  description: Record<string, string>;
   website: string | null;
   is_active: boolean;
   sort_order: number;
@@ -37,10 +38,8 @@ interface BrandRecord {
   thumbnail: string | null;
   cover_image: string | null;
   hero_banner: string | null;
-  meta_title_uz: string | null;
-  meta_title_ru: string | null;
-  meta_description_uz: string | null;
-  meta_description_ru: string | null;
+  meta_title: Record<string, string>;
+  meta_description: Record<string, string>;
   meta_keywords: string | null;
   canonical_url: string | null;
   og_image: string | null;
@@ -63,6 +62,7 @@ export default function BrandWorkspace() {
   const [tab, setTab] = useState('general');
   const [uploadField, setUploadField] = useState<string | null>(null);
   const { stats, loading: statsLoading, refetch: refetchStats } = useBrandStats(brandId);
+  const { languages, defaultLanguage } = useLanguages();
 
   useEffect(() => {
     if (!brandId) return;
@@ -177,13 +177,15 @@ export default function BrandWorkspace() {
     { v: 'settings', label: 'Sozlamalar', icon: Sliders },
   ];
 
+  const brandName = getTranslated(brand.name, defaultLanguage, defaultLanguage);
+
   return (
     <div className="space-y-6 pb-12">
       {/* Breadcrumb */}
       <nav className="flex items-center gap-2 text-sm text-muted-foreground">
         <Link to="/admin/brands" className="hover:text-foreground">Brendlar</Link>
         <ChevronRight className="h-4 w-4" />
-        <span className="text-foreground font-medium">{brand.name_uz}</span>
+        <span className="text-foreground font-medium">{brandName}</span>
       </nav>
 
       {/* Header */}
@@ -198,12 +200,12 @@ export default function BrandWorkspace() {
           )}
           <div>
             <div className="flex items-center gap-2 mb-1">
-              <h1 className="text-2xl font-bold">{brand.name_uz}</h1>
+              <h1 className="text-2xl font-bold">{brandName}</h1>
               <Badge variant={brand.is_active ? 'default' : 'secondary'}>
                 {brand.is_active ? 'Faol' : 'Nofaol'}
               </Badge>
             </div>
-            <p className="text-sm text-muted-foreground">{brand.name_ru} · /brand/{brand.slug}</p>
+            <p className="text-sm text-muted-foreground">/brand/{brand.slug}</p>
           </div>
         </div>
         <div className="flex items-center gap-2">
@@ -231,21 +233,22 @@ export default function BrandWorkspace() {
           <Card>
             <CardHeader><CardTitle>Asosiy ma'lumotlar</CardTitle></CardHeader>
             <CardContent className="space-y-4">
-              <div className="grid md:grid-cols-2 gap-4">
-                <div className="space-y-2"><Label>Nomi (UZ) *</Label>
-                  <Input value={brand.name_uz} onChange={(e) => update({ name_uz: e.target.value })} /></div>
-                <div className="space-y-2"><Label>Nomi (RU) *</Label>
-                  <Input value={brand.name_ru} onChange={(e) => update({ name_ru: e.target.value })} /></div>
-              </div>
+              <TranslatedInput
+                label="Nomi"
+                required
+                languages={languages}
+                value={brand.name}
+                onChange={(name) => update({ name })}
+              />
               <div className="space-y-2"><Label>Slug (URL)</Label>
                 <Input value={brand.slug} onChange={(e) => update({ slug: e.target.value })} />
                 <p className="text-xs text-muted-foreground">/brand/{brand.slug}</p></div>
-              <div className="grid md:grid-cols-2 gap-4">
-                <div className="space-y-2"><Label>Qisqa tavsif (UZ)</Label>
-                  <Textarea rows={3} value={brand.description_uz || ''} onChange={(e) => update({ description_uz: e.target.value })} /></div>
-                <div className="space-y-2"><Label>Qisqa tavsif (RU)</Label>
-                  <Textarea rows={3} value={brand.description_ru || ''} onChange={(e) => update({ description_ru: e.target.value })} /></div>
-              </div>
+              <TranslatedTextarea
+                label="Qisqa tavsif"
+                languages={languages}
+                value={brand.description}
+                onChange={(description) => update({ description })}
+              />
               <div className="grid md:grid-cols-3 gap-4">
                 <div className="space-y-2 md:col-span-2"><Label>Veb-sayt</Label>
                   <Input type="url" value={brand.website || ''} onChange={(e) => update({ website: e.target.value })} placeholder="https://..." /></div>
@@ -265,18 +268,19 @@ export default function BrandWorkspace() {
           <Card>
             <CardHeader><CardTitle>SEO sozlamalari</CardTitle></CardHeader>
             <CardContent className="space-y-4">
-              <div className="grid md:grid-cols-2 gap-4">
-                <div className="space-y-2"><Label>SEO Title (UZ)</Label>
-                  <Input value={brand.meta_title_uz || ''} onChange={(e) => update({ meta_title_uz: e.target.value })} /></div>
-                <div className="space-y-2"><Label>SEO Title (RU)</Label>
-                  <Input value={brand.meta_title_ru || ''} onChange={(e) => update({ meta_title_ru: e.target.value })} /></div>
-              </div>
-              <div className="grid md:grid-cols-2 gap-4">
-                <div className="space-y-2"><Label>Meta Description (UZ)</Label>
-                  <Textarea rows={3} value={brand.meta_description_uz || ''} onChange={(e) => update({ meta_description_uz: e.target.value })} /></div>
-                <div className="space-y-2"><Label>Meta Description (RU)</Label>
-                  <Textarea rows={3} value={brand.meta_description_ru || ''} onChange={(e) => update({ meta_description_ru: e.target.value })} /></div>
-              </div>
+              <TranslatedInput
+                label="SEO Title"
+                languages={languages}
+                value={brand.meta_title}
+                onChange={(meta_title) => update({ meta_title })}
+                placeholder={brand.name}
+              />
+              <TranslatedTextarea
+                label="Meta Description"
+                languages={languages}
+                value={brand.meta_description}
+                onChange={(meta_description) => update({ meta_description })}
+              />
               <div className="space-y-2"><Label>Keywords</Label>
                 <Input value={brand.meta_keywords || ''} onChange={(e) => update({ meta_keywords: e.target.value })} placeholder="kalit, soz, lar" /></div>
               <div className="grid md:grid-cols-2 gap-4">

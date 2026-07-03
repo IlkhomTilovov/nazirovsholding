@@ -4,6 +4,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { LanguageProvider } from "@/hooks/useLanguage";
+import { LanguagesProvider } from "@/hooks/useLanguages";
 import { CartProvider } from "@/hooks/useCart";
 import { ThemeProvider } from "@/hooks/useTheme";
 import { AuthProvider } from "@/hooks/useAuth";
@@ -45,6 +46,7 @@ import Categories from "./pages/admin/Categories";
 import Brands from "./pages/admin/Brands";
 import BrandWorkspace from "./pages/admin/BrandWorkspace";
 import Partners from "./pages/admin/Partners";
+import OfficialLinks from "./pages/admin/OfficialLinks";
 
 import ProductsNew from "./pages/admin/ProductsNew";
 import Attributes from "./pages/admin/Attributes";
@@ -65,6 +67,7 @@ const App = () => (
     <ThemeProvider>
       <ThemeLoader>
         <SystemSettingsProvider>
+          <LanguagesProvider>
           <LanguageProvider>
             <CartProvider>
               <AuthProvider>
@@ -111,6 +114,11 @@ const App = () => (
                           <Route path="partners" element={
                             <ProtectedRoute module="brands">
                               <Partners />
+                            </ProtectedRoute>
+                          } />
+                          <Route path="official-links" element={
+                            <ProtectedRoute module="brands">
+                              <OfficialLinks />
                             </ProtectedRoute>
                           } />
 
@@ -209,6 +217,7 @@ const App = () => (
               </AuthProvider>
             </CartProvider>
           </LanguageProvider>
+          </LanguagesProvider>
         </SystemSettingsProvider>
       </ThemeLoader>
     </ThemeProvider>

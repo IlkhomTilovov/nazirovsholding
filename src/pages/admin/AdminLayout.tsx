@@ -19,6 +19,7 @@ import {
   MessageSquare,
   Award,
   Handshake,
+  Landmark,
   Sliders,
   BarChart3,
 
@@ -43,6 +44,7 @@ const navItems: NavItem[] = [
   { title: 'Buyurtmalar', url: '/admin/orders', icon: ShoppingCart, module: 'orders' },
   { title: 'Brendlar', url: '/admin/brands', icon: Award, module: 'brands' },
   { title: 'Hamkorlar', url: '/admin/partners', icon: Handshake, module: 'brands' },
+  { title: 'Rasmiy havolalar', url: '/admin/official-links', icon: Landmark, module: 'brands' },
 
   { title: 'Toifalar', url: '/admin/categories', icon: FolderTree, module: 'categories' },
   { title: 'Mahsulotlar', url: '/admin/products', icon: Package, module: 'products' },

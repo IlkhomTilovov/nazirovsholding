@@ -12,6 +12,7 @@ import { Switch } from '@/components/ui/switch';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useToast } from '@/hooks/use-toast';
 import { useSystemSettings } from '@/hooks/useSystemSettings';
+import { LanguagesManager } from '@/components/admin/LanguagesManager';
 
 interface SystemSettingsData {
   id: string;
@@ -282,20 +283,6 @@ export default function SystemSettings() {
     } finally {
       setSaving(false);
     }
-  };
-
-  const toggleLanguage = (lang: string) => {
-    const enabled = formData.languages_enabled.includes(lang);
-    if (enabled && formData.languages_enabled.length === 1) {
-      toast({ variant: 'destructive', title: 'Xatolik', description: 'Kamida bitta til faol bo\'lishi kerak' });
-      return;
-    }
-    setFormData({
-      ...formData,
-      languages_enabled: enabled
-        ? formData.languages_enabled.filter((l) => l !== lang)
-        : [...formData.languages_enabled, lang],
-    });
   };
 
   if (loading) {
@@ -579,42 +566,8 @@ export default function SystemSettings() {
               <CardTitle>Til sozlamalari</CardTitle>
               <CardDescription>Saytda faol tillarni boshqaring</CardDescription>
             </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="space-y-2">
-                <Label>Asosiy til</Label>
-                <Select
-                  value={formData.default_language}
-                  onValueChange={(value) => setFormData({ ...formData, default_language: value })}
-                >
-                  <SelectTrigger>
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="uz">O'zbekcha</SelectItem>
-                    <SelectItem value="ru">Русский</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-
-              <div className="space-y-4">
-                <Label>Faol tillar</Label>
-                <div className="space-y-2">
-                  <div className="flex items-center justify-between p-3 bg-muted rounded-lg">
-                    <span>O'zbekcha (UZ)</span>
-                    <Switch
-                      checked={formData.languages_enabled.includes('uz')}
-                      onCheckedChange={() => toggleLanguage('uz')}
-                    />
-                  </div>
-                  <div className="flex items-center justify-between p-3 bg-muted rounded-lg">
-                    <span>Русский (RU)</span>
-                    <Switch
-                      checked={formData.languages_enabled.includes('ru')}
-                      onCheckedChange={() => toggleLanguage('ru')}
-                    />
-                  </div>
-                </div>
-              </div>
+            <CardContent>
+              <LanguagesManager />
             </CardContent>
           </Card>
         </TabsContent>

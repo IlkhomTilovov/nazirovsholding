@@ -6,11 +6,11 @@ import {
 } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { toWebP } from '@/lib/imageOptimizer';
+import { getTranslated } from '@/lib/i18n';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Switch } from '@/components/ui/switch';
-import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
@@ -19,23 +19,22 @@ import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Separator } from '@/components/ui/separator';
 import { useToast } from '@/hooks/use-toast';
+import { useLanguages } from '@/hooks/useLanguages';
+import { TranslatedInput } from '@/components/admin/translated/TranslatedInput';
+import { TranslatedTextarea } from '@/components/admin/translated/TranslatedTextarea';
 
 interface Brand {
   id: string;
-  name_uz: string;
-  name_ru: string;
+  name: Record<string, string>;
   slug: string;
   logo: string | null;
   banner: string | null;
-  description_uz: string | null;
-  description_ru: string | null;
+  description: Record<string, string>;
   website: string | null;
   is_active: boolean;
   sort_order: number;
-  meta_title_uz: string | null;
-  meta_title_ru: string | null;
-  meta_description_uz: string | null;
-  meta_description_ru: string | null;
+  meta_title: Record<string, string>;
+  meta_description: Record<string, string>;
   meta_keywords: string | null;
   is_indexed: boolean;
   is_followed: boolean;
@@ -44,33 +43,28 @@ interface Brand {
 }
 
 interface FormData {
-  name_uz: string;
-  name_ru: string;
+  name: Record<string, string>;
   slug: string;
   logo: string;
   banner: string;
-  description_uz: string;
-  description_ru: string;
+  description: Record<string, string>;
   website: string;
   is_active: boolean;
   sort_order: number;
-  meta_title_uz: string;
-  meta_title_ru: string;
-  meta_description_uz: string;
-  meta_description_ru: string;
+  meta_title: Record<string, string>;
+  meta_description: Record<string, string>;
   meta_keywords: string;
   is_indexed: boolean;
   is_followed: boolean;
 }
 
 const initialFormData: FormData = {
-  name_uz: '', name_ru: '', slug: '',
+  name: {}, slug: '',
   logo: '', banner: '',
-  description_uz: '', description_ru: '',
+  description: {},
   website: '',
   is_active: true, sort_order: 0,
-  meta_title_uz: '', meta_title_ru: '',
-  meta_description_uz: '', meta_description_ru: '',
+  meta_title: {}, meta_description: {},
   meta_keywords: '',
   is_indexed: true, is_followed: true,
 };
@@ -84,6 +78,7 @@ const generateSlug = (name: string) =>
     .replace(/[^a-z0-9\s-]/g,'').replace(/\s+/g,'-').replace(/-+/g,'-').trim();
 
 export default function Brands() {
+  const { languages, defaultLanguage } = useLanguages();
   const [brands, setBrands] = useState<Brand[]>([]);
   const [loading, setLoading] = useState(true);
   const [dialogOpen, setDialogOpen] = useState(false);
@@ -143,7 +138,7 @@ export default function Brands() {
     try {
       const { data, error } = await supabase.from('brands').select('*').order('sort_order', { ascending: true });
       if (error) throw error;
-      setBrands((data || []) as Brand[]);
+      setBrands((data || []) as unknown as Brand[]);
 
       const { data: products } = await supabase.from('products').select('brand_id');
       const counts: Record<string, number> = {};
@@ -174,25 +169,26 @@ export default function Brands() {
   const openEdit = (b: Brand) => {
     setSelected(b);
     setFormData({
-      name_uz: b.name_uz, name_ru: b.name_ru, slug: b.slug,
+      name: b.name || {}, slug: b.slug,
       logo: b.logo || '', banner: b.banner || '',
-      description_uz: b.description_uz || '', description_ru: b.description_ru || '',
+      description: b.description || {},
       website: b.website || '',
       is_active: b.is_active, sort_order: b.sort_order,
-      meta_title_uz: b.meta_title_uz || '', meta_title_ru: b.meta_title_ru || '',
-      meta_description_uz: b.meta_description_uz || '', meta_description_ru: b.meta_description_ru || '',
+      meta_title: b.meta_title || {}, meta_description: b.meta_description || {},
       meta_keywords: b.meta_keywords || '',
       is_indexed: b.is_indexed, is_followed: b.is_followed,
     });
     setSlugError(''); setActiveTab('general'); setDialogOpen(true);
   };
 
-  const handleNameChange = (value: string, field: 'name_uz' | 'name_ru') => {
-    const next = { ...formData, [field]: value };
-    if (field === 'name_uz' && (!formData.slug || formData.slug === generateSlug(formData.name_uz))) {
-      next.slug = generateSlug(value);
-    }
-    setFormData(next);
+  const handleNameChange = (name: Record<string, string>) => {
+    const baseName = name[defaultLanguage] || '';
+    const prevBaseName = formData.name[defaultLanguage] || '';
+    setFormData((p) => ({
+      ...p,
+      name,
+      slug: !p.slug || p.slug === generateSlug(prevBaseName) ? generateSlug(baseName) : p.slug,
+    }));
   };
 
   const handleSlugChange = async (value: string) => {
@@ -205,29 +201,27 @@ export default function Brands() {
   };
 
   const handleSubmit = async () => {
-    if (!formData.name_uz || !formData.name_ru) {
-      toast({ variant: 'destructive', title: 'Xatolik', description: "Brend nomini to'ldiring" });
+    const hasAllNames = languages.every((lang) => formData.name[lang.code]?.trim());
+    if (!hasAllNames) {
+      toast({ variant: 'destructive', title: 'Xatolik', description: "Barcha tillar uchun brend nomini to'ldiring" });
       return;
     }
-    const slug = formData.slug || generateSlug(formData.name_uz);
+    const baseName = formData.name[defaultLanguage] || '';
+    const slug = formData.slug || generateSlug(baseName);
     const ok = await checkSlugUnique(slug, selected?.id);
     if (!ok) { setSlugError('Bu slug allaqachon mavjud'); return; }
 
     const payload = {
-      name_uz: formData.name_uz.trim(),
-      name_ru: formData.name_ru.trim(),
+      name: formData.name,
       slug,
       logo: formData.logo || null,
       banner: formData.banner || null,
-      description_uz: formData.description_uz || null,
-      description_ru: formData.description_ru || null,
+      description: formData.description,
       website: formData.website || null,
       is_active: formData.is_active,
       sort_order: formData.sort_order,
-      meta_title_uz: formData.meta_title_uz || null,
-      meta_title_ru: formData.meta_title_ru || null,
-      meta_description_uz: formData.meta_description_uz || null,
-      meta_description_ru: formData.meta_description_ru || null,
+      meta_title: formData.meta_title,
+      meta_description: formData.meta_description,
       meta_keywords: formData.meta_keywords || null,
       is_indexed: formData.is_indexed,
       is_followed: formData.is_followed,
@@ -284,7 +278,7 @@ export default function Brands() {
   const filtered = brands.filter(b => {
     if (!searchQuery) return true;
     const q = searchQuery.toLowerCase();
-    return b.name_uz.toLowerCase().includes(q) || b.name_ru.toLowerCase().includes(q) || b.slug.toLowerCase().includes(q);
+    return Object.values(b.name || {}).some((n) => n.toLowerCase().includes(q)) || b.slug.toLowerCase().includes(q);
   });
 
   if (loading) {
@@ -322,7 +316,7 @@ export default function Brands() {
             <TableHeader>
               <TableRow>
                 <TableHead className="w-16">Logo</TableHead>
-                <TableHead>Nomi (UZ / RU)</TableHead>
+                <TableHead>Nomi</TableHead>
                 <TableHead>Slug</TableHead>
                 <TableHead className="text-center">Mahsulotlar</TableHead>
                 <TableHead>Status</TableHead>
@@ -332,11 +326,12 @@ export default function Brands() {
             <TableBody>
               {filtered.map(b => {
                 const count = productCounts[b.id] || 0;
+                const name = getTranslated(b.name, defaultLanguage, defaultLanguage);
                 return (
                   <TableRow key={b.id}>
                     <TableCell>
                       {b.logo ? (
-                        <img src={b.logo} alt={b.name_uz} className="h-12 w-12 object-contain rounded-lg border bg-white p-1" />
+                        <img src={b.logo} alt={name} className="h-12 w-12 object-contain rounded-lg border bg-white p-1" />
                       ) : (
                         <div className="h-12 w-12 bg-muted rounded-lg flex items-center justify-center">
                           <ImageIcon className="h-5 w-5 text-muted-foreground" />
@@ -345,8 +340,10 @@ export default function Brands() {
                     </TableCell>
                     <TableCell>
                       <div>
-                        <p className="font-medium">{b.name_uz}</p>
-                        <p className="text-sm text-muted-foreground">{b.name_ru}</p>
+                        <p className="font-medium">{name}</p>
+                        {languages.filter((l) => l.code !== defaultLanguage).map((l) => (
+                          <p key={l.code} className="text-sm text-muted-foreground">{b.name?.[l.code]}</p>
+                        ))}
                       </div>
                     </TableCell>
                     <TableCell><code className="text-xs bg-muted px-2 py-1 rounded">/brand/{b.slug}</code></TableCell>
@@ -405,16 +402,14 @@ export default function Brands() {
             </TabsList>
 
             <TabsContent value="general" className="space-y-4 mt-4">
-              <div className="grid grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <Label>Nomi (UZ) *</Label>
-                  <Input value={formData.name_uz} onChange={e => handleNameChange(e.target.value, 'name_uz')} placeholder="O'zbek tilida" />
-                </div>
-                <div className="space-y-2">
-                  <Label>Nomi (RU) *</Label>
-                  <Input value={formData.name_ru} onChange={e => handleNameChange(e.target.value, 'name_ru')} placeholder="На русском" />
-                </div>
-              </div>
+              <TranslatedInput
+                label="Nomi"
+                required
+                languages={languages}
+                value={formData.name}
+                onChange={handleNameChange}
+                placeholder={{ uz: "O'zbek tilida", ru: 'На русском' }}
+              />
 
               <div className="space-y-2">
                 <Label>Slug (URL)</Label>
@@ -464,16 +459,12 @@ export default function Brands() {
                 </div>
               </div>
 
-              <div className="grid grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <Label>Tavsif (UZ)</Label>
-                  <Textarea value={formData.description_uz} rows={3} onChange={e => setFormData({ ...formData, description_uz: e.target.value })} />
-                </div>
-                <div className="space-y-2">
-                  <Label>Tavsif (RU)</Label>
-                  <Textarea value={formData.description_ru} rows={3} onChange={e => setFormData({ ...formData, description_ru: e.target.value })} />
-                </div>
-              </div>
+              <TranslatedTextarea
+                label="Tavsif"
+                languages={languages}
+                value={formData.description}
+                onChange={(description) => setFormData({ ...formData, description })}
+              />
 
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-2">
@@ -493,31 +484,20 @@ export default function Brands() {
             </TabsContent>
 
             <TabsContent value="seo" className="space-y-4 mt-4">
-              <div className="grid grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <Label>Meta Title (UZ)</Label>
-                  <Input value={formData.meta_title_uz} maxLength={60} onChange={e => setFormData({ ...formData, meta_title_uz: e.target.value })} placeholder={formData.name_uz} />
-                  <p className="text-xs text-muted-foreground">{formData.meta_title_uz.length}/60</p>
-                </div>
-                <div className="space-y-2">
-                  <Label>Meta Title (RU)</Label>
-                  <Input value={formData.meta_title_ru} maxLength={60} onChange={e => setFormData({ ...formData, meta_title_ru: e.target.value })} placeholder={formData.name_ru} />
-                  <p className="text-xs text-muted-foreground">{formData.meta_title_ru.length}/60</p>
-                </div>
-              </div>
+              <TranslatedInput
+                label="Meta Title"
+                languages={languages}
+                value={formData.meta_title}
+                onChange={(meta_title) => setFormData({ ...formData, meta_title })}
+                placeholder={formData.name}
+              />
               <Separator />
-              <div className="grid grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <Label>Meta Description (UZ)</Label>
-                  <Textarea value={formData.meta_description_uz} maxLength={160} rows={3} onChange={e => setFormData({ ...formData, meta_description_uz: e.target.value })} />
-                  <p className="text-xs text-muted-foreground">{formData.meta_description_uz.length}/160</p>
-                </div>
-                <div className="space-y-2">
-                  <Label>Meta Description (RU)</Label>
-                  <Textarea value={formData.meta_description_ru} maxLength={160} rows={3} onChange={e => setFormData({ ...formData, meta_description_ru: e.target.value })} />
-                  <p className="text-xs text-muted-foreground">{formData.meta_description_ru.length}/160</p>
-                </div>
-              </div>
+              <TranslatedTextarea
+                label="Meta Description"
+                languages={languages}
+                value={formData.meta_description}
+                onChange={(meta_description) => setFormData({ ...formData, meta_description })}
+              />
               <Separator />
               <div className="space-y-2">
                 <Label>Meta Keywords</Label>
@@ -553,9 +533,9 @@ export default function Brands() {
             </AlertDialogTitle>
             <AlertDialogDescription>
               {(productCounts[selected?.id || ''] || 0) > 0 ? (
-                <>"{selected?.name_uz}" brendida <strong>{productCounts[selected?.id || '']}</strong> ta mahsulot bor.</>
+                <>"{selected ? getTranslated(selected.name, defaultLanguage, defaultLanguage) : ''}" brendida <strong>{productCounts[selected?.id || '']}</strong> ta mahsulot bor.</>
               ) : (
-                <>Haqiqatan ham "{selected?.name_uz}" brendini o'chirmoqchimisiz?</>
+                <>Haqiqatan ham "{selected ? getTranslated(selected.name, defaultLanguage, defaultLanguage) : ''}" brendini o'chirmoqchimisiz?</>
               )}
             </AlertDialogDescription>
           </AlertDialogHeader>

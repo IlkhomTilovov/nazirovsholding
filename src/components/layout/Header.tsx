@@ -1,8 +1,9 @@
 import { Link, useLocation } from 'react-router-dom';
 import { Menu, X, Phone, ArrowUpRight, Mail, MapPin } from 'lucide-react';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Fragment } from 'react';
 import { Button } from '@/components/ui/button';
 import { useLanguage } from '@/hooks/useLanguage';
+import { useLanguages } from '@/hooks/useLanguages';
 import { useSystemSettings } from '@/hooks/useSystemSettings';
 
 const navLinks = [
@@ -17,6 +18,7 @@ export function Header() {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const { language, setLanguage } = useLanguage();
+  const { languages } = useLanguages();
   const location = useLocation();
   const { settings } = useSystemSettings();
 
@@ -97,16 +99,15 @@ export function Header() {
             {/* Right */}
             <div className="flex items-center gap-3 md:gap-5 shrink-0">
               <div className="hidden md:flex items-center gap-2 text-[10px] tracking-[0.3em] uppercase">
-                <button
-                  onClick={() => setLanguage('uz')}
-                  className={`font-semibold transition-colors ${language === 'uz' ? 'text-primary' : 'text-foreground/70 hover:text-foreground'}`}
-                >UZ</button>
-                <span className="text-foreground/30">/</span>
-                <button
-                  onClick={() => setLanguage('ru')}
-                  className={`font-semibold transition-colors ${language === 'ru' ? 'text-primary' : 'text-foreground/70 hover:text-foreground'}`}
-                >RU</button>
-
+                {languages.map((lang, i) => (
+                  <Fragment key={lang.code}>
+                    {i > 0 && <span className="text-foreground/30">/</span>}
+                    <button
+                      onClick={() => setLanguage(lang.code)}
+                      className={`font-semibold transition-colors ${language === lang.code ? 'text-primary' : 'text-foreground/70 hover:text-foreground'}`}
+                    >{lang.code.toUpperCase()}</button>
+                  </Fragment>
+                ))}
               </div>
 
               <Link
@@ -235,15 +236,15 @@ export function Header() {
               </div>
 
               <div className="mt-8 flex items-center gap-3 text-[10px] tracking-[0.3em] uppercase">
-                <button
-                  onClick={() => setLanguage('uz')}
-                  className={`transition-colors ${language === 'uz' ? 'text-primary' : 'text-foreground/40'}`}
-                >UZ</button>
-                <span className="text-foreground/20">/</span>
-                <button
-                  onClick={() => setLanguage('ru')}
-                  className={`transition-colors ${language === 'ru' ? 'text-primary' : 'text-foreground/40'}`}
-                >RU</button>
+                {languages.map((lang, i) => (
+                  <Fragment key={lang.code}>
+                    {i > 0 && <span className="text-foreground/20">/</span>}
+                    <button
+                      onClick={() => setLanguage(lang.code)}
+                      className={`transition-colors ${language === lang.code ? 'text-primary' : 'text-foreground/40'}`}
+                    >{lang.code.toUpperCase()}</button>
+                  </Fragment>
+                ))}
               </div>
             </div>
           </nav>
