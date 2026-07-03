@@ -456,6 +456,28 @@ export default function SystemSettings() {
               </div>
             </CardContent>
           </Card>
+
+          <Card>
+            <CardHeader>
+              <CardTitle>Chat widget</CardTitle>
+              <CardDescription>Saytning o'ng pastki burchagidagi chat tugmasini boshqarish</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="flex items-center justify-between">
+                <div className="space-y-0.5">
+                  <Label htmlFor="chat-enabled">Chat tugmasini ko'rsatish</Label>
+                  <p className="text-xs text-muted-foreground">
+                    O'chirilgan holatda saytda chat tugmasi umuman ko'rinmaydi
+                  </p>
+                </div>
+                <Switch
+                  id="chat-enabled"
+                  checked={formData.chat_enabled}
+                  onCheckedChange={(checked) => setFormData({ ...formData, chat_enabled: checked })}
+                />
+              </div>
+            </CardContent>
+          </Card>
         </TabsContent>
 
         <TabsContent value="contact" className="space-y-4 mt-4">
