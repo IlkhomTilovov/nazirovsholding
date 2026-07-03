@@ -1293,6 +1293,7 @@ export type Database = {
         Row: {
           address_ru: string | null
           address_uz: string | null
+          chat_enabled: boolean
           clarity_enabled: boolean
           clarity_project_id: string | null
           contact_phone: string | null
@@ -1324,6 +1325,7 @@ export type Database = {
         Insert: {
           address_ru?: string | null
           address_uz?: string | null
+          chat_enabled?: boolean
           clarity_enabled?: boolean
           clarity_project_id?: string | null
           contact_phone?: string | null
@@ -1355,6 +1357,7 @@ export type Database = {
         Update: {
           address_ru?: string | null
           address_uz?: string | null
+          chat_enabled?: boolean
           clarity_enabled?: boolean
           clarity_project_id?: string | null
           contact_phone?: string | null
